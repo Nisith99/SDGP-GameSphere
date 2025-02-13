@@ -4,6 +4,8 @@ const cors = require('cors')
 const dotenv = require('dotenv')
 const bcrypt = require('bcrypt')
 
+import authRoutes from "./routes/auth.route.js";
+
 const app = express()
 app.use(express.json());
 
@@ -19,6 +21,5 @@ app.listen(process.env.PORT,() => {
     console.log('Server is running on port 3001');
 });
 
-app.get("/", (req, res) => {
-    res.send();
-} )
+
+app.use("/api/v1/auth", authRoutes)
