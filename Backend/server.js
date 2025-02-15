@@ -1,8 +1,8 @@
-const express = require('express')
-const mongoose = require("mongoose")
-const cors = require('cors')
-const dotenv = require('dotenv')
-const bcrypt = require('bcrypt')
+import express from "express";
+import mongoose from "mongoose";
+import cors from 'cors';
+import dotenv from 'dotenv';
+import bcrypt from 'bcrypt';
 
 import authRoutes from "./routes/auth.route.js";
 
@@ -20,6 +20,5 @@ mongoose.connect(process.env.MONGO_URI)
 app.listen(process.env.PORT,() => {
     console.log('Server is running on port 3001');
 });
-
 
 app.use("/api/v1/auth", authRoutes)
