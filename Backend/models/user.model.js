@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        require: tue
+        require: true
     }
 
 },{timestamps: true});
