@@ -15,14 +15,14 @@ export const signup =async(req, res) => {
 		const hashedPassword = await bcrypt.hash(password, salt);
 
 		const user = new User({
-			firstame,
+			firstName,
             lastName,
 			email,
 			password: hashedPassword,
 		});
 		await user.save();
 
-		const token = jwt.sign({id:user_.id}, process.env.JWT_SECRET, {expiresIn: '2d'});
+		const token = jwt.sign({id:user._id}, process.env.JWT_SECRET, {expiresIn: '2d'});
 		res.cookie('token', token, {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === 'production',
