@@ -1,26 +1,21 @@
-//const express = require('express')
-//const mongoose = require("mongoose")
-//const cors = require('cors')
-//const dotenv = require('dotenv')
-//const bcrypt = require('bcrypt')
-
 import express from "express";
 import mongoose from "mongoose";
-import cors from 'cores';
-import dotenv from 'dotenv';
-import bcrypt from 'bcrypt';
+import cors from "cors"; // Fixed typo
+import dotenv from "dotenv";
+import bcrypt from "bcrypt";
 
-const app = express()
-//app.use(express.json());
+const app = express();
+app.use(express.json()); // Don't forget to uncomment this!
 
 dotenv.config();
 
-app.use(cors())
+app.use(cors());
 
-mongoose.connect(process.env.MONGO_URI)
-.then(() => console.log("Conncted to database successfuly"))
-.catch(err => console.log("Faild to connect to database",err))
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("Connected to database successfully"))
+  .catch((err) => console.log("Failed to connect to database", err));
 
-app.listen(process.env.PORT,() => {
-    console.log('Server is running on port 3001');
+app.listen(process.env.PORT, () => {
+  console.log("Server is running on port 3001");
 });
