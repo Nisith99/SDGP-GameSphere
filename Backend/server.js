@@ -2,13 +2,9 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from 'cors';
 import dotenv from 'dotenv';
-<<<<<<< HEAD
-import bcrypt from 'bcrypt';
-=======
 import bcrypt from 'bcryptjs';
 
 import authRoutes from "./routes/auth.route.js";
->>>>>>> SignupPage
 
 const app = express();
 
