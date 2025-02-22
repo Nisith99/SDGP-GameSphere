@@ -1,20 +1,12 @@
-import PropTypes from "prop-types";
-import "../styles/NotificationItem.css"; // Import CSS
-
-const NotificationItem = ({ notification }) => {
+const NotificationItem = ({ notification, markAsRead }) => {
     return (
-        <div className="notification-item">
-            <div className="notification-icon">🔔</div>
-            <div>
-                <p className="notification-message font-semibold">{notification.message}</p>
-                <span className="notification-time">{notification.time}</span>
-            </div>
+        <div className={`notification-item ${notification.read ? "read" : "unread"}`} 
+             onClick={() => markAsRead(notification._id)}>
+            <span className="icon">🔔</span>
+            <p>{notification.message}</p>
+            {!notification.read && <span className="badge">New</span>}
         </div>
     );
-};
-
-NotificationItem.propTypes = {
-    notification: PropTypes.object.isRequired,
 };
 
 export default NotificationItem;
