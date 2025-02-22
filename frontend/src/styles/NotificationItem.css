@@ -5,7 +5,7 @@
     padding: 12px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Subtle transparent border */
     transition: background 0.2s ease-in-out;
-    background: rgba(173, 74, 74, 0.2); /* Slight transparency */
+    background: rgba(255, 255, 255, 0.2); /* Slight transparency */
     backdrop-filter: blur(5px); /* Blur effect for modern UI */
     border-radius: 8px;
     margin-bottom: 8px;
