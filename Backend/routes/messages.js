@@ -1,5 +1,5 @@
 import express from 'express';
-import Message from '../models/message.js';
+import Message from '../models/Message.js';  // Note the capital M and .js extension
 
 const router = express.Router();
 
@@ -24,7 +24,6 @@ router.post('/', async (req, res) => {
     content: req.body.content,
     roomId: req.body.roomId
   });
-  
 
   try {
     const newMessage = await message.save();
