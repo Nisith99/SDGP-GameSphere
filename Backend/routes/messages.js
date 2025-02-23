@@ -24,6 +24,7 @@ router.post('/', async (req, res) => {
     content: req.body.content,
     roomId: req.body.roomId
   });
+  
 
   try {
     const newMessage = await message.save();
