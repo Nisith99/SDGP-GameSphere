@@ -25,7 +25,7 @@ export default function Navbar() {
         <div className="flex items-center space-x-6">
         <span className="text-gray-600 text-xl cursor-pointer hover:text-blue-600 transition">
           Player
-        </span>
+        </span> 
 
         <div className="flex items-center space-x-6">
         <span className="text-gray-600 text-xl cursor-pointer hover:text-blue-600 transition">
@@ -39,9 +39,15 @@ export default function Navbar() {
 
         <div className="flex items-center space-x-6">
         <span className="text-gray-600 text-xl cursor-pointer hover:text-blue-600 transition">
-          Profile
+          Message
         </span>
 
+        <div className="flex items-center space-x-6">
+        <span className="text-gray-600 text-xl cursor-pointer hover:text-blue-600 transition">
+          Profile
+        </span> 
+
+      </div>
       </div>
       </div>
       </div>
