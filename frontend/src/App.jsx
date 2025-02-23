@@ -29,7 +29,7 @@ function App() {
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-zA55e9Of6OFMVVF3LKcvaeVf4jdBMf.png" alt="GameSphere" className="h-8 w-8" />
+            <img src="gameSphere_logo.png" alt="GameSphere" className="h-8 w-8" />
             <span className="font-bold text-xl">GameSphere</span>
           </div>
           
