@@ -1,6 +1,6 @@
 .loginPage {
     min-height: 100vh;
-    background: linear-gradient(to bottom right, #3b82f6, #6366f1);
+    background: radial-gradient(rgba(0, 10, 50, 0.9) 5%, rgba(0, 0, 0, 1) 100%);;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -8,7 +8,7 @@
   }
 
   .loginForm {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.105);
     backdrop-filter: blur(10px);
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -18,17 +18,18 @@
   }
 
   .logoSection {
+    position: absolute;
+    top: 20px;
+    left: 20px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-bottom: 24px;
+    background: transparent;
   }
   
   .logo {
+    background: transparent !important; 
     width: 48px;
     height: 48px;
-    background: #1e40af;
-    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -50,7 +51,7 @@
   .form-title {
     font-size: 28px;
     font-weight: bold;
-    color: #1e293b;
+    color: white;
     text-align: center;
     margin-bottom: 24px;
   }
@@ -93,7 +94,7 @@
   .signup-link {
     text-align: center;
     margin-top: 16px;
-    color: #4b5563;
+    color: white;
   }
   
   .signup-link a {

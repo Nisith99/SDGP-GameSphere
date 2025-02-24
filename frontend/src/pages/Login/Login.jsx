@@ -31,11 +31,11 @@ const Login = () => {
         }
       } catch (error) {
         if (error.response) {
-          // The request was made, but the server responded with an error
+          // The server responded with an error
           console.error('Login failed:', error.response.data.message);
           alert(`Login failed: ${error.response.data.message}`);
         } else {
-          // Something happened in setting up the request
+          // Something wrong with in setting up the request
           console.error('Error during login:', error.message);
           alert('An error occurred during login.');
         }
@@ -44,16 +44,13 @@ const Login = () => {
   
     return (
       <div className="loginPage">
-        <div className="loginForm">
-          <div className="logoSection">
+        <div className="logoSection">
             <div className="logo">
-              <img src="" alt="GameSphere Logo" />
+              <img src="gameSphere_logo.png" alt="GameSphere Logo" />
             </div>
-            <h1 className="projectName">GameSphere</h1>
           </div>
-
+        <div className="loginForm">
           <h2 className="form-title">Login</h2>
- 
           <form onSubmit={handleSubmit}>
             <div className="inputs">
               <input
