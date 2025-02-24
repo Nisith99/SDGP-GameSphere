@@ -24,7 +24,7 @@ export default function Feed() {
           alt="Post"
           className="w-full h-48 object-cover rounded-lg my-3"
         />
-
+        
         {/* Like, Comment, Share */}
         <div className="flex justify-between text-gray-600 mt-2">
           <div className="flex items-center space-x-2 cursor-pointer hover:text-blue-500">
