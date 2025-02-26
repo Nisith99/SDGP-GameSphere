@@ -18,6 +18,11 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         require: true
+    },
+    role: {
+        type: String,
+        enum: ["player", "club"],
+        default: null
     }
 
 },{timestamps: true});
