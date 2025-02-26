@@ -9,7 +9,7 @@ export default function Feed() {
         <div className="flex items-center space-x-3">
           <div>
             <h2 className="font-semibold text-gray-800">Ms Dhoni</h2>
-            <p className="text-sm text-gray-500">Indian professional Cricketer </p>
+            <p className="text-sm text-gray-500">Indian Cricketer </p>
           </div>
         </div>
 
