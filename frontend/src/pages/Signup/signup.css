@@ -1,0 +1,108 @@
+.signupPage {
+    min-height: 100vh;
+    background: radial-gradient(rgba(0, 10, 50, 0.9) 5%, rgba(0, 0, 0, 1) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .signupForm {
+    background: rgba(255, 255, 255, 0.105);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 32px;
+    width: 100%;
+    max-width: 400px;
+  }
+ 
+  .logoSection {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    background: transparent;
+  }
+  
+  .logo {
+    background: transparent !important; 
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  
+  .projectName {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1e293b;
+    margin-left: 12px;
+  }
+
+  .formTitle {
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .inputs {
+    margin-bottom: 16px;
+  }
+  
+  .inputs input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+  }
+  
+  .inputs input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  }
+ 
+  .btn {
+    width: 100%;
+    padding: 12px;
+    background: #3b82f6;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .btn:hover {
+    background: #2563eb;
+  }
+  
+  .signin-link {
+    text-align: center;
+    margin-top: 16px;
+    color: white;
+  }
+  
+  .signin-link a {
+    color: #3b82f6;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .signin-link a:hover {
+    text-decoration: underline;
+  }
