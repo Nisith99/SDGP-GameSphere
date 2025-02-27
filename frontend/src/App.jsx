@@ -1,4 +1,5 @@
 import Notifications from "./components/Notifications"; // Import Notifications
+import Navbar from "./components/Navbar";
 import "./App.css";
 
 function App() {
@@ -9,10 +10,14 @@ function App() {
       {/* App Title */}
       <h1 className="text-3xl font-bold text-blue-600 mb-4">GameSphere Notifications</h1>
       
-
-      {/* Notification Section */}
-      <div className="w-full max-w-md bg-white p- rounded-lg shadow-md">
+{/* Notification Section */}
+      <div className="w-full max-w-md bg-white p- rounded-lg shadow-md ">
         <Notifications userId={userId} />
+      </div>
+      
+
+      <div className="bg-gray-100 min-h-screen">
+        <Navbar/>
       </div>
     </div>
   );
