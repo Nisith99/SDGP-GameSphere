@@ -8,6 +8,8 @@ import authRoutes from "./routes/auth.route.js";
 
 const app = express();
 
+app.use(express.json());
+
 dotenv.config();
 
 app.use(cors({
