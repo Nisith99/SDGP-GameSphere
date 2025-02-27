@@ -8,9 +8,10 @@ function App() {
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-6">
       {/* App Title */}
       <h1 className="text-3xl font-bold text-blue-600 mb-4">GameSphere Notifications</h1>
+      
 
       {/* Notification Section */}
-      <div className="w-full max-w-md bg-white p-4 rounded-lg shadow-md">
+      <div className="w-full max-w-md bg-white p- rounded-lg shadow-md">
         <Notifications userId={userId} />
       </div>
     </div>
