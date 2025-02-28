@@ -1,10 +1,13 @@
 
 
 
+
+
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import Signup from './pages/Signup/Signup'
 import Login from './pages/Login/Login'
 import Landing from './pages/Landing/Landing'
+import Message from './pages/Message/Message';
 import Notification from './components/Notifications'
 
 
@@ -17,6 +20,7 @@ function App() {
     <Route path='/login' element = {<Login/>}></Route>
     <Route path='/landing' element = {<Landing/>}/>
     <Route path = '/Notification' element = {<Notification/>}></Route>
+    <Route path='/message' element={<Message/>}> </Route>
    </Routes>
    </BrowserRouter>
   )
@@ -24,3 +28,4 @@ function App() {
 }
 
 export default App;
+
