@@ -6,6 +6,7 @@ import Landing from './pages/Landing/Landing'
 import Message from './pages/Message/Message';
 import Notification from './components/Notifications'
 import Home from "./pages/Home/Home";
+import Profile from './pages/Profile/Profile';
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
     <Route path = '/Notification' element = {<Notification/>}></Route>
     <Route path='/message' element={<Message/>}> </Route>
     <Route path="/home" element= {<Home/>}></Route>
+    <Route path="/profile" element={<Profile />}></Route>
    </Routes>
    </BrowserRouter>
   )

@@ -1,4 +1,4 @@
-import Navbar from "../../Components/Navbar";
+import Navbar from "../../Components/Navbar_";
 import Feed from "../../Components/Feed"
 
 export default function Home() {
