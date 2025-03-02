@@ -19,6 +19,7 @@ export const Profile = ({
   clubName = "Club Name",
   rating = 8.9,
   location = "Sri Lanka",
+  about = "This is a brief description about the club.",
   ageRange = { min: 17, max: 35 },
   opportunities = [
     {
@@ -33,7 +34,6 @@ export const Profile = ({
       description: "Opportunity to participate in national and international tournaments",
       icon: "trophy",
     },
-
     {
       id: 3,
       title: "Career Development",
@@ -61,6 +61,9 @@ export const Profile = ({
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPasswords, setShowPasswords] = useState(false);
+  const [editedLocation, setEditedLocation] = useState(location);
+  const [editedAbout, setEditedAbout] = useState(about);
+  const [editedAgeRange, setEditedAgeRange] = useState(ageRange);
 
   const toggleFavorite = () => setIsFavorite(!isFavorite);
   const togglePlayers = () => setIsPlayersOpen(!isPlayersOpen);
@@ -84,6 +87,10 @@ export const Profile = ({
       alert("New passwords don't match!");
       return;
     }
+    // Update the location, about, and age range
+    setLocation(editedLocation);
+    setAbout(editedAbout);
+    setAgeRange(editedAgeRange);
     setIsSettingsOpen(false);
   };
 
@@ -133,6 +140,10 @@ export const Profile = ({
             </div>
           </div>
           <div className="space-y-4">
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h2 className="text-lg font-semibold mb-2">About</h2>
+              <p className="text-gray-600">{about}</p>
+            </div>
             <div className="bg-gray-50 p-4 rounded-lg">
               <h2 className="text-lg font-semibold">
                 Age Range: {ageRange.min}yr - {ageRange.max}yr
@@ -249,6 +260,69 @@ export const Profile = ({
               </div>
               <div className="space-y-4">
                 <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-blue-100 rounded-lg">
+                    <Eye size={20} className="text-blue-600" />
+                  </div>
+                  <h3 className="font-medium">Location</h3>
+                </div>
+                <input
+                  type="text"
+                  value={editedLocation}
+                  onChange={(e) => setEditedLocation(e.target.value)}
+                  className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                  placeholder="Enter new location"
+                />
+              </div>
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-purple-100 rounded-lg">
+                    <MessageSquare size={20} className="text-purple-600" />
+                  </div>
+                  <h3 className="font-medium">About</h3>
+                </div>
+                <textarea
+                  value={editedAbout}
+                  onChange={(e) => setEditedAbout(e.target.value)}
+                  className="w-full min-h-[120px] p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors resize-y"
+                  placeholder="Enter new about text"
+                />
+              </div>
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-yellow-100 rounded-lg">
+                    <Target size={20} className="text-yellow-600" />
+                  </div>
+                  <h3 className="font-medium">Age Range</h3>
+                </div>
+                <div className="flex gap-4">
+                  <input
+                    type="number"
+                    value={editedAgeRange.min}
+                    onChange={(e) =>
+                      setEditedAgeRange({
+                        ...editedAgeRange,
+                        min: parseInt(e.target.value),
+                      })
+                    }
+                    className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                    placeholder="Min age"
+                  />
+                  <input
+                    type="number"
+                    value={editedAgeRange.max}
+                    onChange={(e) =>
+                      setEditedAgeRange({
+                        ...editedAgeRange,
+                        max: parseInt(e.target.value),
+                      })
+                    }
+                    className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                    placeholder="Max age"
+                  />
+                </div>
+              </div>
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 mb-2">
                   <div className="p-2 bg-red-100 rounded-lg">
                     <Lock size={20} className="text-red-600" />
                   </div>
@@ -329,7 +403,6 @@ export const Profile = ({
                 >
                   <option value="public">Public</option>
                   <option value="private">Private</option>
-            
                 </select>
               </div>
               <div className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
