@@ -2,11 +2,11 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-    firstName:{
+    fulltName:{
         type: String,
         require: true 
     },
-    lastName: {
+    userName: {
         type: String,
         require: true
     },
@@ -18,6 +18,51 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         require: true
+    },
+    role: {
+        type: String,
+        enum: ["player", "club"],
+        default: null
+    },
+    profilePicture: {
+        type: String,
+        default: "",
+    },
+    coverImg: {
+        type: String,
+        default: "",
+    },
+    location: {
+        type: String,
+        default: "",
+    },
+    about: {
+        type: String,
+        default: "",
+    },
+    playerProfile: {
+        sport: {
+            type: String,
+            default: "",
+        },
+        skills: {
+            type: [String],
+            default: [],
+        },
+        achievements: {
+            type: [String],
+            default: [],    
+        }
+    },
+    clubProfile: {
+        sportType: {
+            type: String,
+            default: "",
+        },
+        stratedYear: {
+            type: Number,
+            default: null,
+        }
     }
 
 },{timestamps: true});
