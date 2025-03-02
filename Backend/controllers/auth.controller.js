@@ -6,9 +6,22 @@ export const signup =async(req, res) => {
    try {
       const { fullName, userName, email, password } = req.body;
 
+	  if (!fullName || !userName || !email || !password) {
+		return res.status(400).json({ message: "All fields need to be complete" });
+	  }
+
       const existEmail = await User.findOne({ email });
 		if (existEmail) {
 			return res.status(400).json({ message: "Email already taken" });
+		}
+
+		const existingUsername = await User.findOne({ userName });
+		if (existingUsername) {
+			return res.status(400).json({ message: "Username already taken" });
+		}
+
+		if (password.length < 6) {
+			return res.status(400).json({ message: "Password should be at least 6 characters" });
 		}
       
       const salt = await bcrypt.genSalt(10);
@@ -69,3 +82,68 @@ export const login = async (req, res) => {
 		res.status(500).json({ message: "Server error" });
 	}
 };
+
+export const selectRole = async (req, res) => {
+	try{
+		const {userId, role, profileData} = req.body;
+		if(!userId || !role){
+			return res.status(400).json({message: "user ID and role are needed"})
+		}
+
+		if(role !== "player" && role !== "club"){
+			return res.status(400).json({message: "Invalid role selecting"})
+		}
+
+		const user = await User.findById(userId);
+		if(!user){
+			return res.status(404).json({message: "User not found"})
+		}
+
+		user.role = role;
+		if(role == "player"){
+			user.playerProfile = profileData;
+		}else if (role == "club"){
+			user.clubProfile = profileData;
+		}
+
+		await user.save();
+
+		res.status(200).json({message: "User role updated successfully", role: user.role});
+
+	}catch(error){
+		console.error("Error in role section: ", error);
+		res.status(500).json({message: "Server error"});
+	}
+};
+
+export const getProfile = async (req,res) => {
+	try{
+		const userId = req.user.id;
+
+		const user = await User.findById(userId);
+		if(!user){
+			return res.status(400).json({message: "User not founded"});
+		}
+
+		if(user.role == "player"){
+			res.status(200).json({profile: user.playerProfile});
+		}else if(user.role == "club"){
+			res.status(200).json({profile: user.clubProfile});
+		}else{
+			res.status(400).json({message: "Please selected role"});
+		}
+	}catch(error){
+		console.error("Error in getProfile section: ", error);
+		res.status(500).json({message: "Server error"});
+	}
+};
+
+
+export const getCurrentUser = async (req, res) => {
+	try{
+		res.json(req.user);
+	}catch(error){
+		console.error("Error in getCurrentUser:", error);
+		res.status(500).json({message: "Server error"});
+	}
+}

@@ -2,7 +2,7 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-    fulltName:{
+    fullName:{
         type: String,
         require: true 
     },
@@ -59,9 +59,13 @@ const userSchema = new mongoose.Schema({
             type: String,
             default: "",
         },
-        stratedYear: {
+        ageRange: {
             type: Number,
             default: null,
+        },
+        opportunities{
+            type: String,
+            defult: null
         }
     }
 
