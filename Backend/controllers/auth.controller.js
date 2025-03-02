@@ -4,10 +4,10 @@ import jwt from "jsonwebtoken";
 
 export const signup =async(req, res) => {
    try {
-      const { firstName, lastName, email, password } = req.body;
+      const { fulltName, userName, email, password } = req.body;
 
-      const existingEmail = await User.findOne({ email });
-		if (existingEmail) {
+      const existEmail = await User.findOne({ email });
+		if (existEmail) {
 			return res.status(400).json({ message: "Email already taken" });
 		}
       
@@ -15,15 +15,15 @@ export const signup =async(req, res) => {
 		const hashedPassword = await bcrypt.hash(password, salt);
 
 		const user = new User({
-			firstName,
-            lastName,
+			fullName,
+            userName,
 			email,
 			password: hashedPassword,
 		});
 		await user.save();
 
 		const token = jwt.sign({id:user._id}, process.env.JWT_SECRET, {expiresIn: '2d'});
-		res.cookie('token', token, {
+		res.cookie('jwt-gamesphere', token, {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === 'production',
 			sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
@@ -41,12 +41,12 @@ export const signup =async(req, res) => {
 
 export const login = async (req, res) => {
 	try {
-		const { email, password } = req.body;
+		const { userName, password } = req.body;
 
 		
-		const user = await User.findOne({ email });
-		if (!email) {
-			return res.status(400).json({ message: "Invalid email" });
+		const user = await User.findOne({ userName });
+		if (!user) {
+			return res.status(400).json({ message: "Invalid username" });
 		}
 
 		const isMatch = await bcrypt.compare(password, user.password);
@@ -55,16 +55,59 @@ export const login = async (req, res) => {
 		}
 		
 		const token = jwt.sign({id:user._id}, process.env.JWT_SECRET, {expiresIn: '2d'});
-		res.cookie('token', token, {
+		res.cookie('jwt-gamesphere', token, {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === 'production',
 			sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
 			maxAge: 2 * 24 * 60 * 60 * 1000
 		})
 
-		res.json({ message: "Logged in successfully" });
+		res.json({ message: "Logged in successfully", token });
 	} catch (error) {
 		console.error("Error in login:", error);
 		res.status(500).json({ message: "Server error" });
 	}
 };
+
+export const selectRole = async (req, res) => {
+	try{
+		const {userId, role, profileData} = req.body;
+		if(!userId || !role){
+			return res.status(400).json({message: "user ID and role are needed"})
+		}
+
+		if(role !== "player" && role !== "club"){
+			return res.status(400).json({message: "Invalid role selecting"})
+		}
+
+		const user = await User.findById(userId);
+		if(!user){
+			return res.status(404).json({message: "User not found"})
+		}
+
+		user.role = role;
+		if(role == "player"){
+			user.playerProfile = profileData;
+		}else if (role == "club"){
+			user.clubProfile = profileData;
+		}
+
+		await user.save();
+
+		res.status(200).json({message: "User role updated successfully", role: user.role});
+
+	}catch(error){
+		console.error("Error in role section: ", error);
+		res.status(500).json({message: "Server error"});
+	}
+};
+
+
+export const getCurrentUser = async (req, res) => {
+	try{
+		res.json(req.user);
+	}catch(error){
+		console.error("Error in getCurrentUser:", error);
+		res.status(500).json({message: "Server error"});
+	}
+}
