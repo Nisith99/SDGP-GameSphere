@@ -34,6 +34,7 @@ router.post('/', async (req, res) => {
     avatar: req.body.avatar,
     teamBadge: req.body.teamBadge
   });
+  
 
   try {
     const newUser = await user.save();
