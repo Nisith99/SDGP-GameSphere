@@ -1,16 +1,15 @@
 import express from "express";
 import mongoose from "mongoose";
-import cors from 'cors';
-import dotenv from 'dotenv';
-import bcrypt from 'bcryptjs';
+import cors from "cors";
+import dotenv from "dotenv";
 
 import authRoutes from "./routes/auth.route.js";
+import postRoutes from "./routes/post.route.js";
 
 const app = express();
+dotenv.config();
 
 app.use(express.json());
-
-dotenv.config();
 
 app.use(cors({
     origin: "http://localhost:5173",
@@ -19,11 +18,13 @@ app.use(cors({
 }));
 
 mongoose.connect(process.env.MONGO_URI)
-.then(() => console.log("Conncted to database successfuly"))
-.catch(err => console.log("Faild to connect to database",err))
+.then(() => console.log("✅ Connected to database successfully"))
+.catch(err => console.log("❌ Failed to connect to database", err));
 
-app.listen(process.env.PORT,() => {
-    console.log('Server is running on port 3001');
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/posts", postRoutes); // ✅ Added post routes
+
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+    console.log(`🚀 Server is running on port ${PORT}`);
 });
-
-app.use("/api/v1/auth", authRoutes)
