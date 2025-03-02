@@ -33,6 +33,7 @@ export const Profile = ({
       description: "Opportunity to participate in national and international tournaments",
       icon: "trophy",
     },
+
     {
       id: 3,
       title: "Career Development",
@@ -92,7 +93,7 @@ export const Profile = ({
         <div className="relative">
           <div className="bg-gradient-to-b from-blue-100 to-blue-200 rounded-lg h-48 w-full mb-4">
             <img
-              src="https://mirrorful-production.s3.us-west-1.amazonaws.com/patterns/files/d2358626-a3e5-4a6c-ad1a-971a406db581/Sport_club.jpg"
+              src="C:\Users\nisit\Music\SDGP-GameSphere\frontend\src\assets\soccer_club_logo .png"
               alt="Club logo"
               className="w-48 h-48 object-contain mx-auto"
             />
@@ -205,7 +206,7 @@ export const Profile = ({
                   <textarea
                     value={achievements}
                     onChange={(e) => onAchievementsChange(e.target.value)}
-                    className="w-full min-h-[120px] p-3 rounded-lg border border-gray-200 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors resize-y"
+                    className="w-full min-h-[120px] p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors resize-y"
                     placeholder="Enter your sports achievements..."
                     aria-label="Sports achievements"
                   />
@@ -242,7 +243,7 @@ export const Profile = ({
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full p-3 rounded-lg border border-gray-200 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                  className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
                   placeholder="Enter new club name"
                 />
               </div>
@@ -258,21 +259,21 @@ export const Profile = ({
                     type={showPasswords ? "text" : "password"}
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
-                    className="w-full p-3 rounded-lg border border-gray-200 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                    className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
                     placeholder="Current password"
                   />
                   <input
                     type={showPasswords ? "text" : "password"}
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
-                    className="w-full p-3 rounded-lg border border-gray-200 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                    className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
                     placeholder="New password"
                   />
                   <input
                     type={showPasswords ? "text" : "password"}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full p-3 rounded-lg border border-gray-200 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                    className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
                     placeholder="Confirm new password"
                   />
                   <label className="flex items-center gap-2 text-sm text-gray-600">
@@ -324,11 +325,11 @@ export const Profile = ({
                 <select
                   value={profileVisibility}
                   onChange={(e) => setProfileVisibility(e.target.value)}
-                  className="p-2 rounded-lg border border-gray-200 outline-none focus:border-gray-400"
+                  className="p-2 rounded-lg border bg-white outline-none focus:bg-white"
                 >
                   <option value="public">Public</option>
                   <option value="private">Private</option>
-                  <option value="friends">Friends Only</option>
+            
                 </select>
               </div>
               <div className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">

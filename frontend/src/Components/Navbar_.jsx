@@ -20,7 +20,7 @@ export default function Navbar() {
       <div className="flex items-center space-x-6">
         <span className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
           Home
-        </span>
+          </span>
 
         <div className="flex items-center space-x-6">
         <span className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
