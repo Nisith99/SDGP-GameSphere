@@ -13,6 +13,7 @@ router.get('/', async (req, res) => {
   }
 });
 
+
 // Get user by ID
 router.get('/:id', async (req, res) => {
   try {
