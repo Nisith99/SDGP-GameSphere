@@ -7,7 +7,7 @@ const postSchema = new mongoose.Schema({
     content: { type: String, required: true },
     image: { type: String },
     likes: { type: Number, default: 0 },
-    comments: [{ userId: String, text: String, createdAt: { type: Date, default: Date.now } }]
+    comments: [{ userId: String, text: String }],
 }, { timestamps: true });
 
 const Post = mongoose.model("Post", postSchema);
