@@ -6,7 +6,7 @@ import Landing from './pages/Landing/Landing'
 import Message from './pages/Message/Message';
 import Notification from './components/Notifications'
 import Home from "./pages/Home/Home";
-import Profile from './pages/Profile/Profile';
+import { Profile } from './pages/Profile/Profile';
 
 
 function App() {
