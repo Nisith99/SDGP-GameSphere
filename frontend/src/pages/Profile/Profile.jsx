@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import {
   MessageSquare,
   Heart,
@@ -65,6 +64,7 @@ export const Profile = ({
   const [editedLocation, setEditedLocation] = useState(location);
   const [editedAbout, setEditedAbout] = useState(about);
   const [editedAgeRange, setEditedAgeRange] = useState(ageRange);
+  const [clubLogo, setClubLogo] = useState("./soccer.png");
 
   const toggleFavorite = () => setIsFavorite(!isFavorite);
   const togglePlayers = () => setIsPlayersOpen(!isPlayersOpen);
@@ -83,29 +83,36 @@ export const Profile = ({
     }
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setClubLogo(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSave = () => {
     if (newPassword && newPassword !== confirmPassword) {
       alert("New passwords don't match!");
       return;
     }
-    // Update the location, about, and age range
-    setLocation(editedLocation);
-    setAbout(editedAbout);
-    setAgeRange(editedAgeRange);
+    // Update the state variables directly
     setIsSettingsOpen(false);
+    console.log("All changes saved!");
   };
 
   return (
     <>
       <div className="max-w-7xl mx-auto p-6">
         <div className="relative">
-          
-            <img
-              src="./soccer.png"
-              alt="Club logo"
-              className="w-150 h-150 object-contain mx-auto"
-            />
-          
+          <img
+            src={clubLogo}
+            alt="Club logo"
+            className="w-150 h-150 object-contain mx-auto"
+          />
           <div className="flex items-center justify-between mb-8">
             <div>
               <h1 className="text-3xl font-bold mb-1">{clubName}</h1>
@@ -244,6 +251,23 @@ export const Profile = ({
               </button>
             </div>
             <div className="p-4 space-y-6">
+              {/* Change Club Logo Section */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-green-100 rounded-lg">
+                    <User size={20} className="text-green-600" />
+                  </div>
+                  <h3 className="font-medium">Change Club Logo</h3>
+                </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                />
+              </div>
+
+              {/* Club Name Section */}
               <div className="space-y-4">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-2 bg-green-100 rounded-lg">
@@ -259,6 +283,8 @@ export const Profile = ({
                   placeholder="Enter new club name"
                 />
               </div>
+
+              {/* Location Section */}
               <div className="space-y-4">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-2 bg-blue-100 rounded-lg">
@@ -274,6 +300,8 @@ export const Profile = ({
                   placeholder="Enter new location"
                 />
               </div>
+
+              {/* About Section */}
               <div className="space-y-4">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-2 bg-purple-100 rounded-lg">
@@ -288,6 +316,8 @@ export const Profile = ({
                   placeholder="Enter new about text"
                 />
               </div>
+
+              {/* Age Range Section */}
               <div className="space-y-4">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-2 bg-yellow-100 rounded-lg">
@@ -322,6 +352,8 @@ export const Profile = ({
                   />
                 </div>
               </div>
+
+              {/* Change Password Section */}
               <div className="space-y-4">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-2 bg-red-100 rounded-lg">
@@ -362,6 +394,8 @@ export const Profile = ({
                   </label>
                 </div>
               </div>
+
+              {/* Notifications Section */}
               <div className="border-t -mx-4 my-6"></div>
               <div className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
                 <div className="flex items-center gap-3">
@@ -385,6 +419,8 @@ export const Profile = ({
                   <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
                 </label>
               </div>
+
+              {/* Profile Visibility Section */}
               <div className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-blue-100 rounded-lg">
@@ -406,6 +442,8 @@ export const Profile = ({
                   <option value="private">Private</option>
                 </select>
               </div>
+
+              {/* Dark Mode Section */}
               <div className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-yellow-100 rounded-lg">
