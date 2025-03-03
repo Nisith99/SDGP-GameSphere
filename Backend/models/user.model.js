@@ -50,8 +50,19 @@ const userSchema = new mongoose.Schema({
             default: [],
         },
         achievements: {
-            type: [String],
-            default: [],    
+            division:{
+                type: String,
+                default: [],
+            },
+            distric:{
+                type: String,
+                default: [],
+            },
+            island:{
+                type: String,
+                default: [],
+            }
+
         }
     },
     clubProfile: {
@@ -63,7 +74,7 @@ const userSchema = new mongoose.Schema({
             type: Number,
             default: null,
         },
-        opportunities{
+        opportunities: {
             type: String,
             defult: null
         }
