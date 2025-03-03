@@ -28,7 +28,7 @@ export const updateUserProfile = async (req, res) => {
         res.status(200).json({ message: "Profile updated successfully", user });
 
     } catch (error) {
-        console.error("Error updating profile:", error);
+        console.error("Error in updating profile:", error);
         res.status(500).json({ message: "Server error" });
     }
 };
@@ -37,7 +37,7 @@ export const getProfile = async (req, res) => {
     try {
        const userId = req.user._id; 
  
-       const user = await User.findById(userId).select('-password');
+       const user = await User.findById(userId).select('-password').lean();
        if (!user) {
           return res.status(404).json({ message: "User not found" });
        }

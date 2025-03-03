@@ -51,18 +51,17 @@ const userSchema = new mongoose.Schema({
         },
         achievements: {
             division:{
-                type: String,
+                type: [String],
                 default: [],
             },
             distric:{
-                type: String,
+                type: [String],
                 default: [],
             },
             island:{
-                type: String,
+                type: [String],
                 default: [],
             }
-
         }
     },
     clubProfile: {
