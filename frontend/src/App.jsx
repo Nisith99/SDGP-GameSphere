@@ -1,4 +1,3 @@
-
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import Signup from './pages/Signup/Signup'
 import Login from './pages/Login/Login'
@@ -7,6 +6,7 @@ import Message from './pages/Message/Message';
 import Notification from './components/Notifications'
 import Home from "./pages/Home/Home";
 import { Profile } from './pages/Profile/Profile';
+import PlayerProfile from "./pages/Profile/PlayerProfile";
 
 
 function App() {
@@ -20,6 +20,7 @@ function App() {
     <Route path='/message' element={<Message/>}> </Route>
     <Route path="/home" element= {<Home/>}></Route>
     <Route path="/profile" element={<Profile />}></Route>
+    <Route path="/player-profile" element={<PlayerProfile />}></Route>
    </Routes>
    </BrowserRouter>
   )

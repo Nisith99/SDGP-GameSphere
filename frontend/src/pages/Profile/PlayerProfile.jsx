@@ -1,12 +1,9 @@
-import React, { useState } from "react";
-
+import React, { useState } from 'react';
 import {
   MessageSquare,
   Heart,
   ChevronDown,
   User,
-  Star,
-  Trophy,
   Target,
   Settings,
   Bell,
@@ -14,72 +11,59 @@ import {
   Moon,
   X,
   Lock,
-} from "lucide-react";
+} from 'lucide-react';
 
-export const Profile = ({
-  clubName = "Club Name",
-  rating = 8.9,
+const PlayerProfile = ({
+  playerName = "Player Name",
+  rating = 7.5,
   location = "Sri Lanka",
-  about = "This is a brief description about the club.",
-  ageRange = { min: 17, max: 35 },
-  opportunities = [
-    {
-      id: 1,
-      title: "Professional Training",
-      description: "Access to professional training facilities and experienced coaches",
-      icon: "star",
-    },
-    {
-      id: 2,
-      title: "Tournament Participation",
-      description: "Opportunity to participate in national and international tournaments",
-      icon: "trophy",
-    },
-    {
-      id: 3,
-      title: "Career Development",
-      description: "Career guidance and development programs for aspiring professional players",
-      icon: "target",
-    },
-  ],
+  about = "This is a brief description about the player.",
+  age = 23,
+  position = "Forward",
   achievements = "",
   onAchievementsChange = () => {},
-  players = [
-    { id: 1, name: "John Smith", position: "Forward", age: 23 },
-    { id: 2, name: "David Wilson", position: "Midfielder", age: 25 },
-    { id: 3, name: "Michael Brown", position: "Defender", age: 22 },
-    { id: 4, name: "Robert Taylor", position: "Goalkeeper", age: 28 },
-  ],
+  sportType = "Soccer",
+  recentPerformance = "Good",
+  participateMatchesCount = 50,
+  bestAchievements = "Won the regional championship",
+  playerType = "Pro",
+  pastClubStatus = "Played for Club A and Club B",
 }) => {
   const [isFavorite, setIsFavorite] = useState(false);
-  const [isPlayersOpen, setIsPlayersOpen] = useState(false);
+  const [isClubsOpen, setIsClubsOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [notifications, setNotifications] = useState(true);
   const [profileVisibility, setProfileVisibility] = useState("public");
   const [darkMode, setDarkMode] = useState(false);
-  const [username, setUsername] = useState(clubName);
+  const [username, setUsername] = useState(playerName);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPasswords, setShowPasswords] = useState(false);
   const [editedLocation, setEditedLocation] = useState(location);
   const [editedAbout, setEditedAbout] = useState(about);
-  const [editedAgeRange, setEditedAgeRange] = useState(ageRange);
+  const [editedAge, setEditedAge] = useState(age);
+  const [editedPosition, setEditedPosition] = useState(position);
+  const [editedSportType, setEditedSportType] = useState(sportType);
+  const [editedRecentPerformance, setEditedRecentPerformance] = useState(recentPerformance);
+  const [editedParticipateMatchesCount, setEditedParticipateMatchesCount] = useState(participateMatchesCount);
+  const [editedBestAchievements, setEditedBestAchievements] = useState(bestAchievements);
+  const [editedPlayerType, setEditedPlayerType] = useState(playerType);
+  const [editedPastClubStatus, setEditedPastClubStatus] = useState(pastClubStatus);
+  const [playerImage, setPlayerImage] = useState("./player.png");
 
   const toggleFavorite = () => setIsFavorite(!isFavorite);
-  const togglePlayers = () => setIsPlayersOpen(!isPlayersOpen);
+  const toggleClubs = () => setIsClubsOpen(!isClubsOpen);
   const toggleSettings = () => setIsSettingsOpen(!isSettingsOpen);
 
-  const getOpportunityIcon = (iconName) => {
-    switch (iconName) {
-      case "star":
-        return <Star className="text-yellow-500" size={24} />;
-      case "trophy":
-        return <Trophy className="text-blue-500" size={24} />;
-      case "target":
-        return <Target className="text-green-500" size={24} />;
-      default:
-        return <Star className="text-yellow-500" size={24} />;
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPlayerImage(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -88,27 +72,23 @@ export const Profile = ({
       alert("New passwords don't match!");
       return;
     }
-    // Update the location, about, and age range
-    setLocation(editedLocation);
-    setAbout(editedAbout);
-    setAgeRange(editedAgeRange);
+    // Update the state variables directly
     setIsSettingsOpen(false);
+    console.log("All changes saved!");
   };
 
   return (
     <>
       <div className="max-w-7xl mx-auto p-6">
         <div className="relative">
-          
-            <img
-              src="./soccer.png"
-              alt="Club logo"
-              className="w-150 h-150 object-contain mx-auto"
-            />
-          
+          <img
+            src={playerImage}
+            alt="Player avatar"
+            className="w-150 h-150 object-contain mx-auto"
+          />
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h1 className="text-3xl font-bold mb-1">{clubName}</h1>
+              <h1 className="text-3xl font-bold mb-1">{playerName}</h1>
               <p className="text-gray-600">{location}</p>
             </div>
             <div className="flex items-center gap-4">
@@ -146,39 +126,45 @@ export const Profile = ({
               <p className="text-gray-600">{about}</p>
             </div>
             <div className="bg-gray-50 p-4 rounded-lg">
-              <h2 className="text-lg font-semibold">
-                Age Range: {ageRange.min}yr - {ageRange.max}yr
-              </h2>
+              <h2 className="text-lg font-semibold">Age: {age} years</h2>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h2 className="text-lg font-semibold">Position: {position}</h2>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h2 className="text-lg font-semibold">Sport Type: {sportType}</h2>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h2 className="text-lg font-semibold">Recent Performance: {recentPerformance}</h2>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h2 className="text-lg font-semibold">Participate Matches Count: {participateMatchesCount}</h2>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h2 className="text-lg font-semibold">Best Achievements: {bestAchievements}</h2>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h2 className="text-lg font-semibold">Player Type: {playerType}</h2>
+            </div>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <h2 className="text-lg font-semibold">Past Club Status: {pastClubStatus}</h2>
             </div>
             <div className="bg-gray-50 rounded-lg overflow-hidden">
-              <button
-                onClick={togglePlayers}
-                className="w-full p-4 flex items-center justify-between hover:bg-gray-100 transition-colors"
-                aria-expanded={isPlayersOpen}
-              >
-                <h2 className="text-lg font-semibold">Our current players</h2>
-                <ChevronDown
-                  size={20}
-                  className={`transform transition-transform duration-200 ${
-                    isPlayersOpen ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-              {isPlayersOpen && (
+              {isClubsOpen && (
                 <div className="border-t border-gray-200 p-4">
                   <div className="space-y-3">
-                    {players.map((player) => (
+                    {clubsInterested.map((club) => (
                       <div
-                        key={player.id}
+                        key={club.id}
                         className="flex items-center gap-3 p-2 hover:bg-gray-100 rounded-lg transition-colors"
                       >
                         <div className="p-2 bg-gray-200 rounded-full">
                           <User size={20} className="text-gray-600" />
                         </div>
                         <div>
-                          <div className="font-medium">{player.name}</div>
+                          <div className="font-medium">{club.name}</div>
                           <div className="text-sm text-gray-600">
-                            {player.position} • {player.age} years
+                            {club.location} • Rating: {club.rating}
                           </div>
                         </div>
                       </div>
@@ -188,28 +174,7 @@ export const Profile = ({
               )}
             </div>
             <div className="bg-gray-50 p-4 rounded-lg">
-              <h2 className="text-lg font-semibold mb-6">Opportunities</h2>
-              <div className="space-y-4">
-                {opportunities.map((opportunity) => (
-                  <div
-                    key={opportunity.id}
-                    className="flex items-start gap-4 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
-                  >
-                    <div className="p-2 bg-gray-50 rounded-lg">
-                      {getOpportunityIcon(opportunity.icon)}
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-lg mb-1">
-                        {opportunity.title}
-                      </h3>
-                      <p className="text-gray-600">{opportunity.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h2 className="text-lg font-semibold mb-4">Requirements</h2>
+              <h2 className="text-lg font-semibold mb-4">Achievements</h2>
               <div className="mb-4">
                 <label className="block">
                   <span className="font-semibold mb-2 block">
@@ -244,21 +209,40 @@ export const Profile = ({
               </button>
             </div>
             <div className="p-4 space-y-6">
+              {/* Change Image Section */}
               <div className="space-y-4">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-2 bg-green-100 rounded-lg">
                     <User size={20} className="text-green-600" />
                   </div>
-                  <h3 className="font-medium">Club Name</h3>
+                  <h3 className="font-medium">Change Profile Image</h3>
+                </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                />
+              </div>
+
+              {/* Username Section */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-green-100 rounded-lg">
+                    <User size={20} className="text-green-600" />
+                  </div>
+                  <h3 className="font-medium">Player Name</h3>
                 </div>
                 <input
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
-                  placeholder="Enter new club name"
+                  placeholder="Enter new player name"
                 />
               </div>
+
+              {/* Location Section */}
               <div className="space-y-4">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-2 bg-blue-100 rounded-lg">
@@ -274,6 +258,8 @@ export const Profile = ({
                   placeholder="Enter new location"
                 />
               </div>
+
+              {/* About Section */}
               <div className="space-y-4">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-2 bg-purple-100 rounded-lg">
@@ -288,40 +274,127 @@ export const Profile = ({
                   placeholder="Enter new about text"
                 />
               </div>
+
+              {/* Age Section */}
               <div className="space-y-4">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-2 bg-yellow-100 rounded-lg">
                     <Target size={20} className="text-yellow-600" />
                   </div>
-                  <h3 className="font-medium">Age Range</h3>
+                  <h3 className="font-medium">Age</h3>
                 </div>
-                <div className="flex gap-4">
-                  <input
-                    type="number"
-                    value={editedAgeRange.min}
-                    onChange={(e) =>
-                      setEditedAgeRange({
-                        ...editedAgeRange,
-                        min: parseInt(e.target.value),
-                      })
-                    }
-                    className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
-                    placeholder="Min age"
-                  />
-                  <input
-                    type="number"
-                    value={editedAgeRange.max}
-                    onChange={(e) =>
-                      setEditedAgeRange({
-                        ...editedAgeRange,
-                        max: parseInt(e.target.value),
-                      })
-                    }
-                    className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
-                    placeholder="Max age"
-                  />
-                </div>
+                <input
+                  type="number"
+                  value={editedAge}
+                  onChange={(e) => setEditedAge(e.target.value)}
+                  className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                  placeholder="Enter new age"
+                />
               </div>
+
+              {/* Sport Type Section */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-red-100 rounded-lg">
+                    <Target size={20} className="text-red-600" />
+                  </div>
+                  <h3 className="font-medium">Sport Type</h3>
+                </div>
+                <input
+                  type="text"
+                  value={editedSportType}
+                  onChange={(e) => setEditedSportType(e.target.value)}
+                  className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                  placeholder="Enter new sport type"
+                />
+              </div>
+
+              {/* Recent Performance Section */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-purple-100 rounded-lg">
+                    <Target size={20} className="text-purple-600" />
+                  </div>
+                  <h3 className="font-medium">Recent Performance</h3>
+                </div>
+                <input
+                  type="text"
+                  value={editedRecentPerformance}
+                  onChange={(e) => setEditedRecentPerformance(e.target.value)}
+                  className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                  placeholder="Enter recent performance"
+                />
+              </div>
+
+              {/* Participate Matches Count Section */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-blue-100 rounded-lg">
+                    <Target size={20} className="text-blue-600" />
+                  </div>
+                  <h3 className="font-medium">Participate Matches Count</h3>
+                </div>
+                <input
+                  type="number"
+                  value={editedParticipateMatchesCount}
+                  onChange={(e) => setEditedParticipateMatchesCount(e.target.value)}
+                  className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                  placeholder="Enter participate matches count"
+                />
+              </div>
+
+              {/* Best Achievements Section */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-green-100 rounded-lg">
+                    <Target size={20} className="text-green-600" />
+                  </div>
+                  <h3 className="font-medium">Best Achievements</h3>
+                </div>
+                <textarea
+                  value={editedBestAchievements}
+                  onChange={(e) => setEditedBestAchievements(e.target.value)}
+                  className="w-full min-h-[120px] p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors resize-y"
+                  placeholder="Enter best achievements"
+                />
+              </div>
+
+              {/* Player Type Section */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-yellow-100 rounded-lg">
+                    <Target size={20} className="text-yellow-600" />
+                  </div>
+                  <h3 className="font-medium">Player Type</h3>
+                </div>
+                <select
+                  value={editedPlayerType}
+                  onChange={(e) => setEditedPlayerType(e.target.value)}
+                  className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                >
+                  <option value="Beginner">Beginner</option>
+                  <option value="Pro">Pro</option>
+                  <option value="Expert">Expert</option>
+                </select>
+              </div>
+
+              {/* Past Club Status Section */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="p-2 bg-red-100 rounded-lg">
+                    <Target size={20} className="text-red-600" />
+                  </div>
+                  <h3 className="font-medium">Past Club Status</h3>
+                </div>
+                <textarea
+                  value={editedPastClubStatus}
+                  onChange={(e) => setEditedPastClubStatus(e.target.value)}
+                  className="w-full min-h-[120px] p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors resize-y"
+                  placeholder="Enter past club status"
+                />
+              </div>
+
+              {/* Change Password Section */}
               <div className="space-y-4">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-2 bg-red-100 rounded-lg">
@@ -362,6 +435,8 @@ export const Profile = ({
                   </label>
                 </div>
               </div>
+
+              {/* Notifications Section */}
               <div className="border-t -mx-4 my-6"></div>
               <div className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
                 <div className="flex items-center gap-3">
@@ -385,6 +460,8 @@ export const Profile = ({
                   <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
                 </label>
               </div>
+
+              {/* Profile Visibility Section */}
               <div className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-blue-100 rounded-lg">
@@ -406,6 +483,8 @@ export const Profile = ({
                   <option value="private">Private</option>
                 </select>
               </div>
+
+              {/* Dark Mode Section */}
               <div className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-yellow-100 rounded-lg">
@@ -441,3 +520,5 @@ export const Profile = ({
     </>
   );
 };
+
+export default PlayerProfile;
