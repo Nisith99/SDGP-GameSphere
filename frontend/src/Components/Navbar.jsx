@@ -1,5 +1,4 @@
 import { FaSearch } from "react-icons/fa";
-import './Navbar.css'; 
 
 export default function Navbar() {
   return (
@@ -18,13 +17,41 @@ export default function Navbar() {
       </div>
 
       {/* Right Side */}
-      <div className="navbar-right">
-        <span className="navbar-item">Home</span>
-        <span className="navbar-item">Player</span>
-        <span className="navbar-item">Club</span>
-        <span className="navbar-item">Notifications</span>
-        <span className="navbar-item">Message</span>
-        <span className="navbar-item">Profile</span>
+      <div className="flex items-center space-x-6">
+        <span className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
+          Home
+        </span>
+
+        <div className="flex items-center space-x-6">
+        <span className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
+          Player
+        </span> 
+
+        <div className="flex items-center space-x-6">
+        <span className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
+          Club
+        </span>
+
+        <div className="flex items-center space-x-6">
+        <span className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
+          Notifications
+        </span>
+
+        <div className="flex items-center space-x-6">
+        <span className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
+          Message
+        </span>
+
+        <div className="flex items-center space-x-6">
+        <span className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
+          Profile
+        </span> 
+
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
       </div>
     </div>
   );
