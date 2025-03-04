@@ -1,6 +1,6 @@
+
 import { useState } from "react";
 import { Bell, Users, CheckCircle, MessageCircle, Flag } from "lucide-react";
-import Navbar from "../components/Navbar";
 
 const notificationsData = [
   { id: 1, type: "trial", message: "You have been invited for a trial at XYZ Club.", time: "30m", unread: true },
@@ -36,8 +36,6 @@ const Notifications = () => {
   );
 
   return (
-
-    
     <div className="min-h-screen bg-gray-0 p-10 flex flex-col items-center">
       
       
