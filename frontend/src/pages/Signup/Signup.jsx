@@ -4,8 +4,8 @@ import { axiosInstance } from "../../lib/axios";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    fullName: '',
+    userName: '',
     email: '',
     password: '',
   });
@@ -55,8 +55,8 @@ const Signup = () => {
           <div className="inputs">
             <input
               type="text"
-              name="firstName"
-              placeholder="First Name"
+              name="fulltName"
+              placeholder="Full Name"
               value={formData.firstName}
               onChange={handleChange}
               required
@@ -66,8 +66,8 @@ const Signup = () => {
           <div className="inputs">
             <input
               type="text"
-              name="lastName"
-              placeholder="Last Name"
+              name="userName"
+              placeholder="Username"
               value={formData.lastName}
               onChange={handleChange}
               required

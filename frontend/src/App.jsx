@@ -4,7 +4,7 @@ import Signup from './pages/Signup/Signup'
 import Login from './pages/Login/Login'
 import Landing from './pages/Landing/Landing'
 import Message from './pages/Message/Message';
-import Notification from './components/Notifications'
+import Notification from './Components/Notifications'
 import Home from "./pages/Home/Home";
 
 

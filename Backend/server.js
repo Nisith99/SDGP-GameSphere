@@ -14,11 +14,16 @@ app.use(cors());
 import cors from 'cors';
 import dotenv from 'dotenv';
 import bcrypt from 'bcryptjs';
+import cookieParser from "cookie-parser";
 
 import authRoutes from "./routes/auth.route.js";
+import userRoutes from "./routes/user.route.js";
+import playerRoutes from "./routes/player.route.js";
+import clubRoutes from "./routes/club.route.js";
 
 
 app.use(express.json());
+app.use(cookieParser());
 
 dotenv.config();
 
@@ -39,5 +44,3 @@ app.listen(process.env.PORT,() => {
 });
 
 app.use("/api/v1/auth", authRoutes)
-
-
