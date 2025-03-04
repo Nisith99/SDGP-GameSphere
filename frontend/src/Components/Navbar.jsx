@@ -1,4 +1,6 @@
-import { FaSearch } from "react-icons/fa";
+import {  FaSearch } from "react-icons/fa";
+import { Link  } from "react-router-dom";
+
 
 export default function Navbar() {
   return (
@@ -18,34 +20,34 @@ export default function Navbar() {
 
       {/* Right Side */}
       <div className="flex items-center space-x-6">
-        <span className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
+        <Link to="/Home.jsx" className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
           Home
-        </span>
+        </Link>
 
         <div className="flex items-center space-x-6">
-        <span className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
+        <Link to="/" className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
           Player
-        </span> 
+        </Link> 
 
         <div className="flex items-center space-x-6">
-        <span className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
+        <Link to="/" className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
           Club
-        </span>
+        </Link>
 
         <div className="flex items-center space-x-6">
-        <span className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
+        <Link to="/" className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
           Notifications
-        </span>
+        </Link>
 
         <div className="flex items-center space-x-6">
-        <span className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
+        <Link to="/" className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
           Message
-        </span>
+        </Link>
 
         <div className="flex items-center space-x-6">
-        <span className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
+        <Link to="/" className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
           Profile
-        </span> 
+        </Link> 
 
       </div>
       </div>
