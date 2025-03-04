@@ -1,9 +1,10 @@
-import {  FaSearch } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
   return (
     <div className="bg-blue-400 shadow-md p-4 flex justify-between items-center px-8">
-      {/* Left Side -  Logo & Search */}
+      {/* Left Side - Logo & Search */}
       <div className="flex items-center space-x-10">
         <img src="/gameSphere_logo.png" alt="Logo" className="h-16 w-auto"/>
         <div className="flex items-center bg-blue-200 p-2 rounded-md w-72">
@@ -16,43 +17,32 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Right Side */}
+      {/* Right Side - Navigation Links */}
       <div className="flex items-center space-x-6">
-        <span className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
+        <Link to="/home" className="text-gray-600 text-xl font-medium hover:text-blue-600 transition">
           Home
-          </span>
+        </Link>
 
-        <div className="flex items-center space-x-6">
-        <span className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
+        <Link to="/" className="text-gray-600 text-xl font-medium hover:text-blue-600 transition">
           Player
-        </span> 
+        </Link>
 
-        <div className="flex items-center space-x-6">
-        <span className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
+        <Link to="/club" className="text-gray-600 text-xl font-medium hover:text-blue-600 transition">
           Club
-        </span>
+        </Link>
 
-        <div className="flex items-center space-x-6">
-        <span className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
+        <Link to="/Notification" className="text-gray-600 text-xl font-medium hover:text-blue-600 transition">
           Notifications
-        </span>
+        </Link>
 
-        <div className="flex items-center space-x-6">
-        <span className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
+        <Link to="/message" className="text-gray-600 text-xl font-medium hover:text-blue-600 transition">
           Message
-        </span>
-
-        <div className="flex items-center space-x-6">
-        <span className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
+        </Link>
+        
+        <Link to="/profile" className="text-gray-600 text-xl font-medium hover:text-blue-600 transition">
           Profile
-        </span> 
-
+        </Link>
       </div>
-      </div>
-      </div>
-      </div>
-      </div>
-      </div>
-      </div>
+    </div>
   );
 }
