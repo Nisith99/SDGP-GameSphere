@@ -1,10 +1,11 @@
 import {  FaSearch } from "react-icons/fa";
 import { Link  } from "react-router-dom";
 
+
 export default function Navbar() {
   return (
     <div className="bg-blue-400 shadow-md p-4 flex justify-between items-center px-8">
-      {/* Left Side -  Logo & Search */}
+      {/*Logo & Search */}
       <div className="flex items-center space-x-10">
         <img src="/gameSphere_logo.png" alt="Logo" className="h-16 w-auto"/>
         <div className="flex items-center bg-blue-200 p-2 rounded-md w-72">
