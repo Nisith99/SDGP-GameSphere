@@ -3,7 +3,7 @@ import User from "../models/user.model.js"
 export const ratingClub = async (req, res) => {
     try {
         const { clubId } = req.params;
-        const { rating } = req.body;
+        const { rate } = req.body;
         const userId = req.user._id; 
 
         if (!rate || rate < 1 || rate > 5) {
@@ -36,8 +36,8 @@ export const ratingClub = async (req, res) => {
         }
 
         const totalRating = club.clubProfile.rating.length;
-        const avgRating = club.clubProfile.rating.reduce((sum, r) => sum + r.rating, 0) / totalRating;
-        club.clubProfile.avgRating = avgRating.toFixed(1);
+        const avgRating = club.clubProfile.rating.reduce((sum, r) => sum + r.rate, 0) / totalRating;
+        club.clubProfile.avgRating = parseFloat(avgRating.toFixed(1));
 
         await club.save();
 
@@ -79,7 +79,18 @@ export const getClubsSortedUsingRating = async (req, res) => {
             .select("fullName userName profilePicture about clubProfile.avgRating")
             .lean();
 
-        const sortedClubs = clubs.sort((a, b) => b.clubProfile.avgRating - a.clubProfile.avgRating);
+        const sortedClubs = clubs.map(club => ({
+                fullName: club.fullName,
+                userName: club.userName,
+                profilePicture: club.profilePicture,
+                about: club.about,
+                avgRating: parseFloat(club.clubProfile?.avgRating || 0).toFixed(1)
+        })).sort((a, b) => {
+            if(b.avgRating === a.avgRating) {
+                return b.clubProfile.rating.leangth - a.clubProfile.rating.length;
+            }
+            return b.avgRating - a.avgRating;
+        });
 
         res.status(200).json({ clubs: sortedClubs });
     } catch (error) {
