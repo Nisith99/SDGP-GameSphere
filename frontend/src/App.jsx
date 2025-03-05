@@ -7,6 +7,7 @@ import Notification from './Components/Notifications'
 import Home from "./pages/Home/Home";
 import { Profile } from './pages/Profile/Profile';
 import PlayerProfile from "./pages/Profile/PlayerProfile";
+import PlayerListView from "./pages/PlayerList/PlayerListView";
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
     <Route path="/home" element= {<Home/>}></Route>
     <Route path="/profile" element={<Profile />}></Route>
     <Route path="/playerProfile" element={<PlayerProfile />}></Route>
+    <Route path="/players" element={<PlayerListView />}> </Route>
    </Routes>
    </BrowserRouter>
   )
