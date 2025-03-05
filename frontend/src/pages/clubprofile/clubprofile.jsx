@@ -36,6 +36,10 @@ const App = () => {
             <span>User Profile</span>
           </div>
         </div>
+      </div>
+
+      {/* Theme Toggle Button just below the navbar */}
+      <div className="theme-toggle-container">
         <button className="theme-toggle" onClick={toggleTheme}>
           {darkMode ? "Light Mode" : "Dark Mode"}
         </button>
@@ -43,7 +47,7 @@ const App = () => {
 
       {/* Hero Section */}
       <div className="hero">
-        <h1>Welcome to Gamesphere User999</h1>
+        <h1>Welcome to GameSphere User999</h1>
       </div>
 
       {/* Club List */}
