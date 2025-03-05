@@ -147,6 +147,9 @@ const PlayerListView = () => {
               style={{ cursor: "pointer" }}
               onClick={() => navigate(`/playerProfile/${filteredPlayers[0].id}`)}
             >
+
+                {/* Player Img */}
+
               <div className="playerImage">
                 <img src="player.png" alt="Soccer player" />
               </div>
