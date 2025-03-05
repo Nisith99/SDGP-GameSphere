@@ -9,6 +9,7 @@ import authRoutes from "./routes/auth.route.js";
 import userRoutes from "./routes/user.route.js";
 import playerRoutes from "./routes/player.route.js";
 import clubRoutes from "./routes/club.route.js";
+import ratingRoutes from "./routes/rating.route.js";
 
 const app = express();
 
@@ -35,3 +36,4 @@ app.use("/api/v1/auth", authRoutes)
 app.use("/api/v1/user", userRoutes)
 app.use("/api/v1/player", playerRoutes)
 app.use("/api/v1/club", clubRoutes)
+app.use("/api/v1/rating", ratingRoutes)
