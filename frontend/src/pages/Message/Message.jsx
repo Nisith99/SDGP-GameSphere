@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
-import { FiSearch, FiHome, FiMessageSquare, FiBell, FiUser, FiSend } from 'react-icons/fi'
+import React, { useState } from 'react';
+import { FiSearch, FiHome, FiMessageSquare, FiBell, FiUser, FiSend } from 'react-icons/fi';
+import './Message.css';
 
 const Message = () => {
     const [messages, setMessages] = useState([
@@ -8,115 +9,109 @@ const Message = () => {
         { id: 3, text: 'Message here', time: '2:10pm', isUser: false },
         { id: 4, text: 'Message here', time: '2:15pm', isUser: false },
     ]);
-    const [newMessage, setNewMessage] = useState('')
-    
+    const [newMessage, setNewMessage] = useState('');
+
     const handleSendMessage = (e) => {
-        e.preventDefault()
-        if (!newMessage.trim()) return
-        
+        e.preventDefault();
+        if (!newMessage.trim()) return;
+
         setMessages([...messages, {
-          id: messages.length + 1,
-          text: newMessage,
-          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-          isUser: true
-        }])
-        setNewMessage('')
+            id: messages.length + 1,
+            text: newMessage,
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            isUser: true
+        }]);
+        setNewMessage('');
     };
-    
+
     return (
-        <div className="min-h-screen bg-gray-100">
-          {/* Header */}
-          <header className="bg-white shadow-sm">
-            <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <img src="gameSphere_logo.png" alt="GameSphere" className="h-8 w-8" />
-                <span className="font-bold text-xl">GameSphere</span>
-              </div>
-              
-              <div className="flex-1 max-w-xl mx-4">
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Search here............"
-                    className="w-full px-4 py-2 rounded-full bg-gray-100 focus:outline-none"
-                  />
-                  <FiSearch className="absolute right-3 top-2.5 text-gray-400 h-5 w-5" />
-                </div>
-              </div>
-    
-              <nav className="flex items-center gap-6">
-                <FiHome className="h-6 w-6 text-gray-600" />
-                <FiMessageSquare className="h-6 w-6 text-purple-600" />
-                <FiBell className="h-6 w-6 text-gray-600" />
-                <FiUser className="h-6 w-6 text-gray-600" />
-              </nav>
-            </div>
-          </header>
-    
-          {/* Main Content */}
-          <main className="max-w-7xl mx-auto px-4 py-6 grid grid-cols-[300px,1fr] gap-6">
-            {/* Sidebar */}
-            <div className="bg-white rounded-lg p-6 h-[calc(100vh-8rem)]">
-              <div className="flex flex-col items-center gap-4">
-                <div className="h-24 w-24 bg-gray-200 rounded-lg flex items-center justify-center">
-                  <FiMessageSquare className="h-12 w-12 text-gray-400" />
-                </div>
-                <h2 className="text-xl font-semibold">Message BOX</h2>
-              </div>
-            </div>
-    
-            {/* Chat Area */}
-            <div className="bg-white rounded-lg flex flex-col h-[calc(100vh-8rem)]">
-              <div className="flex-1 p-6 overflow-y-auto">
-                <div className="space-y-4">
-                  {messages.map((message) => (
-                    <div
-                      key={message.id}
-                      className={`flex ${message.isUser ? 'justify-start' : 'justify-end'}`}
-                    >
-                      <div className="flex items-end gap-2 max-w-[80%]">
-                        {message.isUser && (
-                          <div className="h-8 w-8 rounded-full bg-gray-200 flex-shrink-0" />
-                        )}
-                        <div
-                          className={`rounded-lg px-4 py-2 ${
-                            message.isUser
-                              ? 'bg-white border'
-                              : 'bg-gray-200'
-                          }`}
-                        >
-                          <p>{message.text}</p>
-                          <span className="text-xs text-gray-500">{message.time}</span>
-                        </div>
-                        {!message.isUser && (
-                          <div className="h-8 w-8 rounded-full bg-blue-600 flex-shrink-0" />
-                        )}
-                      </div>
+        <div className="container">
+            {/* Header */}
+            <header className="header">
+                <div className="header-content">
+                    <div className="logo-container">
+                        <img src="gameSphere_logo.png" alt="GameSphere" className="logo" />
+                        <span className="brand">GameSphere</span>
                     </div>
-                  ))}
+
+                    <div className="search-container">
+                        <input
+                            type="text"
+                            placeholder="Search here............"
+                            className="search-input"
+                        />
+                        <FiSearch className="search-icon" />
+                    </div>
+
+                    <nav className="nav">
+                        <FiHome className="nav-icon" />
+                        <FiMessageSquare className="nav-icon active" />
+                        <FiBell className="nav-icon" />
+                        <FiUser className="nav-icon" />
+                    </nav>
                 </div>
-              </div>
-    
-              {/* Message Input */}
-              <form onSubmit={handleSendMessage} className="p-4 border-t">
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    placeholder="Message"
-                    className="flex-1 px-4 py-2 rounded-full bg-gray-100 focus:outline-none"
-                  />
-                  <button
-                    type="submit"
-                    className="p-2 rounded-full hover:bg-gray-100"
-                  >
-                    <FiSend className="h-5 w-5 text-gray-600" />
-                  </button>
+            </header>
+
+            {/* Main Content */}
+            <main className="main-content">
+                {/* Sidebar */}
+                <div className="sidebar">
+                    <div className="sidebar-content">
+                        <div className="sidebar-icon-container">
+                            <FiMessageSquare className="sidebar-icon" />
+                        </div>
+                        <h2 className="sidebar-title">Message BOX</h2>
+                    </div>
                 </div>
-              </form>
-            </div>
-          </main>
+
+                {/* Chat Area */}
+                <div className="chat-area">
+                    <div className="chat-messages">
+                        <div className="space-y-4">
+                            {messages.map((message) => (
+                                <div
+                                    key={message.id}
+                                    className={`message-container ${message.isUser ? 'user' : 'other'}`}
+                                >
+                                    <div className="message-content">
+                                        {message.isUser && (
+                                            <div className="avatar" />
+                                        )}
+                                        <div
+                                            className={`message-bubble ${message.isUser ? 'user' : 'other'}`}
+                                        >
+                                            <p className="message-text">{message.text}</p>
+                                            <span className="message-time">{message.time}</span>
+                                        </div>
+                                        {!message.isUser && (
+                                            <div className="avatar" style={{ backgroundColor: '#3b82f6' }} />
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Message Input */}
+                    <form onSubmit={handleSendMessage} className="message-input-form">
+                        <div className="message-input-container">
+                            <input
+                                type="text"
+                                value={newMessage}
+                                onChange={(e) => setNewMessage(e.target.value)}
+                                placeholder="Message"
+                                className="message-input"
+                            />
+                            <button
+                                type="submit"
+                                className="send-button"
+                            >
+                                <FiSend className="send-icon" />
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </main>
         </div>
     );
 };

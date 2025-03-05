@@ -1,0 +1,186 @@
+.player-profile {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .player-avatar {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    margin: 0 auto;
+  }
+  
+  .player-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .player-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .player-location {
+    color: #666;
+  }
+  
+  .player-rating {
+    text-align: center;
+  }
+  
+  .rating-value {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .rating-label {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .message-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: background-color 0.3s;
+  }
+  
+  .message-button:hover {
+    background-color: #333;
+  }
+  
+  .favorite-button {
+    padding: 8px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    transition: background-color 0.3s;
+  }
+  
+  .favorite-button:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .favorite-button.active {
+    border-color: red;
+    color: red;
+  }
+  
+  .settings-button {
+    padding: 8px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    transition: background-color 0.3s;
+  }
+  
+  .settings-button:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .info-section {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+  }
+  
+  .info-section h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .info-section p {
+    color: #666;
+  }
+  
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background-color: white;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    background-color: white;
+  }
+  
+  .modal-title {
+    font-size: 20px;
+    font-weight: 600;
+  }
+  
+  .modal-close-button {
+    padding: 5px;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+  }
+  
+  .modal-close-button:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .modal-body {
+    padding: 15px;
+  }
+  
+  .input-field {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 15px;
+  }
+  
+  .textarea-field {
+    width: 100%;
+    min-height: 120px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    resize: vertical;
+  }
+  
+  .save-button {
+    width: 100%;
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: background-color 0.3s;
+  }
+  
+  .save-button:hover {
+    background-color: #333;
+  }
