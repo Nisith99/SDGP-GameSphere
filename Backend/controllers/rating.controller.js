@@ -76,21 +76,29 @@ export const getClubRating = async (req, res) => {
 export const getClubsSortedUsingRating = async (req, res) => {
     try {
         const clubs = await User.find({ role: "club" })
-            .select("fullName userName profilePicture about clubProfile.avgRating")
+            .select("fullName userName profilePicture about clubProfile.avgRating clubProfile.rating")
             .lean();
 
-        const sortedClubs = clubs.map(club => ({
+        const totalRatingCount = clubs.reduce((sum, club) => sum + (club.clubProfile?.rating?.length || 0), 0);
+        const totalClubs = clubs.length;
+
+        const k = totalClubs > 0 ? Math.max(5, totalRatingCount / totalClubs) : 5;
+
+        const sortedClubs = clubs.map(club => {
+            const avgRating = parseFloat(club.clubProfile?.avgRating || 0);
+            const n = club.clubProfile?.rating?.length || 0;
+
+            const weightedRating = ((avgRating * n) + (k * 3)) / (n + k);
+
+            return{
                 fullName: club.fullName,
                 userName: club.userName,
                 profilePicture: club.profilePicture,
                 about: club.about,
-                avgRating: parseFloat(club.clubProfile?.avgRating || 0).toFixed(1)
-        })).sort((a, b) => {
-            if(b.avgRating === a.avgRating) {
-                return b.clubProfile.rating.leangth - a.clubProfile.rating.length;
-            }
-            return b.avgRating - a.avgRating;
-        });
+                avgRating: avgRating.toFixed(1),
+                totalRating: n 
+            };    
+        }).sort((a, b) => b.weightedRating - a.weightedRating);
 
         res.status(200).json({ clubs: sortedClubs });
     } catch (error) {
