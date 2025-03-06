@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { FiSearch, FiHome, FiMessageSquare, FiBell, FiUser, FiSend } from 'react-icons/fi'
-import "./Message.css"; // Import the CSS file
+//import "./Message.css"; // Import the CSS file
 
 
 const Message = () => {
