@@ -1,17 +1,18 @@
-import {  FaSearch } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
+import './Navbar.css';
 
 export default function Navbar() {
   return (
-    <div className="bg-blue-400 shadow-md p-4 flex justify-between items-center px-8">
-      {/* Left Side -  Logo & Search */}
-      <div className="flex items-center space-x-10">
-        <img src="/gameSphere_logo.png" alt="Logo" className="h-16 w-auto"/>
-        <div className="flex items-center bg-blue-200 p-2 rounded-md w-72">
-          <FaSearch className="text-gray-500 mr-2" />
+    <div className="navbar">
+      {/* Logo & Search */}
+      <div className="navbar-left">
+        <img src="/gameSphere_logo.png" alt="Logo" className="logo" />
+        <div className="search-bar">
+          <FaSearch className="search-icon" />
           <input
             type="text"
             placeholder="Search"
-            className="bg-transparent outline-none w-full text-gray-800"
+            className="search-input"
           />
         </div>
       </div>
@@ -53,6 +54,6 @@ export default function Navbar() {
       </div>
       </div>
       </div>
-      </div>
+    </div>
   );
 }
