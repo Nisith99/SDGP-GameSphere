@@ -21,7 +21,7 @@ const Notifications = () => {
         return <CheckCircle className="text-green-500" />;
       case "message":
         return <MessageCircle className="text-purple-500" />;
-      case "club_invite":
+      case "invite":
         return <Users className="text-yellow-500" />;
       case "achievement":
         return <Bell className="text-orange-500" />;
