@@ -27,7 +27,6 @@ app.use(cors({
     methods: ["GET", "POST", "PUT", "DELETE"],
 }));
 
-
 mongoose.connect(process.env.MONGO_URI)
 .then(() => console.log("Conncted to database successfuly"))
 .catch(err => console.log("Faild to connect to database",err))
