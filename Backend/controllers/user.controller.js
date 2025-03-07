@@ -1,4 +1,5 @@
 import User from "../models/user.model.js";
+import bcrypt from "bcryptjs";
 
 export const updateUserProfile = async (req, res) => {
     try {
@@ -12,18 +13,23 @@ export const updateUserProfile = async (req, res) => {
 
         if (fullName) user.fullName = fullName;
         if (userName) user.userName = userName;
-        if (password) user.password = password;
+        if (password) user.password = await bcrypt.hash(password, 10);
         if (profilePicture) user.profilePicture = profilePicture;
         if (coverImg) user.coverImg = coverImg;
         if (location) user.location = location;
         if (about) user.about = about;
 
-        if (user.role === "player") {
+        if (user.role === "player" && profileData) {
+            if (profileData.achievements !== undefined) {
+                user.playerProfile.achievements = profileData.achievements;
+            }
             user.playerProfile = { ...user.playerProfile, ...profileData };
-        } else if (user.role === "club") {
+        } 
+        
+        // Only update `clubProfile` if `profileData` is provided and valid
+        else if (user.role === "club" && profileData) {
             user.clubProfile = { ...user.clubProfile, ...profileData };
         }
-
         await user.save();
         res.status(200).json({ message: "Profile updated successfully", user });
 
