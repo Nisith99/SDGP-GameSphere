@@ -24,7 +24,7 @@ export const signup =async(req, res) => {
 		await user.save();
 
 		const token = jwt.sign({id:user._id}, process.env.JWT_SECRET, {expiresIn: '2d'});
-		res.cookie('token', token, {
+		res.cookie('jwt-gamesphere', token, {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === 'production',
 			sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
@@ -56,7 +56,7 @@ export const login = async (req, res) => {
 		}
 		
 		const token = jwt.sign({id:user._id}, process.env.JWT_SECRET, {expiresIn: '2d'});
-		res.cookie('token', token, {
+		res.cookie('jwt-gamesphere', token, {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === 'production',
 			sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
