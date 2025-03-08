@@ -1,53 +1,52 @@
-import {  FaSearch } from "react-icons/fa";
-import { Link  } from "react-router-dom";
-
+import { FaSearch } from "react-icons/fa";
+import './Navbar.css';
 
 export default function Navbar() {
   return (
-    <div className="bg-blue-400 shadow-md p-4 flex justify-between items-center px-8">
-      {/*Logo & Search */}
-      <div className="flex items-center space-x-10">
-        <img src="/gameSphere_logo.png" alt="Logo" className="h-16 w-auto"/>
-        <div className="flex items-center bg-blue-200 p-2 rounded-md w-72">
-          <FaSearch className="text-gray-500 mr-2" />
+    <div className="navbar">
+      {/* Logo & Search */}
+      <div className="navbar-left">
+        <img src="/gameSphere_logo.png" alt="Logo" className="logo" />
+        <div className="search-bar">
+          <FaSearch className="search-icon" />
           <input
             type="text"
             placeholder="Search"
-            className="bg-transparent outline-none w-full text-gray-800"
+            className="search-input"
           />
         </div>
       </div>
 
       {/* Right Side */}
       <div className="flex items-center space-x-6">
-        <Link to="/Home.jsx" className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
+        <span className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
           Home
-        </Link>
+        </span>
 
         <div className="flex items-center space-x-6">
-        <Link to="/" className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
+        <span className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
           Player
-        </Link> 
+        </span> 
 
         <div className="flex items-center space-x-6">
-        <Link to="/" className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
+        <span className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
           Club
-        </Link>
+        </span>
 
         <div className="flex items-center space-x-6">
-        <Link to="/" className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
+        <span className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
           Notifications
-        </Link>
+        </span>
 
         <div className="flex items-center space-x-6">
-        <Link to="/" className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
+        <span className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
           Message
-        </Link>
+        </span>
 
         <div className="flex items-center space-x-6">
-        <Link to="/" className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
+        <span className="text-gray-600 text-xl font-medium cursor-pointer hover:text-blue-600 transition">
           Profile
-        </Link> 
+        </span> 
 
       </div>
       </div>
@@ -55,6 +54,6 @@ export default function Navbar() {
       </div>
       </div>
       </div>
-      </div>
+    </div>
   );
 }

@@ -1,0 +1,59 @@
+.navbar {
+    background-color: #60a5fa;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Medium shadow */
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem; /* Space between logo and search bar */
+  }
+  
+  .logo {
+    height: 4rem;
+    width: auto;
+  }
+  
+  .search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #bfdbfe; 
+    padding: 0.5rem;
+    border-radius: 0.375rem; /* Rounded corners */
+    width: 18rem; 
+  }
+  
+  .search-icon {
+    color: #6b7280; 
+    margin-right: 0.5rem; /* Space between icon and input */
+  }
+  
+  .search-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    width: 100%;
+    color: #374151; /* Dark gray text */
+  }
+  
+  .navbar-right {
+    display: flex;
+    gap: 1.5rem; /* Space between items */
+  }
+  
+  .navbar-item {
+    color: #4b5563;
+    font-size: 1.25rem; 
+    font-weight: 500; 
+    cursor: pointer;
+    transition: color 0.3s ease; 
+  }
+  
+  .navbar-item:hover {
+    color: #2563eb; 
+  }
+  
