@@ -8,6 +8,7 @@ import Home from "./pages/Home/Home";
 import { Profile } from './pages/Profile/Profile';
 import PlayerProfile from "./pages/Profile/PlayerProfile";
 import PlayerListView from "./pages/PlayerList/PlayerListView";
+import { UserRoleType } from "./pages/UserRoleType/UserRoleType";
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
     <Route path="/profile" element={<Profile />}></Route>
     <Route path="/playerProfile" element={<PlayerProfile />}></Route>
     <Route path="/players" element={<PlayerListView />}> </Route>
+    <Route path="/user-role" element={<UserRoleType />}></Route>
    </Routes>
    </BrowserRouter>
   )
