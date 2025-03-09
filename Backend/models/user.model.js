@@ -1,6 +1,20 @@
 
 import mongoose from "mongoose";
 
+const ratingSchema = new mongoose.Schema({
+    player: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    rating: {
+        type: Number,
+        required: true,
+        min: 1,
+        max: 5
+    }
+}, {timestamps: true});
+
 const userSchema = new mongoose.Schema({
     fullName:{
         type: String,
@@ -8,7 +22,8 @@ const userSchema = new mongoose.Schema({
     },
     userName: {
         type: String,
-        require: true
+        require: true,
+        unique: true
     },
     email:{
         type: String,
@@ -76,6 +91,11 @@ const userSchema = new mongoose.Schema({
         opportunities: {
             type: String,
             defult: null
+        },
+        rating: [ratingSchema],
+        avgRating: {
+            type: Number,
+            default: 0
         }
     }
 
