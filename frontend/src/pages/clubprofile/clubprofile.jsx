@@ -1,6 +1,30 @@
 import React, { useState } from "react";
 import "./App.css";
 
+const mockPlayers = [
+  { id: 1, name: "John Doe", position: "Forward", rating: 4.8, available: true, location: "USA" },
+  { id: 2, name: "Mike Smith", position: "Midfielder", rating: 4.5, available: false, location: "UK" },
+  { id: 3, name: "David Johnson", position: "Defender", rating: 4.7, available: true, location: "Germany" },
+  { id: 4, name: "Chris Lee", position: "Goalkeeper", rating: 4.6, available: true, location: "Brazil" },
+  { id: 5, name: "Liam Brown", position: "Forward", rating: 4.9, available: true, location: "France" },
+  { id: 6, name: "Noah White", position: "Midfielder", rating: 4.3, available: true, location: "Spain" },
+  { id: 7, name: "Falcoa", position: "Forward", rating: 4.5, available: false, location: "UK" },
+  { id: 8, name: "Messi", position: "Midfielder", rating: 4.5, available: false, location: "Spain" },
+  { id: 9, name: "Zlatan Ibrahimovic", position: "Defender", rating: 4.5, available: false, location: "UK" },
+  { id: 10, name: "Mike Noah", position: "Forward", rating: 4.5, available: false, location: "UK" },
+  { id: 11, name: "Neymar", position: "Midfielder", rating: 4.5, available: false, location: "UK" },
+  { id: 12, name: "Mike SD", position: "Midfielder", rating: 4.5, available: false, location: "Spain" },
+  { id: 12, name: "Mike Sazowski", position: "Defender", rating: 4.5, available: false, location: "UK" },
+  { id: 14, name: "Mike Smenah", position: "Midfielder", rating: 4.5, available: false, location: "UK" },
+  { id: 15, name: "Cristiano", position: "Forward", rating: 4.5, available: false, location: "Spain" },
+  { id: 16, name: "Ronaldo", position: "Midfielder", rating: 4.5, available: false, location: "UK" },
+  { id: 17, name: "Leo", position: "Midfielder", rating: 4.5, available: false, location: "UK" },
+  { id: 18, name: "Jennda", position: "Midfielder", rating: 4.5, available: false, location: "UK" },
+  { id: 19, name: "Mbappe", position: "Midfielder", rating: 4.5, available: false, location: "UK" },
+  { id: 20, name: "Leonardo Da Vinci", position: "Midfielder", rating: 4.5, available: false, location: "UK" },
+
+];
+
 const ClubProfile = () => {
   const [selectedPosition, setSelectedPosition] = useState("All");
   const [darkMode, setDarkMode] = useState(false);
@@ -9,14 +33,7 @@ const ClubProfile = () => {
     setDarkMode(!darkMode);
   };
 
-  const players = [
-    { id: 1, name: "John Doe", position: "Forward", rating: 4.8, available: true },
-    { id: 2, name: "Mike Smith", position: "Midfielder", rating: 4.5, available: false },
-    { id: 3, name: "David Johnson", position: "Defender", rating: 4.7, available: true },
-    { id: 4, name: "Chris Lee", position: "Goalkeeper", rating: 4.6, available: true },
-  ];
-
-  const filteredPlayers = selectedPosition === "All" ? players : players.filter(player => player.position === selectedPosition);
+  const filteredPlayers = selectedPosition === "All" ? mockPlayers : mockPlayers.filter(player => player.position === selectedPosition);
 
   return (
     <div className={`container ${darkMode ? "dark-mode" : "light-mode"}`}>
@@ -84,6 +101,7 @@ const ClubProfile = () => {
             <h3>{player.name}</h3>
             <p><strong>Position:</strong> {player.position}</p>
             <p><strong>Rating:</strong> {player.rating} ⭐</p>
+            <p><strong>Location:</strong> {player.location}</p>
             <p className={player.available ? "available" : "unavailable"}>
               {player.available ? "Available for Recruitment" : "Currently Unavailable"}
             </p>
