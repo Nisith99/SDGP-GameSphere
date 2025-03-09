@@ -1,5 +1,5 @@
-const express = require("express");
-const Notification = require("../models/Notification");
+import express from "express";
+import Notification from "../models/Notification.model.js";
 
 const router = express.Router();
 
@@ -23,4 +23,4 @@ router.put("/:id", async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;
