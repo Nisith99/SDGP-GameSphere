@@ -3,9 +3,14 @@ import mongoose from "mongoose";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-import postRoutes from './routes/post.routes.js';
 
-const postRoutes = require("./routes/post.routes");
+import authRoutes from "./routes/auth.route.js";
+import userRoutes from "./routes/user.route.js";
+import playerRoutes from "./routes/player.route.js";
+import clubRoutes from "./routes/club.route.js";
+import ratingRoutes from "./routes/rating.route.js";
+import postRoutes from  "./routes/post.route.js";
+
 
 const app = express();
 
@@ -34,4 +39,9 @@ app.listen(PORT, () => {
 });
 
 
-app.use("/api/v1/posts" , postRoutes);
+app.use("/api/v1/auth", authRoutes)
+app.use("/api/v1/user", userRoutes)
+app.use("/api/v1/player", playerRoutes)
+app.use("/api/v1/club", clubRoutes)
+app.use("/api/v1/rating", ratingRoutes)
+app.use("/api/v1/post",postRoutes)
