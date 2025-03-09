@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const postSchema = new mongoose.Schema({
   profileImage: String,
@@ -14,8 +14,8 @@ const postSchema = new mongoose.Schema({
   image: String,
 }, { timestamps: true });
 
-pageXOffsetostSchema.index({content:"text"});   //Adding text for serach
+postSchema.index({ content: "text" });   // Fixed typo in variable name and spacing
 
 const Post = mongoose.model("Post", postSchema);
 
-module.exports = Post;
+export default Post;
