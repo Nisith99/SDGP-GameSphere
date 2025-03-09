@@ -52,7 +52,7 @@ const userSchema = new mongoose.Schema({
             default: [],
         },
         achievements: {
-            division:{
+            province:{
                 type: [String],
                 default: [],
             },
