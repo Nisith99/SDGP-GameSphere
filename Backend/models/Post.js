@@ -14,6 +14,8 @@ const postSchema = new mongoose.Schema({
   image: String,
 }, { timestamps: true });
 
+pageXOffsetostSchema.index({content:"text"});   //Adding text for serach
+
 const Post = mongoose.model("Post", postSchema);
 
 module.exports = Post;
