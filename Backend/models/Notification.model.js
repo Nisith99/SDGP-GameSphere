@@ -1,7 +1,7 @@
 import mongoose from  "mongoose";
 
 const notificationSchema = new mongoose.Schema({
-    reciver: { type: mongoose.Schema.Types.ObjId, ref: "User", required: true },
+    receiver: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     type: { type: String, required: true , enum: ["like", "comment", "connectionAccept"] },
     sender: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     read: { type: Boolean, default: false },
