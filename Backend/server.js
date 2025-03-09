@@ -4,6 +4,7 @@ import cors from "cors"; // Fixed typo
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.route.js";
+import notifyRoute from "./routes/notifications.route.js"
 
 
 const app = express();
@@ -37,3 +38,4 @@ app.listen(process.env.PORT,() => {
 });
 
 app.use("/api/v1/auth", authRoutes)
+app.use("/api/v1/notify", notifyRoute)
