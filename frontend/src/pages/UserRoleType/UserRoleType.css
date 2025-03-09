@@ -1,111 +1,154 @@
-/* UserRoleType.css */
+/* General Styles */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  color: #fff;
+  height: 100%;
+}
+
+/* Container Styles */
 .container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    min-height: 100vh;
-    background: linear-gradient(to bottom, #3b82f6, #60a5fa, #93c5fd);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+  position: relative; 
+  background: none;
+}
+
+.logo{
+  width: 150px;
+  height: auto;
+}
+/* Main Content */
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 500px;
+  margin-top: 120px; 
+}
+
+/* Option Buttons */
+.optionButton {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  padding: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.optionButton:hover {
+  background: rgba(255, 255, 255, 0.1); 
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.optionButton.selected {
+  background: rgba(79, 209, 197, 0.1); 
+  border-color: #4fd1c5;
+  box-shadow: 0 8px 16px rgba(79, 209, 197, 0.3);
+}
+
+.optionContent {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.optionIcon {
+  width: 120px;
+  height: 100px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.optionText {
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* Submit Button */
+.submitButton {
+  width: 100%;
+  max-width: 500px;
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #4fd1c5, #38b2ac);
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.submitButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg, #38b2ac, #4fd1c5);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .logoContainer .logoImage {
+    width: 200px; 
   }
-  
-  .logoContainer {
-    padding: 24px;
-  }
-  
-  .logo {
-    display: flex;
-    align-items: center;
-  }
-  
-  .logoIcon {
-    background-color: #1f2937;
-    border-radius: 8px;
-    padding: 8px;
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .logoInnerIcon {
-    width: 32px;
-    height: 32px;
-    background-color: #4b5563;
-    border-radius: 4px;
-    position: relative;
-  }
-  
-  .logoDot {
-    position: absolute;
-    width: 16px;
-    height: 16px;
-    background-color: #93c5fd;
-    border-radius: 50%;
-    bottom: 0;
-    right: 0;
-  }
-  
-  .logoText {
-    margin-left: 8px;
-    font-size: 24px;
-    font-weight: bold;
-    color: #000000;
-    font-style: italic;
-  }
-  
-  .mainContent {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 32px 16px;
-    gap: 24px;
-  }
-  
+
   .optionButton {
-    width: 100%;
-    max-width: 512px;
-    background-color: rgba(191, 219, 254, 0.7);
-    border-radius: 12px;
-    padding: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    transition: background-color 0.3s;
+    padding: 15px;
   }
-  
-  .optionButton:hover {
-    background-color: rgba(191, 219, 254, 0.9);
+
+  .optionIcon {
+    width: 80px;
+    height: 80px;
   }
-  
-  .optionButton.selected {
-    outline: 2px solid white;
-  }
-  
-  .optionContent {
-    display: flex;
-    align-items: center;
-  }
-  
+
   .optionText {
-    color: white;
-    font-weight: bold;
-    font-size: 20px;
+    font-size: 16px;
   }
-  
+
   .submitButton {
-    width: 100%;
-    max-width: 512px;
-    background-color: rgba(191, 219, 254, 0.7);
-    color: #1f2937;
-    font-weight: bold;
-    padding: 16px 24px;
-    border-radius: 8px;
-    margin-top: 32px;
-    transition: background-color 0.3s;
+    padding: 12px;
+    font-size: 16px;
   }
-  
-  .submitButton:hover {
-    background-color: rgba(191, 219, 254, 0.9);
+}
+
+@media (max-width: 480px) {
+  .logoContainer .logoImage {
+    width: 150px; /* Even smaller logo for mobile */
   }
+
+  .optionButton {
+    padding: 12px;
+  }
+
+  .optionIcon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .optionText {
+    font-size: 14px;
+  }
+
+  .submitButton {
+    padding: 10px;
+    font-size: 14px;
+  }
+}
