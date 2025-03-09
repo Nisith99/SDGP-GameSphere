@@ -21,7 +21,8 @@
   .navbar-logo-search {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 3rem;
+    margin-left:-15%;
   }
   
   .navbar-logo {
@@ -29,17 +30,17 @@
   }
   
   .navbar-logo img {
-    height: 8rem;
+    height: 7rem;
     width: auto;
   }
   
   .navbar-search-container {
     transition: all 0.2s;
-    width: 18rem;
+    width: 24rem;
   }
   
   .navbar-search-container.focused {
-    width: 24rem;
+    width: 28rem;
   }
   
   .navbar-search {
@@ -93,7 +94,7 @@
     display: flex;
     align-items: center;
     gap: 1.0rem;
-    margin: 0 0 0 200px;
+    margin: 0 0 0 500px;
   }
   
   .nav-item {
