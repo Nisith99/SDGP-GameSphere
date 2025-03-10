@@ -1,0 +1,17 @@
+.home {
+  min-height: 100vh;
+  background-color: #121212;
+}
+
+.home-content {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.loading-message,
+.empty-message {
+  color: white;
+  text-align: center;
+  padding: 32px;
+}
