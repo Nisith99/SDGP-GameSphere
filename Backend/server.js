@@ -4,15 +4,8 @@ import mongoose from "mongoose";
 import cors from "cors"; // Fixed typo
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-
-import notifyRoute from "./routes/notifications.route.js"
 import authRoutes from "./routes/auth.route.js";
-import userRoutes from "./routes/user.route.js";
-import playerRoutes from "./routes/player.route.js";
-import clubRoutes from "./routes/club.route.js";
-import ratingRoutes from "./routes/rating.route.js";
-import postRoutes from  "./routes/post.route.js";
-
+import notifyRoute from "./routes/notifications.route.js"
 
 
 const app = express();
@@ -21,9 +14,6 @@ app.use(express.json()); // Don't forget to uncomment this!
 dotenv.config();
 
 app.use(cors());
-
-
-
 
 app.use(express.json());
 app.use(cookieParser());

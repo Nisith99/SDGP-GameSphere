@@ -1,5 +1,13 @@
 import express from "express";
 import Notification from "../models/Notification.model.js";
+import { protectRoute } from "../middleware/auth.middleware.js";
+
+import {
+	deleteNotification,
+	getUserNotifications,
+	markNotificationAsRead,
+} from "../controllers/notification.controller.js";
+
 
 const router = express.Router();
 
@@ -22,5 +30,11 @@ router.put("/:id", async (req, res) => {
         res.status(500).json(err);
     }
 });
+
+router.get("/", protectRoute, getUserNotifications);
+
+router.put("/:id/read", protectRoute, markNotificationAsRead);
+router.delete("/:id", protectRoute, deleteNotification);
+
 
 export default router;
