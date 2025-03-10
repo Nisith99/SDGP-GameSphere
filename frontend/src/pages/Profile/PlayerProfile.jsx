@@ -12,6 +12,7 @@ import {
   X,
   Lock,
 } from 'lucide-react';
+import './PlayerProfile.css'; // Import the CSS file
 
 const PlayerProfile = ({
   playerName = "Player Name",
@@ -72,48 +73,43 @@ const PlayerProfile = ({
       alert("New passwords don't match!");
       return;
     }
-    // Update the state variables directly
     setIsSettingsOpen(false);
     console.log("All changes saved!");
   };
 
   return (
     <>
-      <div className="max-w-7xl mx-auto p-6">
+      <div className="player-profile-container">
         <div className="relative">
           <img
             src={playerImage}
             alt="Player avatar"
-            className="w-150 h-150 object-contain mx-auto"
+            className="player-avatar"
           />
-          <div className="flex items-center justify-between mb-8">
+          <div className="player-header">
             <div>
-              <h1 className="text-3xl font-bold mb-1">{playerName}</h1>
-              <p className="text-gray-600">{location}</p>
+              <h1 className="player-name">{playerName}</h1>
+              <p className="player-location">{location}</p>
             </div>
             <div className="flex items-center gap-4">
-              <div className="text-center">
-                <div className="text-xl font-bold">{rating}</div>
-                <div className="text-sm text-gray-600">Ratings</div>
+              <div className="rating-container">
+                <div className="rating-value">{rating}</div>
+                <div className="rating-label">Ratings</div>
               </div>
-              <button className="flex items-center gap-2 bg-black hover:bg-gray-800 transition-colors text-white px-8 py-3 rounded-lg font-medium">
+              <button className="message-button">
                 <MessageSquare size={18} />
                 Message
               </button>
               <button
                 onClick={toggleFavorite}
-                className={`p-2 rounded-full border hover:bg-gray-50 transition-colors ${
-                  isFavorite ? "border-red-500 text-red-500" : "border-gray-300"
-                }`}
-                aria-label={`${
-                  isFavorite ? "Remove from favorites" : "Add to favorites"
-                }`}
+                className={`favorite-button ${isFavorite ? 'active' : ''}`}
+                aria-label={`${isFavorite ? "Remove from favorites" : "Add to favorites"}`}
               >
                 <Heart size={20} fill={isFavorite ? "currentColor" : "none"} />
               </button>
               <button
                 onClick={toggleSettings}
-                className="p-2 rounded-full border border-gray-300 hover:bg-gray-50 transition-colors"
+                className="settings-button"
                 aria-label="Open settings"
               >
                 <Settings size={20} />
@@ -121,69 +117,43 @@ const PlayerProfile = ({
             </div>
           </div>
           <div className="space-y-4">
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h2 className="text-lg font-semibold mb-2">About</h2>
-              <p className="text-gray-600">{about}</p>
+            <div className="info-section">
+              <h2>About</h2>
+              <p>{about}</p>
             </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h2 className="text-lg font-semibold">Age: {age} years</h2>
+            <div className="info-section">
+              <h2>Age: {age} years</h2>
             </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h2 className="text-lg font-semibold">Position: {position}</h2>
+            <div className="info-section">
+              <h2>Position: {position}</h2>
             </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h2 className="text-lg font-semibold">Sport Type: {sportType}</h2>
+            <div className="info-section">
+              <h2>Sport Type: {sportType}</h2>
             </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h2 className="text-lg font-semibold">Recent Performance: {recentPerformance}</h2>
+            <div className="info-section">
+              <h2>Recent Performance: {recentPerformance}</h2>
             </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h2 className="text-lg font-semibold">Participate Matches Count: {participateMatchesCount}</h2>
+            <div className="info-section">
+              <h2>Participate Matches Count: {participateMatchesCount}</h2>
             </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h2 className="text-lg font-semibold">Best Achievements: {bestAchievements}</h2>
+            <div className="info-section">
+              <h2>Best Achievements: {bestAchievements}</h2>
             </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h2 className="text-lg font-semibold">Player Type: {playerType}</h2>
+            <div className="info-section">
+              <h2>Player Type: {playerType}</h2>
             </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h2 className="text-lg font-semibold">Past Club Status: {pastClubStatus}</h2>
+            <div className="info-section">
+              <h2>Past Club Status: {pastClubStatus}</h2>
             </div>
-            <div className="bg-gray-50 rounded-lg overflow-hidden">
-              {isClubsOpen && (
-                <div className="border-t border-gray-200 p-4">
-                  <div className="space-y-3">
-                    {clubsInterested.map((club) => (
-                      <div
-                        key={club.id}
-                        className="flex items-center gap-3 p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                      >
-                        <div className="p-2 bg-gray-200 rounded-full">
-                          <User size={20} className="text-gray-600" />
-                        </div>
-                        <div>
-                          <div className="font-medium">{club.name}</div>
-                          <div className="text-sm text-gray-600">
-                            {club.location} • Rating: {club.rating}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h2 className="text-lg font-semibold mb-4">Achievements</h2>
+            <div className="info-section">
+              <h2>Achievements</h2>
               <div className="mb-4">
-                <label className="block">
-                  <span className="font-semibold mb-2 block">
-                    Sports achievements 🏆
-                  </span>
+                <label>
+                  <span>Sports achievements 🏆</span>
                   <textarea
                     value={achievements}
                     onChange={(e) => onAchievementsChange(e.target.value)}
-                    className="w-full min-h-[120px] p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors resize-y"
+                    className="textarea-field"
                     placeholder="Enter your sports achievements..."
                     aria-label="Sports achievements"
                   />
@@ -196,181 +166,181 @@ const PlayerProfile = ({
 
       {/* User Settings Modal */}
       {isSettingsOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-          <div className="bg-white rounded-xl shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-4 border-b sticky top-0 bg-white">
-              <h2 className="text-xl font-semibold">Settings</h2>
+        <div className="settings-modal">
+          <div className="settings-content">
+            <div className="settings-header">
+              <h2>Settings</h2>
               <button
                 onClick={() => setIsSettingsOpen(false)}
-                className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+                className="close-button"
                 aria-label="Close settings"
               >
                 <X size={20} />
               </button>
             </div>
-            <div className="p-4 space-y-6">
+            <div className="settings-body">
               {/* Change Image Section */}
-              <div className="space-y-4">
+              <div className="settings-section">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-2 bg-green-100 rounded-lg">
                     <User size={20} className="text-green-600" />
                   </div>
-                  <h3 className="font-medium">Change Profile Image</h3>
+                  <h3>Change Profile Image</h3>
                 </div>
                 <input
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
-                  className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                  className="input-field"
                 />
               </div>
 
               {/* Username Section */}
-              <div className="space-y-4">
+              <div className="settings-section">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-2 bg-green-100 rounded-lg">
                     <User size={20} className="text-green-600" />
                   </div>
-                  <h3 className="font-medium">Player Name</h3>
+                  <h3>Player Name</h3>
                 </div>
                 <input
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                  className="input-field"
                   placeholder="Enter new player name"
                 />
               </div>
 
               {/* Location Section */}
-              <div className="space-y-4">
+              <div className="settings-section">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-2 bg-blue-100 rounded-lg">
                     <Eye size={20} className="text-blue-600" />
                   </div>
-                  <h3 className="font-medium">Location</h3>
+                  <h3>Location</h3>
                 </div>
                 <input
                   type="text"
                   value={editedLocation}
                   onChange={(e) => setEditedLocation(e.target.value)}
-                  className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                  className="input-field"
                   placeholder="Enter new location"
                 />
               </div>
 
               {/* About Section */}
-              <div className="space-y-4">
+              <div className="settings-section">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-2 bg-purple-100 rounded-lg">
                     <MessageSquare size={20} className="text-purple-600" />
                   </div>
-                  <h3 className="font-medium">About</h3>
+                  <h3>About</h3>
                 </div>
                 <textarea
                   value={editedAbout}
                   onChange={(e) => setEditedAbout(e.target.value)}
-                  className="w-full min-h-[120px] p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors resize-y"
+                  className="textarea-field"
                   placeholder="Enter new about text"
                 />
               </div>
 
               {/* Age Section */}
-              <div className="space-y-4">
+              <div className="settings-section">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-2 bg-yellow-100 rounded-lg">
                     <Target size={20} className="text-yellow-600" />
                   </div>
-                  <h3 className="font-medium">Age</h3>
+                  <h3>Age</h3>
                 </div>
                 <input
                   type="number"
                   value={editedAge}
                   onChange={(e) => setEditedAge(e.target.value)}
-                  className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                  className="input-field"
                   placeholder="Enter new age"
                 />
               </div>
 
               {/* Sport Type Section */}
-              <div className="space-y-4">
+              <div className="settings-section">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-2 bg-red-100 rounded-lg">
                     <Target size={20} className="text-red-600" />
                   </div>
-                  <h3 className="font-medium">Sport Type</h3>
+                  <h3>Sport Type</h3>
                 </div>
                 <input
                   type="text"
                   value={editedSportType}
                   onChange={(e) => setEditedSportType(e.target.value)}
-                  className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                  className="input-field"
                   placeholder="Enter new sport type"
                 />
               </div>
 
               {/* Recent Performance Section */}
-              <div className="space-y-4">
+              <div className="settings-section">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-2 bg-purple-100 rounded-lg">
                     <Target size={20} className="text-purple-600" />
                   </div>
-                  <h3 className="font-medium">Recent Performance</h3>
+                  <h3>Recent Performance</h3>
                 </div>
                 <input
                   type="text"
                   value={editedRecentPerformance}
                   onChange={(e) => setEditedRecentPerformance(e.target.value)}
-                  className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                  className="input-field"
                   placeholder="Enter recent performance"
                 />
               </div>
 
               {/* Participate Matches Count Section */}
-              <div className="space-y-4">
+              <div className="settings-section">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-2 bg-blue-100 rounded-lg">
                     <Target size={20} className="text-blue-600" />
                   </div>
-                  <h3 className="font-medium">Participate Matches Count</h3>
+                  <h3>Participate Matches Count</h3>
                 </div>
                 <input
                   type="number"
                   value={editedParticipateMatchesCount}
                   onChange={(e) => setEditedParticipateMatchesCount(e.target.value)}
-                  className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                  className="input-field"
                   placeholder="Enter participate matches count"
                 />
               </div>
 
               {/* Best Achievements Section */}
-              <div className="space-y-4">
+              <div className="settings-section">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-2 bg-green-100 rounded-lg">
                     <Target size={20} className="text-green-600" />
                   </div>
-                  <h3 className="font-medium">Best Achievements</h3>
+                  <h3>Best Achievements</h3>
                 </div>
                 <textarea
                   value={editedBestAchievements}
                   onChange={(e) => setEditedBestAchievements(e.target.value)}
-                  className="w-full min-h-[120px] p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors resize-y"
+                  className="textarea-field"
                   placeholder="Enter best achievements"
                 />
               </div>
 
               {/* Player Type Section */}
-              <div className="space-y-4">
+              <div className="settings-section">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-2 bg-yellow-100 rounded-lg">
                     <Target size={20} className="text-yellow-600" />
                   </div>
-                  <h3 className="font-medium">Player Type</h3>
+                  <h3>Player Type</h3>
                 </div>
                 <select
                   value={editedPlayerType}
                   onChange={(e) => setEditedPlayerType(e.target.value)}
-                  className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                  className="input-field"
                 >
                   <option value="Beginner">Beginner</option>
                   <option value="Pro">Pro</option>
@@ -379,57 +349,56 @@ const PlayerProfile = ({
               </div>
 
               {/* Past Club Status Section */}
-              <div className="space-y-4">
+              <div className="settings-section">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-2 bg-red-100 rounded-lg">
                     <Target size={20} className="text-red-600" />
                   </div>
-                  <h3 className="font-medium">Past Club Status</h3>
+                  <h3>Past Club Status</h3>
                 </div>
                 <textarea
                   value={editedPastClubStatus}
                   onChange={(e) => setEditedPastClubStatus(e.target.value)}
-                  className="w-full min-h-[120px] p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors resize-y"
+                  className="textarea-field"
                   placeholder="Enter past club status"
                 />
               </div>
 
               {/* Change Password Section */}
-              <div className="space-y-4">
+              <div className="settings-section">
                 <div className="flex items-center gap-3 mb-2">
                   <div className="p-2 bg-red-100 rounded-lg">
                     <Lock size={20} className="text-red-600" />
                   </div>
-                  <h3 className="font-medium">Change Password</h3>
+                  <h3>Change Password</h3>
                 </div>
                 <div className="space-y-3">
                   <input
                     type={showPasswords ? "text" : "password"}
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
-                    className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                    className="input-field"
                     placeholder="Current password"
                   />
                   <input
                     type={showPasswords ? "text" : "password"}
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
-                    className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                    className="input-field"
                     placeholder="New password"
                   />
                   <input
                     type={showPasswords ? "text" : "password"}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                    className="input-field"
                     placeholder="Confirm new password"
                   />
-                  <label className="flex items-center gap-2 text-sm text-gray-600">
+                  <label className="password-toggle">
                     <input
                       type="checkbox"
                       checked={showPasswords}
                       onChange={(e) => setShowPasswords(e.target.checked)}
-                      className="rounded border-gray-300 text-purple-600 focus:ring-purple-500"
                     />
                     Show passwords
                   </label>
@@ -437,79 +406,84 @@ const PlayerProfile = ({
               </div>
 
               {/* Notifications Section */}
-              <div className="border-t -mx-4 my-6"></div>
-              <div className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-purple-100 rounded-lg">
-                    <Bell size={20} className="text-purple-600" />
+              <div className="settings-section">
+                <div className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-purple-100 rounded-lg">
+                      <Bell size={20} className="text-purple-600" />
+                    </div>
+                    <div>
+                      <h3>Notifications</h3>
+                      <p className="text-sm text-gray-600">
+                        Receive alerts and updates
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-medium">Notifications</h3>
-                    <p className="text-sm text-gray-600">
-                      Receive alerts and updates
-                    </p>
-                  </div>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      className="sr-only peer"
+                      checked={notifications}
+                      onChange={(e) => setNotifications(e.target.checked)}
+                    />
+                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                  </label>
                 </div>
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="sr-only peer"
-                    checked={notifications}
-                    onChange={(e) => setNotifications(e.target.checked)}
-                  />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
-                </label>
               </div>
 
               {/* Profile Visibility Section */}
-              <div className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-blue-100 rounded-lg">
-                    <Eye size={20} className="text-blue-600" />
+              <div className="settings-section">
+                <div className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-blue-100 rounded-lg">
+                      <Eye size={20} className="text-blue-600" />
+                    </div>
+                    <div>
+                      <h3>Profile Visibility</h3>
+                      <p className="text-sm text-gray-600">
+                        Control who can see your profile
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-medium">Profile Visibility</h3>
-                    <p className="text-sm text-gray-600">
-                      Control who can see your profile
-                    </p>
-                  </div>
+                  <select
+                    value={profileVisibility}
+                    onChange={(e) => setProfileVisibility(e.target.value)}
+                    className="input-field"
+                  >
+                    <option value="public">Public</option>
+                    <option value="private">Private</option>
+                  </select>
                 </div>
-                <select
-                  value={profileVisibility}
-                  onChange={(e) => setProfileVisibility(e.target.value)}
-                  className="p-2 rounded-lg border bg-white outline-none focus:bg-white"
-                >
-                  <option value="public">Public</option>
-                  <option value="private">Private</option>
-                </select>
               </div>
 
               {/* Dark Mode Section */}
-              <div className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-yellow-100 rounded-lg">
-                    <Moon size={20} className="text-yellow-600" />
+              <div className="settings-section">
+                <div className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-yellow-100 rounded-lg">
+                      <Moon size={20} className="text-yellow-600" />
+                    </div>
+                    <div>
+                      <h3>Dark Mode</h3>
+                      <p className="text-sm text-gray-600">Toggle dark theme</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-medium">Dark Mode</h3>
-                    <p className="text-sm text-gray-600">Toggle dark theme</p>
-                  </div>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      className="sr-only peer"
+                      checked={darkMode}
+                      onChange={(e) => setDarkMode(e.target.checked)}
+                    />
+                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-600"></div>
+                  </label>
                 </div>
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="sr-only peer"
-                    checked={darkMode}
-                    onChange={(e) => setDarkMode(e.target.checked)}
-                  />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-600"></div>
-                </label>
               </div>
             </div>
             <div className="p-4 border-t sticky bottom-0 bg-white">
               <button
                 onClick={handleSave}
-                className="w-full bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors"
+                className="save-button"
               >
                 Save Changes
               </button>
