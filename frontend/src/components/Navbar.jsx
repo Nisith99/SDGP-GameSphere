@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Search, Bell, MessageCircle, User, Home, Users, ChevronDown, Menu } from "lucide-react";
-import "./Navbar.css"; // Import the external CSS file
+import "./Navbar.css"; 
 
 export default function Navbar() {
   const [searchFocused, setSearchFocused] = useState(false);
