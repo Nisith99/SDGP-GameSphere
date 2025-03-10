@@ -4,14 +4,13 @@ import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 
-import { router as postRoutes } from "./routes/postRoutes.js";
+dotenv.config();
 
 import authRoutes from "./routes/auth.route.js";
 import userRoutes from "./routes/user.route.js";
 import playerRoutes from "./routes/player.route.js";
 import clubRoutes from "./routes/club.route.js";
 import ratingRoutes from "./routes/rating.route.js";
-
 
 const app = express();
 
