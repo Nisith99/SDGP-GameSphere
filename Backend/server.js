@@ -3,9 +3,9 @@ import mongoose from "mongoose";
 import cors from "cors"; // Fixed typo
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+
 import authRoutes from "./routes/auth.route.js";
 import notifyRoute from "./routes/notifications.route.js"
-
 
 const app = express();
 app.use(express.json()); // Don't forget to uncomment this!
@@ -13,9 +13,6 @@ app.use(express.json()); // Don't forget to uncomment this!
 dotenv.config();
 
 app.use(cors());
-
-
-
 
 app.use(express.json());
 app.use(cookieParser());
