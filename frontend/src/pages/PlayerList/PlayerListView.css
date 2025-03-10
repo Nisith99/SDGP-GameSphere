@@ -1,13 +1,14 @@
 /* PlayerListView.css */
 
-.container {
-    background-color: white;
+.PlayerList-container {
+  background-color: rgb(255, 255, 255);
     min-height: 100vh;
     padding-bottom: 80px;
   }
   
   .topScorerSection {
     padding: 16px;
+    margin: 0 10% 0 10%;
   }
   
   .topScorerTitle {
@@ -17,11 +18,12 @@
   }
   
   .topScorerCard {
-    background-color: #f3f4f6;
+    background-color: #bdc7dd;
     border-radius: 12px;
     padding: 16px;
     position: relative;
     overflow: hidden;
+    padding: 30px ;
   }
   
   .heartIcon {
@@ -40,7 +42,7 @@
   }
   
   .heartIconEmpty {
-    color: #9ca3af;
+    color: #5e6269;
     fill: none;
   }
   
@@ -89,6 +91,7 @@
   
   .scorersListSection {
     padding: 16px;
+    margin: 0 15% 0 15%;
   }
   
   .listHeader {
@@ -117,7 +120,7 @@
     grid-template-columns: repeat(12, 1fr);
     align-items: center;
     padding: 16px 0;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid #bec0c4;
   }
   
   .playerRowContent {
@@ -159,7 +162,7 @@
   }
   
   .heartIconSmallEmpty {
-    color: #d1d5db;
+    color: #5e6269;
     fill: none;
   }
 
@@ -168,10 +171,16 @@
 
 .filterSection {
     padding: 50px;
-    background-color: #f9fafb;
+    background-color: #a3c7eb;
     border-bottom: 1px solid #e5e7eb;
-    margin: 0 20%;
+    margin: 5% 30% 0% 30%;
     border-radius: 20px;
+    font-weight: 600;
+  }
+  .filterSection h2{
+    font-size: x-large;
+    margin-top: -20px;
+    margin-bottom: 25px;
   }
   
   .filterOptions {

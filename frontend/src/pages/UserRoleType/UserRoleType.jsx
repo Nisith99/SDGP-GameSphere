@@ -5,7 +5,7 @@ export function UserRoleType() {
   const [selectedOption, setSelectedOption] = useState(null);
 
   return (
-    <div className="container">
+    <div className="role-container">
       {/* Logo */}
       <div className="logoContainer">
         <div className="logo">

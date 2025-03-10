@@ -39,10 +39,10 @@ export default function Navbar() {
           {/* Navigation */}
           <div className={`navbar-navigation ${isMobileMenuOpen ? "open" : ""}`}>
             <NavItem icon={<Home size={18} />} label="Home" link="/home" />
-            <NavItem icon={<User size={18} />} label="Player" link="/player" />
-            <NavItem icon={<Users size={18} />} label="Club" link="/club" />
+            <NavItem icon={<User size={18} />} label="Player" link="/players" />
+            <NavItem icon={<Users size={18} />} label="Club" link="" />
             <NavItem icon={<Bell size={18} />} label="Notifications" link="/notifications" />
-            <NavItem icon={<MessageCircle size={18} />} label="Messages" link="/messages" />
+            <NavItem icon={<MessageCircle size={18} />} label="Messages" link="/message" />
 
             {/* Profile Dropdown */}
             <div className="profile-dropdown-container">
@@ -55,11 +55,14 @@ export default function Navbar() {
               {/* Dropdown Menu */}
               {isProfileOpen && (
                 <div className="profile-dropdown">
-                  <a href="#" className="profile-dropdown-item">
-                    Your Profile
+                  <a href="playerProfile" className="profile-dropdown-item">
+                    Your Plyer Profile,temp
+                  </a>
+                  <a href="Profile" className="profile-dropdown-item">
+                    Your Club Profile,temp
                   </a>
                   <a href="#" className="profile-dropdown-item">
-                    Settings
+                    About
                   </a>
                   <a href="#" className="profile-dropdown-item">
                     Sign out
