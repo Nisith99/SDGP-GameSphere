@@ -1,5 +1,3 @@
-import { FaSearch } from "react-icons/fa";
-import './Navbar.css';
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Search, Bell, MessageCircle, User, Home, Users, ChevronDown, Menu } from "lucide-react";
