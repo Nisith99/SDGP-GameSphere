@@ -1,12 +1,25 @@
-import type { Request, Response, NextFunction } from "express"
-import { Message } from "../models/message.model"
-import { AppError } from "../utils/app-error"
-import { catchAsync } from "../utils/catch-async"
+
+import { Message } from "../models/message.model";
+import { AppError } from "../utils/app-error";
+import { catchAsync } from "../utils/catch-async";
 import { io } from "../socket"
+import mongoose from "mongoose";
+import { getUserSocketId } from "../utils/socket-manager"; // Utility to track user socket IDs
 
 export const sendMessage = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-  const { receiverId, content } = req.body
-  const senderId = req.user.id
+  const { receiverId, content } = req.body;
+
+  if (!req.user || !req.user.id){
+    return next(new AppError("User not authenticated", 401));
+
+  }
+
+  const senderId = req.user.id;
+  
+  if (!receiverId || !content) {
+    return next(new AppError("Receiver ID and content are required", 400));
+  }
+
 
   const message = await Message.create({
     sender: senderId,
@@ -15,37 +28,8 @@ export const sendMessage = catchAsync(async (req: Request, res: Response, next: 
   })
 
   // Emit socket event for real-time message
-  io.to(receiverId).emit("newMessage", {
-    id: message._id,
-    sender: senderId,
-    content,
-    createdAt: message.createdAt,
-  })
-
-  res.status(201).json({
-    status: "success",
-    data: {
-      message,
-    },
-  })
-})
-import type { Request, Response, NextFunction } from "express"
-import { Message } from "../models/message.model"
-import { AppError } from "../utils/app-error"
-import { catchAsync } from "../utils/catch-async"
-import { io } from "../socket"
-
-export const sendMessage = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-  const { receiverId, content } = req.body
-  const senderId = req.user.id
-
-  const message = await Message.create({
-    sender: senderId,
-    receiver: receiverId,
-    content,
-  })
-
-  // Emit socket event for real-time message
+  const receiverSocketId = getUserSocketId(receiverId);
+  if (receiverSocketId) {
   io.to(receiverId).emit("newMessage", {
     id: message._id,
     sender: senderId,
@@ -62,8 +46,17 @@ export const sendMessage = catchAsync(async (req: Request, res: Response, next: 
 })
 
 export const getConversation = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-  const { userId } = req.params
-  const currentUserId = req.user.id
+  const { userId } = req.params;
+
+  if (!req.user || !req.user.id) {
+    return next(new AppError("User not authenticated", 401));
+  }
+
+  const currentUserId = req.user.id;
+
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return next(new AppError("Invalid user ID", 400));
+  }
 
   const messages = await Message.find({
     $or: [
@@ -87,6 +80,10 @@ export const updateMessageStatus = catchAsync(async (req: Request, res: Response
   const { messageId } = req.params
   const { status } = req.body
 
+  if (!["sent", "delivered", "read"].includes(status)) {
+    return next(new AppError("Invalid message status", 400));
+  }
+
   const message = await Message.findByIdAndUpdate(messageId, { status }, { new: true })
 
   if (!message) {
@@ -94,10 +91,12 @@ export const updateMessageStatus = catchAsync(async (req: Request, res: Response
   }
 
   // Emit socket event for message status update
+  if (message.sender) {
   io.to(message.sender.toString()).emit("messageStatus", {
-    messageId: message._id,
+    messageId: message._id.toString(),
     status,
   })
+}
 
   res.status(200).json({
     status: "success",
