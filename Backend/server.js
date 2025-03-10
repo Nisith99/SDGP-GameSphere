@@ -6,7 +6,11 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.route.js";
 import notifyRoute from "./routes/notifications.route.js"
-
+import userRoutes from "./routes/user.route.js"
+import playerRoutes from "./routes/player.route.js"
+import clubRoutes from "./routes/club.route.js"
+import ratingRoutes from "./routes/rating.route.js"
+import postRoutes from "./routes/post.route.js"
 
 const app = express();
 app.use(express.json()); // Don't forget to uncomment this!
