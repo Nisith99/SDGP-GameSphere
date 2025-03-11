@@ -25,6 +25,19 @@
 .post-input-wrapper {
   margin-bottom: 16px;
   position: relative;
+  display: flex;
+  gap: 12px;
+}
+
+.user-avatar {
+  flex-shrink: 0;
+}
+
+.user-avatar img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .post-input {
@@ -56,42 +69,6 @@
   right: 0;
   font-size: 0.8em;
   color: rgba(255, 255, 255, 0.7);
-}
-
-.image-preview {
-  position: relative;
-  margin: 16px 0;
-  border-radius: 8px;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.image-preview img {
-  width: 100%;
-  max-height: 300px;
-  object-fit: cover;
-}
-
-.remove-image {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background: rgba(0, 0, 0, 0.5);
-  border: none;
-  border-radius: 50%;
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.remove-image:hover {
-  background: rgba(0, 0, 0, 0.7);
-  transform: scale(1.1);
 }
 
 .post-actions {
@@ -172,6 +149,42 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.image-preview {
+  position: relative;
+  margin: 16px 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.image-preview img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+}
+
+.remove-image {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.remove-image:hover {
+  background: rgba(0, 0, 0, 0.7);
+  transform: scale(1.1);
 }
 
 @media (max-width: 850px) {

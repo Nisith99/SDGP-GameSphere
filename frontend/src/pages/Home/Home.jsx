@@ -18,10 +18,19 @@ export default function Home() {
       setLoading(true);
       setError(null);
       const data = await getAllPosts();
-      setPosts(data || []);
+      setPosts(data.map(post => ({
+        ...post,
+        author: post.author || {
+          name: 'User',
+          image: 'https://via.placeholder.com/40',
+          profession: 'Gamer'
+        },
+        likes: post.likes || [],
+        comments: post.comments || []
+      })));
     } catch (error) {
+      setError("Failed to load posts");
       console.error("Error fetching posts:", error);
-      setError("Failed to load posts. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -29,7 +38,14 @@ export default function Home() {
 
   const handleAddPost = async (postData) => {
     try {
-      const newPost = await createPost(postData);
+      const newPost = await createPost({
+        ...postData,
+        author: {
+          name: 'User',
+          image: 'https://via.placeholder.com/40',
+          profession: 'Gamer'
+        }
+      });
       setPosts(prevPosts => [newPost, ...prevPosts]);
     } catch (error) {
       console.error("Error creating post:", error);
@@ -55,7 +71,7 @@ export default function Home() {
       setPosts(prevPosts =>
         prevPosts.map(post =>
           post._id === postId
-            ? { ...post, comments: [...post.comments, newComment] }
+            ? { ...post, comments: [...(post.comments || []), newComment] }
             : post
         )
       );
@@ -75,7 +91,7 @@ export default function Home() {
           onAddPost={handleAddPost}
           onLikePost={handleLikePost}
           onAddComment={handleAddComment}
-          />
+        />
       </div>
     </div>
   );

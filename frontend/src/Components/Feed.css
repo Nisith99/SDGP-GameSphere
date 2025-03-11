@@ -1,33 +1,38 @@
-.feed {
+.feed-container {
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
+}
+
+.feed {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 24px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 24px;
 }
 
 .feed > * {
   width: 100%;
 }
 
-.feed-container {
-  margin-top: 24px;
-}
-
 .feed-status {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.03);
   border-radius: 12px;
   padding: 20px;
   text-align: center;
   color: rgba(255, 255, 255, 0.7);
   margin: 20px 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .feed-status.error {
   background: rgba(255, 0, 0, 0.1);
   color: #ff6b6b;
+  border-color: rgba(255, 0, 0, 0.2);
 }
 
 .posts-list {
@@ -44,8 +49,7 @@
   border-radius: 8px;
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  color: white;
-  margin: 24px 0;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .loading {
@@ -54,7 +58,11 @@
 }
 
 @media (max-width: 850px) {
-  .feed {
+  .feed-container {
     padding: 15px;
+  }
+  
+  .feed {
+    padding: 16px;
   }
 }

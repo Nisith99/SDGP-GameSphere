@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaImage, FaCalendarAlt, FaMapMarkerAlt,} from "react-icons/fa";
+import { FaImage, FaCalendarAlt, FaMapMarkerAlt } from "react-icons/fa";
 import { createPost } from "../api/posts";
 import "./CreatePost.css";
 
@@ -10,21 +10,22 @@ export default function CreatePost({ onAddPost }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!content.trim()) return;
+    if (!content.trim() || isSubmitting) return;
 
     setIsSubmitting(true);
     try {
       const postData = {
-        content,
-        name: "Temporary User",
-        profileImage: "https://via.placeholder.com/40",
-        profession: "Gamer"
+        content: content.trim(),
+        author: {
+          name: "User",
+          image: "https://via.placeholder.com/40",
+          profession: "Gamer"
+        },
+        createdAt: new Date().toISOString()
       };
 
       const newPost = await createPost(postData);
       onAddPost(newPost);
-      
-      // Reset form
       setContent("");
     } catch (error) {
       console.error("Error creating post:", error);
@@ -38,6 +39,9 @@ export default function CreatePost({ onAddPost }) {
       <h3 className="create-post-title">Create a Post</h3>
       <form onSubmit={handleSubmit}>
         <div className="post-input-wrapper">
+          <div className="user-avatar">
+            
+          </div>
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
@@ -52,23 +56,24 @@ export default function CreatePost({ onAddPost }) {
 
         <div className="post-actions">
           <div className="action-buttons">
-            <button type="button" className="action-button" disabled>
+            <button type="button" className="action-button" title="Add Photo">
               <FaImage />
               <span>Photo</span>
             </button>
-            <button type="button" className="action-button" disabled>
+            <button type="button" className="action-button" title="Add Event">
               <FaCalendarAlt />
               <span>Event</span>
             </button>
-            <button type="button" className="action-button" disabled>
+            <button type="button" className="action-button" title="Add Location">
               <FaMapMarkerAlt />
               <span>Location</span>
             </button>
+  
           </div>
           <button
             type="submit"
+            className={`post-button ${isSubmitting ? "loading" : ""}`}
             disabled={!content.trim() || isSubmitting}
-            className={`post-button ${isSubmitting ? 'loading' : ''}`}
           >
             {isSubmitting ? "Posting..." : "Post"}
           </button>
