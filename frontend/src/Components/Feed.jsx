@@ -1,70 +1,107 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getAllPosts } from "../api/posts";
+import "./Feed.css"; 
 
 const Feed = () => {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const data = await getAllPosts();
+        setPosts(data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching feed data:", error);
+        setError("Failed to load posts");
+        setLoading(false);
+      }
+    };
+    
+    fetchPosts();
+  }, []);
+
+  if (loading) {
+    return <p className="loading-text">Loading...</p>;
+  }
+
+  if (error) {
+    return <p className="error-text">{error}</p>;
+  }
+
+  if (!posts.length) {
+    return <p className="no-posts-text">No posts available</p>;
+  }
+
   return (
-    <div className="w-full max-w-2xl mx-auto mt-6 p-4 bg-white rounded-lg shadow-md border border-gray-200">
-      {/* Profile Info */}
-      <div className="flex items-center space-x-3">
-        <img
-          src="https://cdn.britannica.com/25/222725-050-170F622A/Indian-cricketer-Mahendra-Singh-Dhoni-2011.jpg"
-          alt="profile"
-          className="w-12 h-12 rounded-full"
-        />
-        <div>
-          <h2 className="font-semibold">MS DOHNI</h2>
-          <p className="text-green-600 text-sm">Crickter</p>
+    <div className="feed-container space-y-4">
+      {posts.map((post) => (
+        <div key={post._id} className="post-card bg-white rounded-lg shadow-md p-4">
+          {/* Profile */}
+          <div className="profile flex items-center gap-3 mb-4">
+            <img 
+              src={post.profileImage || '/default-avatar.png'} 
+              alt="profile" 
+              className="profile-img w-12 h-12 rounded-full object-cover" 
+            />
+            <div>
+              <h2 className="profile-name font-semibold">{post.name}</h2>
+              <p className="profile-profession text-gray-600 text-sm">{post.profession}</p>
+            </div>
+          </div>
+
+          {/* Post Content */}
+          <p className="post-content text-gray-800 mb-4">{post.content}</p>
+
+          {/* Player Stats Box */}
+          {post.stats && (
+            <div className="stats-box bg-gray-50 rounded-lg p-4 mb-4">
+              <h3 className="stats-title font-semibold mb-2">🏆 Player Stats</h3>
+              <div className="stats-grid grid grid-cols-3 gap-4 text-center">
+                <div>
+                  <p className="stats-value font-bold">{post.stats.points}</p>
+                  <p className="stats-label text-gray-600 text-sm">Points</p>
+                </div>
+                <div>
+                  <p className="stats-value font-bold">{post.stats.assists}</p>
+                  <p className="stats-label text-gray-600 text-sm">Assists</p>
+                </div>
+                <div>
+                  <p className="stats-value font-bold">{post.stats.games}</p>
+                  <p className="stats-label text-gray-600 text-sm">Games</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Tags */}
+          {post.tags && post.tags.length > 0 && (
+            <div className="tags flex flex-wrap gap-2 mb-4">
+              {post.tags.map((tag, index) => (
+                <span 
+                  key={index} 
+                  className="tag bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-sm"
+                >
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {/* Post Image */}
+          {post.image && (
+            <div className="post-image">
+              <img 
+                src={post.image} 
+                alt="post" 
+                className="w-full h-auto rounded-lg"
+              />
+            </div>
+          )}
         </div>
-      </div>
-
-      {/* Post Content */}
-      <p className="mt-3 text-gray-700">
-      Cricket is a bat-and-ball game played between two teams of eleven players on a field,
-      at the centre of which is a 22-yard (20-metre; 66-foot) pitch with a wicket at each end,
-      each comprising two bails (small sticks) balanced on three stumps.
-      </p>
-
-      {/* Player Stats Box */}
-      <div className="bg-green-50 p-3 rounded-lg mt-3">
-        <h3 className="font-medium text-green-700 mb-2 flex items-center">
-          🏆 Player Stats
-        </h3>
-        <div className="grid grid-cols-3 gap-3 text-center">
-          <div>
-            <p className="text-lg font-bold">16.5</p>
-            <p className="text-gray-500 text-sm">Points</p>
-          </div>
-          <div>
-            <p className="text-lg font-bold">7.2</p>
-            <p className="text-gray-500 text-sm">Assists</p>
-          </div>
-          <div>
-            <p className="text-lg font-bold">30</p>
-            <p className="text-gray-500 text-sm">Games</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Tags */}
-      <div className="flex space-x-2 mt-3">
-        <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">
-          #cricket
-        </span>
-        <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">
-          #guard
-        </span>
-        <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">
-          #manchester
-        </span>
-      </div>
-
-      {/* Post Image */}
-      <div className="mt-3">
-        <img
-          src="https://cdn.britannica.com/63/211663-050-A674D74C/Jonny-Bairstow-batting-semifinal-match-England-Australia-2019.jpg"
-          alt="cricket"
-          className="rounded-lg"
-        />
-      </div>
+      ))}
     </div>
   );
 };

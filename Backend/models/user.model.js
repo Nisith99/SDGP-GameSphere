@@ -1,38 +1,23 @@
-
 import mongoose from "mongoose";
-
-const ratingSchema = new mongoose.Schema({
-    player: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-    },
-    rating: {
-        type: Number,
-        required: true,
-        min: 1,
-        max: 5
-    }
-}, {timestamps: true});
 
 const userSchema = new mongoose.Schema({
     fullName:{
         type: String,
-        require: true 
+        required: true 
     },
     userName: {
         type: String,
-        require: true,
+        required: true,
         unique: true
     },
     email:{
         type: String,
-        require: true,
+        required: true,
         unique: true
     },
     password: {
         type: String,
-        require: true
+        required: true
     },
     role: {
         type: String,
@@ -65,11 +50,11 @@ const userSchema = new mongoose.Schema({
             default: [],
         },
         achievements: {
-            division:{
+            province:{
                 type: [String],
                 default: [],
             },
-            distric:{
+            district:{
                 type: [String],
                 default: [],
             },
@@ -90,15 +75,26 @@ const userSchema = new mongoose.Schema({
         },
         opportunities: {
             type: String,
-            defult: null
+            default: null
         },
-        rating: [ratingSchema],
+        rating: [ {
+            user: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+                required: true
+            },
+            rate: {
+                type: Number,
+                required: true,
+                min: 1,
+                max: 5
+            }
+        }],
         avgRating: {
             type: Number,
             default: 0
         }
     }
-
 },{timestamps: true});
 
 const User = mongoose.model("User", userSchema);

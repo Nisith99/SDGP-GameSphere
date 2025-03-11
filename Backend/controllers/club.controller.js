@@ -19,11 +19,11 @@ export const getClubProfileById = async (req, res) => {
     try {
         const { clubId } = req.params;
 
-        const player = await User.findOne({ _id: clubId, role: "club" })
+        const club = await User.findOne({ _id: clubId, role: "club" })
             .select("-password")
             .lean();
 
-        if (!player) {
+        if (!club) {
             return res.status(404).json({ message: "Club profile not found" });
         }
 
