@@ -3,6 +3,7 @@ import React from "react";
 import { Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import "./PlayerListView.css"; 
+import { Footer } from "../../Components/footer";
 
 const players = [
   {
@@ -203,6 +204,7 @@ const PlayerListView = () => {
           </div>
         ))}
       </div>
+      <Footer />
     </div>
   );
 };

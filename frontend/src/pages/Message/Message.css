@@ -8,7 +8,7 @@
 /* Main Content Styles */
 .main-content {
     max-width: 80rem;
-    margin: 0 auto;
+    margin: 50px auto -300px auto;
     padding: 1.5rem 1rem;
     display: grid;
     grid-template-columns: 300px 1fr;
@@ -18,7 +18,7 @@
 
 /* Sidebar Styles */
 .sidebar {
-    background-color: rgb(223, 225, 226);
+    background-color: rgb(164, 186, 197);
     border-radius: 0.5rem;
     padding: 1.5rem;
     height: calc(100vh - 8rem);
@@ -55,7 +55,7 @@
 
 /* Chat Area Styles */
 .chat-area {
-    background-color: rgba(180, 191, 219, 0.568);
+    background-color: rgba(181, 199, 245, 0.877);
     border-radius: 0.5rem;
     display: flex;
     flex-direction: column;

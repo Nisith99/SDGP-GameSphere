@@ -15,9 +15,9 @@ function App() {
   return (
    <BrowserRouter>
    <Routes>
-    <Route path = '/' element = {<Signup/>}></Route>
+    <Route path='/' element = {<Landing/>}></Route>
+    <Route path = '/signup' element = {<Signup/>}></Route>
     <Route path='/login' element = {<Login/>}></Route>
-    <Route path='/landing' element = {<Landing/>}/>
     <Route path='/Notifications' element={<Notification/>}></Route>
     <Route path='/message' element={<Message/>}> </Route>
     <Route path="/home" element= {<Home/>}></Route>

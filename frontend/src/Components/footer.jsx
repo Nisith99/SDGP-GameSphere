@@ -130,7 +130,6 @@ export const Footer = () => {
         {/* Bottom section with copyright */}
         <div className="bottom-section">
           <p className="copyright-text">
-            &copy; {new Date().getFullYear()} Gamesphere. All rights reserved.
           </p>
         </div>
       </div>

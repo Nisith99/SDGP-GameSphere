@@ -2,6 +2,7 @@ import Navbar from "../Components/Navbar";
 import { useState } from "react";
 import { Bell, Users, CheckCircle, MessageCircle, Flag } from "lucide-react";
 import "./Notifications.css";
+import { Footer } from "../Components/footer";
 
 const notificationsData = [
   { id: 1, type: "trial", message: "You have been invited for a trial at XYZ Club.", time: "30m", unread: true },
@@ -58,6 +59,7 @@ const Notifications = () => {
           <p className="no-notifications">No notifications found.</p>
         )}
       </div>
+      <Footer />
     </div>
   );
 };
