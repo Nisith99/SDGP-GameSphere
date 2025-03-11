@@ -1,3 +1,5 @@
+import { FaSearch } from "react-icons/fa";
+import './Navbar.css';
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Search, Bell, MessageCircle, User, Home, Users, ChevronDown, Menu } from "lucide-react";
@@ -15,7 +17,7 @@ export default function Navbar() {
           {/* Logo & Search */}
           <div className="navbar-logo-search">
             <div className="navbar-logo">
-              <img src="gameSphere_logo.png" alt="GameSphere Logo" />
+              <img src="/gameSphere_logo.png" alt="GameSphere Logo" />
             </div>
             <div className={`navbar-search-container ${searchFocused ? "focused" : ""}`}>
               <div className={`navbar-search ${searchFocused ? "focused" : ""}`}>
@@ -52,7 +54,6 @@ export default function Navbar() {
                 <ChevronDown style={{ width: "1rem", height: "1rem", color: "#ffffff" }} />
               </button>
 
-              {/* Dropdown Menu */}
               {isProfileOpen && (
                 <div className="profile-dropdown">
                   <a href="playerProfile" className="profile-dropdown-item">
