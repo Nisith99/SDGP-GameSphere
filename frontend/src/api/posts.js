@@ -24,36 +24,18 @@ export const getAllPosts = async () => {
   }
 };
 
-export const searchPosts = async (query) => {
+export const likePost = async (postId) => {
   try {
-    const response = await api.get(`/search?query=${query}`);
+    const response = await api.post(`/${postId}/like`);
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;
   }
 };
 
-export const getPostById = async (id) => {
+export const addComment = async (postId, comment) => {
   try {
-    const response = await api.get(`/${id}`);
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error.message;
-  }
-};
-
-export const updatePost = async (id, postData) => {
-  try {
-    const response = await api.put(`/${id}`, postData);
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error.message;
-  }
-};
-
-export const deletePost = async (id) => {
-  try {
-    const response = await api.delete(`/${id}`);
+    const response = await api.post(`/${postId}/comment`, { content: comment });
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;

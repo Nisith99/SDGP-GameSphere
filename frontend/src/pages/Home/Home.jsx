@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import Navbar from "../../Components/Navbar";
 import Feed from "../../Components/Feed";
-import CreatePost from "../../Components/CreatePost";
-import { getPosts, likePost, addComment, addReply, likeComment } from "../../api/posts";
+import { getAllPosts, createPost, likePost, addComment } from "../../api/posts";
 import "./Home.css";
 
 export default function Home() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchPosts();
@@ -15,24 +15,32 @@ export default function Home() {
 
   const fetchPosts = async () => {
     try {
-      const data = await getPosts();
-      setPosts(data);
+      setLoading(true);
+      setError(null);
+      const data = await getAllPosts();
+      setPosts(data || []);
     } catch (error) {
       console.error("Error fetching posts:", error);
+      setError("Failed to load posts. Please try again later.");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleAddPost = (newPost) => {
-    setPosts((prevPosts) => [newPost, ...prevPosts]);
+  const handleAddPost = async (postData) => {
+    try {
+      const newPost = await createPost(postData);
+      setPosts(prevPosts => [newPost, ...prevPosts]);
+    } catch (error) {
+      console.error("Error creating post:", error);
+    }
   };
 
   const handleLikePost = async (postId) => {
     try {
       const updatedPost = await likePost(postId);
-      setPosts((prevPosts) =>
-        prevPosts.map((post) =>
+      setPosts(prevPosts =>
+        prevPosts.map(post =>
           post._id === postId ? { ...post, likes: updatedPost.likes } : post
         )
       );
@@ -44,8 +52,8 @@ export default function Home() {
   const handleAddComment = async (postId, comment) => {
     try {
       const newComment = await addComment(postId, comment);
-      setPosts((prevPosts) =>
-        prevPosts.map((post) =>
+      setPosts(prevPosts =>
+        prevPosts.map(post =>
           post._id === postId
             ? { ...post, comments: [...post.comments, newComment] }
             : post
@@ -56,68 +64,18 @@ export default function Home() {
     }
   };
 
-  const handleAddReply = async (postId, commentId, reply) => {
-    try {
-      const newReply = await addReply(postId, commentId, reply);
-      setPosts((prevPosts) =>
-        prevPosts.map((post) =>
-          post._id === postId
-            ? {
-                ...post,
-                comments: post.comments.map((comment) =>
-                  comment._id === commentId
-                    ? { ...comment, replies: [...comment.replies, newReply] }
-                    : comment
-                ),
-              }
-            : post
-        )
-      );
-    } catch (error) {
-      console.error("Error adding reply:", error);
-    }
-  };
-
-  const handleLikeComment = async (postId, commentId) => {
-    try {
-      const updatedComment = await likeComment(postId, commentId);
-      setPosts((prevPosts) =>
-        prevPosts.map((post) =>
-          post._id === postId
-            ? {
-                ...post,
-                comments: post.comments.map((comment) =>
-                  comment._id === commentId
-                    ? { ...comment, likes: updatedComment.likes }
-                    : comment
-                ),
-              }
-            : post
-        )
-      );
-    } catch (error) {
-      console.error("Error liking comment:", error);
-    }
-  };
-
   return (
     <div className="home">
       <Navbar />
       <div className="home-content">
-        <CreatePost onAddPost={handleAddPost} />
-        {loading ? (
-          <div className="loading-message">Loading posts...</div>
-        ) : posts.length === 0 ? (
-          <div className="empty-message">No posts yet. Be the first to post!</div>
-        ) : (
-          <Feed
-            posts={posts}
-            onLikePost={handleLikePost}
-            onAddComment={handleAddComment}
-            onAddReply={handleAddReply}
-            onLikeComment={handleLikeComment}
+        <Feed 
+          posts={posts}
+          loading={loading}
+          error={error}
+          onAddPost={handleAddPost}
+          onLikePost={handleLikePost}
+          onAddComment={handleAddComment}
           />
-        )}
       </div>
     </div>
   );
