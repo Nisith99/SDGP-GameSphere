@@ -27,8 +27,7 @@ app.use(
   })
 );
 
-mongoose
-  .connect(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("Connected to database successfully"))
   .catch((err) => console.log("Failed to connect to database", err));
 
