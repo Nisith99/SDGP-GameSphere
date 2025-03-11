@@ -3,7 +3,6 @@ import Navbar from "../../Components/Navbar";
 import Feed from "../../Components/Feed";
 import { getAllPosts, createPost, likePost, addComment } from "../../api/posts";
 import "./Home.css";
-import Feed from "../../Components/Feed"
 import { Footer } from "../../Components/footer";
 
 export default function Home() {
