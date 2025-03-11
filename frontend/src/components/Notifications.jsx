@@ -2,12 +2,13 @@ import Navbar from "../Components/Navbar";
 import { useState } from "react";
 import { Bell, Users, CheckCircle, MessageCircle, Flag } from "lucide-react";
 import "./Notifications.css";
+import { Footer } from "../Components/footer";
 
 const notificationsData = [
   { id: 1, type: "trial", message: "You have been invited for a trial at XYZ Club.", time: "30m", unread: true },
   { id: 2, type: "selection", message: "Coach ABC shortlisted you for the next selection round.", time: "1h", unread: true },
   { id: 3, type: "message", message: "New message from Coach DEF.", time: "2h", unread: true },
-  { id: 4, type: "club_invite", message: "XYZ Club has sent you an invitation to join.", time: "4h", unread: false },
+  { id: 4, type: "invite", message: "XYZ Club has sent you an invitation to join.", time: "4h", unread: false },
   { id: 5, type: "achievement", message: "Congratulations! You have been rated All-Island Level.", time: "1d", unread: false },
 ];
 
@@ -16,6 +17,7 @@ const Notifications = () => {
   const [filter, setFilter] = useState("all");
 
   const getIcon = (type) => {
+
     const icons = {
       trial: <Flag className="icon trial" />, 
       selection: <CheckCircle className="icon selection" />, 
@@ -24,6 +26,7 @@ const Notifications = () => {
       achievement: <Bell className="icon achievement" />, 
     };
     return icons[type] || <Bell className="icon default" />;
+
   };
 
   const filteredNotifications = notifications.filter((n) => filter === "all" || n.type === filter);
@@ -58,6 +61,7 @@ const Notifications = () => {
           <p className="no-notifications">No notifications found.</p>
         )}
       </div>
+      <Footer />
     </div>
   );
 };

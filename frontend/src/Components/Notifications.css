@@ -4,13 +4,15 @@
     flex-direction: column;
     align-items: center;
     background-color: #f8f9fa;
-    padding: 20px;
+    
   }
   
   .filters {
     display: flex;
     gap: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
+    margin-top: 80px;
+
   }
   
   .filter-button {
