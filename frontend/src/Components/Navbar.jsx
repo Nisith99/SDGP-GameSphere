@@ -1,7 +1,9 @@
+import { FaSearch } from "react-icons/fa";
+import './Navbar.css';
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { Search, Bell, MessageCircle, User, Home, Users, ChevronDown, Menu } from "lucide-react";
-import "./Navbar.css"; // Import the external CSS file
+import "./Navbar.css"; 
 
 export default function Navbar() {
   const [searchFocused, setSearchFocused] = useState(false);
@@ -15,7 +17,7 @@ export default function Navbar() {
           {/* Logo & Search */}
           <div className="navbar-logo-search">
             <div className="navbar-logo">
-              <img src="gameSphere_logo.png" alt="GameSphere Logo" />
+              <img src="/gameSphere_logo.png" alt="GameSphere Logo" />
             </div>
             <div className={`navbar-search-container ${searchFocused ? "focused" : ""}`}>
               <div className={`navbar-search ${searchFocused ? "focused" : ""}`}>
@@ -39,10 +41,10 @@ export default function Navbar() {
           {/* Navigation */}
           <div className={`navbar-navigation ${isMobileMenuOpen ? "open" : ""}`}>
             <NavItem icon={<Home size={18} />} label="Home" link="/home" />
-            <NavItem icon={<User size={18} />} label="Player" link="/player" />
-            <NavItem icon={<Users size={18} />} label="Club" link="/club" />
+            <NavItem icon={<User size={18} />} label="Player" link="/players" />
+            <NavItem icon={<Users size={18} />} label="Club" link="" />
             <NavItem icon={<Bell size={18} />} label="Notifications" link="/notifications" />
-            <NavItem icon={<MessageCircle size={18} />} label="Messages" link="/messages" />
+            <NavItem icon={<MessageCircle size={18} />} label="Messages" link="/message" />
 
             {/* Profile Dropdown */}
             <div className="profile-dropdown-container">
@@ -52,14 +54,16 @@ export default function Navbar() {
                 <ChevronDown style={{ width: "1rem", height: "1rem", color: "#ffffff" }} />
               </button>
 
-              {/* Dropdown Menu */}
               {isProfileOpen && (
                 <div className="profile-dropdown">
-                  <a href="#" className="profile-dropdown-item">
-                    Your Profile
+                  <a href="playerProfile" className="profile-dropdown-item">
+                    Your Plyer Profile,temp
+                  </a>
+                  <a href="Profile" className="profile-dropdown-item">
+                    Your Club Profile,temp
                   </a>
                   <a href="#" className="profile-dropdown-item">
-                    Settings
+                    About
                   </a>
                   <a href="#" className="profile-dropdown-item">
                     Sign out

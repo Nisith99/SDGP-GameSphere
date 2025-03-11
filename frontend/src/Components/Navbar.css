@@ -12,24 +12,29 @@
 .navbar-logo-search {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
-}
-
-.navbar-logo img {
-    height: 4rem;
+    gap: 3rem;
+    margin-left:-15%;
+  }
+  
+  .navbar-logo {
+    flex-shrink: 0;
+  }
+  
+  .navbar-logo img {
+    height: 7rem;
     width: auto;
 }
 
 .navbar-search-container {
     transition: all 0.2s;
-    width: 18rem;
-}
-
-.navbar-search-container.focused {
     width: 24rem;
-}
-
-.navbar-search {
+  }
+  
+  .navbar-search-container.focused {
+    width: 28rem;
+  }
+  
+  .navbar-search {
     display: flex;
     align-items: center;
     background-color: rgba(255, 255, 255, 0.2);
@@ -68,10 +73,11 @@
 .navbar-navigation {
     display: flex;
     align-items: center;
-    gap: 1rem;
-}
-
-.nav-item {
+    gap: 1.0rem;
+    margin: 0 0 0 500px;
+  }
+  
+  .nav-item {
     display: flex;
     align-items: center;
     padding: 0.5rem;

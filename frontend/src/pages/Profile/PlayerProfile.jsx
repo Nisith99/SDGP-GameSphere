@@ -1,3 +1,4 @@
+import Navbar from "../../Components/Navbar";
 import React, { useState } from 'react';
 import {
   MessageSquare,
@@ -79,6 +80,7 @@ const PlayerProfile = ({
 
   return (
     <>
+    <Navbar />
       <div className="player-profile-container">
         <div className="relative">
           <img
