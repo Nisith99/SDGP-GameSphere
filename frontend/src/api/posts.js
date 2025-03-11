@@ -1,61 +1,101 @@
-import axios from 'axios';
-import { API_BASE_URL } from './config';
+// Temporary local storage keys
+const POSTS_STORAGE_KEY = 'gameSphere_posts';
 
-const api = axios.create({
-  baseURL: `${API_BASE_URL}/post`,
-  withCredentials: true
-});
+// Helper functions for local storage
+const getStoredPosts = () => {
+  const posts = localStorage.getItem(POSTS_STORAGE_KEY);
+  return posts ? JSON.parse(posts) : [];
+};
 
+const savePostsToStorage = (posts) => {
+  localStorage.setItem(POSTS_STORAGE_KEY, JSON.stringify(posts));
+};
+
+// Create a new post
 export const createPost = async (postData) => {
   try {
-    const response = await api.post('/', postData);
-    return response.data;
+    const posts = getStoredPosts();
+    const newPost = {
+      _id: Date.now().toString(),
+      ...postData,
+      likes: [],
+      comments: []
+    };
+    posts.unshift(newPost);
+    savePostsToStorage(posts);
+    return newPost;
   } catch (error) {
-    throw error.response?.data || error.message;
+    console.error('Error creating post:', error);
+    throw new Error('Failed to create post');
   }
 };
 
+// Get all posts
 export const getAllPosts = async () => {
   try {
-    const response = await api.get('/');
-    return response.data;
+    return getStoredPosts();
   } catch (error) {
-    throw error.response?.data || error.message;
+    console.error('Error fetching posts:', error);
+    throw new Error('Failed to fetch posts');
   }
 };
 
-export const searchPosts = async (query) => {
+// Like/Unlike a post
+export const likePost = async (postId) => {
   try {
-    const response = await api.get(`/search?query=${query}`);
-    return response.data;
+    const posts = getStoredPosts();
+    const postIndex = posts.findIndex(post => post._id === postId);
+    
+    if (postIndex === -1) {
+      throw new Error('Post not found');
+    }
+
+    // Toggle like
+    const userId = 'current_user'; // Temporary user ID
+    const likes = posts[postIndex].likes || [];
+    const likeIndex = likes.indexOf(userId);
+
+    if (likeIndex === -1) {
+      likes.push(userId);
+    } else {
+      likes.splice(likeIndex, 1);
+    }
+
+    posts[postIndex].likes = likes;
+    savePostsToStorage(posts);
+    return posts[postIndex];
   } catch (error) {
-    throw error.response?.data || error.message;
+    console.error('Error liking post:', error);
+    throw new Error('Failed to like post');
   }
 };
 
-export const getPostById = async (id) => {
+// Add a comment to a post
+export const addComment = async (postId, comment) => {
   try {
-    const response = await api.get(`/${id}`);
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error.message;
-  }
-};
+    const posts = getStoredPosts();
+    const postIndex = posts.findIndex(post => post._id === postId);
+    
+    if (postIndex === -1) {
+      throw new Error('Post not found');
+    }
 
-export const updatePost = async (id, postData) => {
-  try {
-    const response = await api.put(`/${id}`, postData);
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error.message;
-  }
-};
+    const newComment = {
+      _id: Date.now().toString(),
+      content: comment,
+      author: {
+        name: 'User',
+        image: 'https://via.placeholder.com/40',
+        profession: 'Gamer'
+      },
+      createdAt: new Date().toISOString()
+    };
 
-export const deletePost = async (id) => {
-  try {
-    const response = await api.delete(`/${id}`);
-    return response.data;
+    posts[postIndex].comments = [...(posts[postIndex].comments || []), newComment];
+    savePostsToStorage(posts);
+    return newComment;
   } catch (error) {
-    throw error.response?.data || error.message;
+    console.error('Error adding comment:', error);
+    throw new Error('Failed to add comment');
   }
 };
