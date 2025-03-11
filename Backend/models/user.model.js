@@ -1,23 +1,23 @@
-
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
     fullName:{
         type: String,
-        require: true 
+        required: true 
     },
     userName: {
         type: String,
-        require: true
+        required: true,
+        unique: true
     },
     email:{
         type: String,
-        require: true,
+        required: true,
         unique: true
     },
     password: {
         type: String,
-        require: true
+        required: true
     },
     role: {
         type: String,
@@ -50,8 +50,18 @@ const userSchema = new mongoose.Schema({
             default: [],
         },
         achievements: {
-            type: [String],
-            default: [],    
+            province:{
+                type: [String],
+                default: [],
+            },
+            district:{
+                type: [String],
+                default: [],
+            },
+            island:{
+                type: [String],
+                default: [],
+            }
         }
     },
     clubProfile: {
@@ -63,12 +73,28 @@ const userSchema = new mongoose.Schema({
             type: Number,
             default: null,
         },
-        opportunities{
+        opportunities: {
             type: String,
-            defult: null
+            default: null
+        },
+        rating: [ {
+            user: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+                required: true
+            },
+            rate: {
+                type: Number,
+                required: true,
+                min: 1,
+                max: 5
+            }
+        }],
+        avgRating: {
+            type: Number,
+            default: 0
         }
     }
-
 },{timestamps: true});
 
 const User = mongoose.model("User", userSchema);

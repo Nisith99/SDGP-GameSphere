@@ -1,0 +1,92 @@
+.feed-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 16px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+  }
+  
+  .loading-text {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .profile-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+  }
+  
+  .profile-name {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .profile-profession {
+    color: #059669;
+    font-size: 14px;
+  }
+  
+  .post-content {
+    margin-top: 12px;
+    color: #333;
+  }
+  
+  .stats-box {
+    background: #ecfdf5;
+    padding: 12px;
+    border-radius: 6px;
+    margin-top: 12px;
+  }
+  
+  .stats-title {
+    font-size: 16px;
+    color: #047857;
+    margin-bottom: 8px;
+  }
+  
+  .stats-grid {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+  }
+  
+  .stats-value {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .stats-label {
+    color: #555;
+    font-size: 12px;
+  }
+  
+  .tags {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  
+  .tag {
+    background: #d1fae5;
+    color: #065f46;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+  }
+  
+  .post-image img {
+    width: 100%;
+    border-radius: 6px;
+    margin-top: 12px;
+  }
+  

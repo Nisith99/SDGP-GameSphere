@@ -14,7 +14,7 @@ export const protectRoute = async (req, res, next) => {
             return res.status(401).json({message: "Invalid token"})
         }
 
-        const user = await User.findById(decoded.id).select("-password")
+        const user = await User.findById(decoded.userId).select("-password")
 
         if(!user){
             return res.status(401).json({message: "User not founded"});
@@ -28,4 +28,13 @@ export const protectRoute = async (req, res, next) => {
         console.log("Error in middleware:", error.message);
         res.status(500).json({message: "Server error"});
     }
-}
+};
+
+export const roleRequired = (allowedRoles) => {
+    return (req, res, next) => {
+        if (!req.user || !allowedRoles.includes(req.user.role)) {
+            return res.status(403).json({ message: "Access denied: required role not found" });
+        }
+        next();
+    };
+};
