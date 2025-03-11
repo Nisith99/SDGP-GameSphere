@@ -1,31 +1,28 @@
 import User from "../models/user.model.js";
+import bcrypt from "bcryptjs";
 
 export const updateUserProfile = async (req, res) => {
     try {
         const userId = req.user._id;
-        const { fullName, userName, password, profilePicture, coverImg, location, about, profileData } = req.body;
+        const { fullName, profilePicture } = req.body;
 
         const user = await User.findById(userId);
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
 
+        // Only update name and profile picture
         if (fullName) user.fullName = fullName;
-        if (userName) user.userName = userName;
-        if (password) user.password = password;
         if (profilePicture) user.profilePicture = profilePicture;
-        if (coverImg) user.coverImg = coverImg;
-        if (location) user.location = location;
-        if (about) user.about = about;
-
-        if (user.role === "player") {
-            user.playerProfile = { ...user.playerProfile, ...profileData };
-        } else if (user.role === "club") {
-            user.clubProfile = { ...user.clubProfile, ...profileData };
-        }
 
         await user.save();
-        res.status(200).json({ message: "Profile updated successfully", user });
+        res.status(200).json({ 
+            message: "Profile updated successfully", 
+            user: {
+                fullName: user.fullName,
+                profilePicture: user.profilePicture
+            } 
+        });
 
     } catch (error) {
         console.error("Error in updating profile:", error);
@@ -61,4 +58,3 @@ export const getProfile = async (req, res) => {
        res.status(500).json({ message: "Server error" });
     }
  };
-
