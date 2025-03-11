@@ -1,80 +1,8 @@
 /* General Styles */
 .container {
-    min-height: 100vh;
-    background-color: #f3f4f6;
-}
-
-/* Header Styles */
-.header {
-    background-color: white;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    padding: 0.75rem 1rem;
-}
-
-.header-content {
-    max-width: 80rem;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.logo-container {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.logo {
-    height: 2rem;
-    width: 2rem;
-}
-
-.brand {
-    font-size: 1.25rem;
-    font-weight: bold;
-}
-
-.search-container {
-    flex: 1;
-    max-width: 36rem;
-    margin: 0 1rem;
-    position: relative;
-}
-
-.search-input {
-    width: 100%;
-    padding: 0.5rem 1rem;
-    border-radius: 9999px;
-    background-color: #f3f4f6;
-    border: none;
-    outline: none;
-}
-
-.search-icon {
-    position: absolute;
-    right: 0.75rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #9ca3af;
-    height: 1.25rem;
-    width: 1.25rem;
-}
-
-.nav {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.nav-icon {
-    height: 1.5rem;
-    width: 1.5rem;
-    color: #4b5563;
-}
-
-.nav-icon.active {
-    color: #9333ea;
+    max-width: none;
+    margin: 0%;
+   
 }
 
 /* Main Content Styles */
@@ -85,11 +13,12 @@
     display: grid;
     grid-template-columns: 300px 1fr;
     gap: 1.5rem;
+   
 }
 
 /* Sidebar Styles */
 .sidebar {
-    background-color: white;
+    background-color: rgb(223, 225, 226);
     border-radius: 0.5rem;
     padding: 1.5rem;
     height: calc(100vh - 8rem);
@@ -110,6 +39,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 250px;
 }
 
 .sidebar-icon {
@@ -125,7 +55,7 @@
 
 /* Chat Area Styles */
 .chat-area {
-    background-color: white;
+    background-color: rgba(180, 191, 219, 0.568);
     border-radius: 0.5rem;
     display: flex;
     flex-direction: column;

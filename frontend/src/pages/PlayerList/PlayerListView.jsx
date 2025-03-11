@@ -1,7 +1,8 @@
+import Navbar from "../../Components/Navbar";
 import React from "react";
 import { Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import "./PlayerListView.css"; // Import the CSS file
+import "./PlayerListView.css"; 
 
 const players = [
   {
@@ -93,7 +94,8 @@ const PlayerListView = () => {
   };
 
   return (
-    <div className="container">
+    <div className="PlayerList-container">
+      <Navbar />
       {/* Filter Section */}
       <div className="filterSection">
         <h2>Filters</h2>
