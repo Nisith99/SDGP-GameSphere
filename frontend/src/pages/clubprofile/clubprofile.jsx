@@ -37,33 +37,7 @@ const ClubProfile = () => {
 
   return (
     <div className={`container ${darkMode ? "dark-mode" : "light-mode"}`}>
-      {/* Navbar */}
-      <div className="navbar">
-        <img src="/gameSphere_logo.png" alt="GameSphere Logo" className="logo" />
-        <h2>GameSphere</h2>
-        <div className="search-container">
-          <input type="text" placeholder="Search here..." className="search-bar" />
-          <i className="ri-search-line search-icon"></i>
-        </div>
-        <div className="nav-icons">
-          <div className="nav-item active">
-            <i className="ri-home-line"></i>
-            <span>Home</span>
-          </div>
-          <div className="nav-item">
-            <i className="ri-message-2-line"></i>
-            <span>Messages</span>
-          </div>
-          <div className="nav-item">
-            <i className="ri-notification-line"></i>
-            <span>Notification</span>
-          </div>
-          <div className="nav-item">
-            <i className="ri-user-line"></i>
-            <span>User Profile</span>
-          </div>
-        </div>
-      </div>
+      
 
       {/* Theme Toggle Button */}
       <div className="theme-toggle-container">
@@ -111,29 +85,7 @@ const ClubProfile = () => {
         ))}
       </div>
 
-      {/* Footer */}
-      <footer className="footer">
-        <div className="footer-content">
-          <div className="row social-links">
-            <a id="facebook" href="https://www.facebook.com/"><i className="fa fa-facebook"></i></a>
-            <a id="insta" href="https://instagram.com/"><i className="fa fa-instagram"></i></a>
-            <a id="whatsapp" href="https://whatsapp.com/"><i className="fa fa-whatsapp"></i></a>
-            <a id="linkedin" href="https://www.linkedin.com/"><i className="fa fa-linkedin"></i></a>
-          </div>
-          <div className="row">
-            <ul>
-              <li><a href="#">Back to TOP</a></li>
-              <li><a href="contactus.html">Contact us</a></li>
-              <li><a href="privacypolicy.html">Privacy Policy</a></li>
-              <li><a href="termsandconditions.html">Terms & Conditions</a></li>
-              <li><a href="editorspage.html">Editors page</a></li>
-            </ul>
-          </div>
-          <div className="row copyright">
-            Gamesphere Copyright © 2024 Sports - All rights reserved || Designed By: <a href="gamespheremembers.html">Gamesphere Members</a>
-          </div>
-        </div>
-      </footer>
+      
     </div>
   );
 };
