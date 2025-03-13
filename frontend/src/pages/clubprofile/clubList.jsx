@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import "./clubprofile.css";
+import "./clubList.css";
+import Navbar from "../../Components/Navbar";
+import { Footer } from "../../Components/footer";
 
 const mockPlayers = [
   { id: 1, name: "John Doe", position: "Forward", rating: 4.8, available: true, location: "USA" },
@@ -37,7 +39,8 @@ const ClubProfile = () => {
 
   return (
     <div className={`container ${darkMode ? "dark-mode" : "light-mode"}`}>
-      
+      {/* Navbar */}
+            <Navbar />
 
       {/* Theme Toggle Button */}
       <div className="theme-toggle-container">
@@ -85,7 +88,7 @@ const ClubProfile = () => {
         ))}
       </div>
 
-      
+      <Footer /> 
     </div>
   );
 };
