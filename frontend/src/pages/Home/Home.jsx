@@ -4,6 +4,12 @@ import Feed from "../../Components/Feed";
 import { getAllPosts, createPost, likePost, addComment } from "../../api/posts";
 import "./Home.css";
 
+const defaultAuthor = {
+  name: 'User',
+  image: 'https://via.placeholder.com/40',
+  profession: 'Gamer'
+};
+
 export default function Home() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,16 +24,18 @@ export default function Home() {
       setLoading(true);
       setError(null);
       const data = await getAllPosts();
-      setPosts(data.map(post => ({
-        ...post,
-        author: post.author || {
-          name: 'User',
-          image: 'https://via.placeholder.com/40',
-          profession: 'Gamer'
-        },
-        likes: post.likes || [],
-        comments: post.comments || []
-      })));
+      setPosts(prevPosts => {
+        const uniquePosts = new Map(prevPosts.map(post => [post._id, post]));
+        data.forEach(post => {
+          uniquePosts.set(post._id, {
+            ...post,
+            author: post.author || defaultAuthor,
+            likes: post.likes || [],
+            comments: post.comments || []
+          });
+        });
+        return Array.from(uniquePosts.values());
+      });
     } catch (error) {
       setError("Failed to load posts");
       console.error("Error fetching posts:", error);
@@ -40,13 +48,9 @@ export default function Home() {
     try {
       const newPost = await createPost({
         ...postData,
-        author: {
-          name: 'User',
-          image: 'https://via.placeholder.com/40',
-          profession: 'Gamer'
-        }
+        author: defaultAuthor  
       });
-      setPosts(prevPosts => [newPost, ...prevPosts]);
+      setPosts(prevPosts => [newPost, ...prevPosts.filter(post._id !== newPost._id)]);
     } catch (error) {
       console.error("Error creating post:", error);
     }
