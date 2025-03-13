@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./App.css";
+import "./clubprofile.css";
 
 const mockPlayers = [
   { id: 1, name: "John Doe", position: "Forward", rating: 4.8, available: true, location: "USA" },
