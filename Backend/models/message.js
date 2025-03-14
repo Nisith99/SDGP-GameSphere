@@ -21,9 +21,8 @@ const messageSchema = new mongoose.Schema({
   },
   roomId: {
     type: String,
-    required: true
+    required: false // Made optional
   }
-  
 });
 
 export default mongoose.model('Message', messageSchema);

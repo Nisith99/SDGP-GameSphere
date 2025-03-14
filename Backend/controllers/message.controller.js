@@ -1,4 +1,4 @@
-import { Message } from "../models/message.model";
+import { Message } from "../models/message.js";
 import { AppError } from "../utils/app-error";
 import { catchAsync } from "../utils/catch-async";
 import { io } from "../socket";
