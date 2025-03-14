@@ -1,63 +1,63 @@
-import Navbar from "../Components/Navbar";
 import { useState } from "react";
-import { Bell, Users, CheckCircle, MessageCircle, Flag } from "lucide-react";
+import { Bell, MessageSquare, ThumbsUp, Share2, Eye, Trash2 } from "lucide-react";
 import "./Notifications.css";
 
-const notificationsData = [
-  { id: 1, type: "trial", message: "You have been invited for a trial at XYZ Club.", time: "30m", unread: true },
-  { id: 2, type: "selection", message: "Coach ABC shortlisted you for the next selection round.", time: "1h", unread: true },
-  { id: 3, type: "message", message: "New message from Coach DEF.", time: "2h", unread: true },
-  { id: 4, type: "invite", message: "XYZ Club has sent you an invitation to join.", time: "4h", unread: false },
-  { id: 5, type: "achievement", message: "Congratulations! You have been rated All-Island Level.", time: "1d", unread: false },
+const initialNotifications = [
+  { id: 1, type: "comment", user: "Olivia Pearson", message: "commented on your post", time: "2 minutes ago", read: false, postText: "Confirming with the lads Claude can't replace us!" },
+  { id: 2, type: "comment", user: "Beth Doe", message: "commented on your post", time: "11 minutes ago", read: false, postText: "Today Jeff was explaining why he sucks at coding on a whiteboard! 😆" },
+  { id: 3, type: "like", user: "John Doe", message: "liked your post", time: "1 day ago", read: true, postText: "Hello world!" },
+  { id: 4, type: "share", user: "Alex Smith", message: "shared your post", time: "3 days ago", read: true, postText: "Great content! 🎉" },
 ];
 
 const Notifications = () => {
-  const [notifications, setNotifications] = useState(notificationsData);
-  const [filter, setFilter] = useState("all");
+  const [notifications, setNotifications] = useState(initialNotifications);
 
-  const getIcon = (type) => {
-
-    const icons = {
-      trial: <Flag className="icon trial" />, 
-      selection: <CheckCircle className="icon selection" />, 
-      message: <MessageCircle className="icon message" />, 
-      club_invite: <Users className="icon club_invite" />, 
-      achievement: <Bell className="icon achievement" />, 
-    };
-    return icons[type] || <Bell className="icon default" />;
-
+  const markAsRead = (id) => {
+    setNotifications(notifications.map((n) => (n.id === id ? { ...n, read: true } : n)));
   };
 
-  const filteredNotifications = notifications.filter((n) => filter === "all" || n.type === filter);
+  const deleteNotification = (id) => {
+    setNotifications(notifications.filter((n) => n.id !== id));
+  };
+
+  const getIcon = (type) => {
+    const icons = {
+      like: <ThumbsUp className="icon like" />,
+      comment: <MessageSquare className="icon comment" />,
+      share: <Share2 className="icon share" />,
+    };
+    return icons[type] || <Bell className="icon default" />;
+  };
 
   return (
     <div className="notifications-container">
-      <Navbar />
-      <div className="filters">
-        {["all", "trial", "selection", "message", "club_invite", "achievement"].map((category) => (
-          <button
-            key={category}
-            onClick={() => setFilter(category)}
-            className={`filter-button ${filter === category ? "active" : ""}`}
-          >
-            {category.charAt(0).toUpperCase() + category.slice(1)}
-          </button>
-        ))}
-      </div>
+      <h2>Notifications</h2>
       <div className="notifications-list">
-        {filteredNotifications.length > 0 ? (
-          filteredNotifications.map((notification) => (
-            <div key={notification.id} className={`notification-item ${notification.unread ? "unread" : ""}`}>
+        {notifications.length > 0 ? (
+          notifications.map((notification) => (
+            <div key={notification.id} className={`notification-item ${notification.read ? "read" : "unread"}`}>
               <div className="icon-wrapper">{getIcon(notification.type)}</div>
               <div className="notification-content">
-                <p className="message">{notification.message}</p>
-                <p className="time">{notification.time}</p>
+                <p>
+                  <strong>{notification.user}</strong> {notification.message}
+                </p>
+                <span className="time">{notification.time}</span>
+                {notification.postText && <div className="related-post">{notification.postText}</div>}
               </div>
-              {notification.unread && <span className="unread-indicator"></span>}
+              <div className="actions">
+                {!notification.read && (
+                  <button className="mark-read" onClick={() => markAsRead(notification.id)}>
+                    <Eye size={16} />
+                  </button>
+                )}
+                <button className="delete" onClick={() => deleteNotification(notification.id)}>
+                  <Trash2 size={16} />
+                </button>
+              </div>
             </div>
           ))
         ) : (
-          <p className="no-notifications">No notifications found.</p>
+          <p className="no-notifications">No notifications available.</p>
         )}
       </div>
     </div>
