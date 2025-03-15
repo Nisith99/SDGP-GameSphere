@@ -5,12 +5,13 @@ import cors from "cors"; // Fixed typo
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.route.js";
-import notifyRoute from "./routes/notifications.route.js"
-import userRoutes from "./routes/user.route.js"
-import playerRoutes from "./routes/player.route.js"
-import clubRoutes from "./routes/club.route.js"
-import ratingRoutes from "./routes/rating.route.js"
-import postRoutes from "./routes/post.route.js"
+import notifyRoute from "./routes/notifications.route.js";
+import userRoutes from "./routes/user.route.js";
+import playerRoutes from "./routes/player.route.js";
+import clubRoutes from "./routes/club.route.js";
+import ratingRoutes from "./routes/rating.route.js";
+import postRoutes from "./routes/post.route.js";
+import connectionRoutes from "./routes/connection.route.js";
 
 const app = express();
 app.use(express.json()); // Don't forget to uncomment this!
@@ -45,11 +46,12 @@ app.listen(PORT, () => {
 });
 
 
-app.use("/api/v1/auth", authRoutes)
-app.use("/api/v1/notify", notifyRoute)
-app.use("/api/v1/user", userRoutes)
-app.use("/api/v1/player", playerRoutes)
-app.use("/api/v1/club", clubRoutes)
-app.use("/api/v1/rating", ratingRoutes)
-app.use("/api/v1/post",postRoutes)
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/notify", notifyRoute);
+app.use("/api/v1/user", userRoutes);
+app.use("/api/v1/player", playerRoutes);
+app.use("/api/v1/club", clubRoutes);
+app.use("/api/v1/rating", ratingRoutes);
+app.use("/api/v1/post",postRoutes);
+app.use("/api/v1/connections",connectionRoutes);
 
