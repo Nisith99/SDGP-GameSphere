@@ -1,5 +1,6 @@
 import Navbar from "../../Components/Navbar";
 import React, { useState } from "react";
+import { Footer } from "../../Components/footer";
 import {
   MessageSquare,
   Heart,
@@ -472,6 +473,7 @@ export const Profile = ({
               </button>
             </div>
           </div>
+          <Footer />
         </div>
       )}
     </>
