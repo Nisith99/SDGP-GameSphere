@@ -1,7 +1,9 @@
-import Message from "../models/message.js";
-import { AppError } from "../utils/app-error.js";
-import { catchAsync } from "../utils/catch-async.js";
-import { io } from "../socket.js";
+
+import { Message } from "../models/message.js";
+import { AppError } from "../utils/app-error";
+import { catchAsync } from "../utils/catch-async";
+import { io } from "../socket";
+
 import mongoose from "mongoose";
 import { getUserSocketId } from "../utils/socket-manager.js";
 
