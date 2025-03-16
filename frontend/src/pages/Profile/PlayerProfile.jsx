@@ -1,5 +1,5 @@
+import React, { useState, useEffect } from 'react';
 import Navbar from "../../Components/Navbar";
-import React, { useState } from 'react';
 import {
   MessageSquare,
   Heart,
@@ -15,44 +15,46 @@ import {
 } from 'lucide-react';
 import './PlayerProfile.css'; // Import the CSS file
 
-const PlayerProfile = ({
-  playerName = "Player Name",
-  rating = 7.5,
-  location = "Sri Lanka",
-  about = "This is a brief description about the player.",
-  age = 23,
-  position = "Forward",
-  achievements = "",
-  onAchievementsChange = () => {},
-  sportType = "Soccer",
-  recentPerformance = "Good",
-  participateMatchesCount = 50,
-  bestAchievements = "Won the regional championship",
-  playerType = "Pro",
-  pastClubStatus = "Played for Club A and Club B",
-}) => {
+const PlayerProfile = () => {
+  const [playerData, setPlayerData] = useState({
+    playerName: "",
+    rating: 0,
+    location: "",
+    about: "",
+    age: 0,
+    position: "",
+    achievements: "",
+    sportType: "",
+    recentPerformance: "",
+    participateMatchesCount: 0,
+    bestAchievements: "",
+    playerType: "",
+    pastClubStatus: "",
+  });
+
   const [isFavorite, setIsFavorite] = useState(false);
   const [isClubsOpen, setIsClubsOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [notifications, setNotifications] = useState(true);
   const [profileVisibility, setProfileVisibility] = useState("public");
   const [darkMode, setDarkMode] = useState(false);
-  const [username, setUsername] = useState(playerName);
+  const [username, setUsername] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPasswords, setShowPasswords] = useState(false);
-  const [editedLocation, setEditedLocation] = useState(location);
-  const [editedAbout, setEditedAbout] = useState(about);
-  const [editedAge, setEditedAge] = useState(age);
-  const [editedPosition, setEditedPosition] = useState(position);
-  const [editedSportType, setEditedSportType] = useState(sportType);
-  const [editedRecentPerformance, setEditedRecentPerformance] = useState(recentPerformance);
-  const [editedParticipateMatchesCount, setEditedParticipateMatchesCount] = useState(participateMatchesCount);
-  const [editedBestAchievements, setEditedBestAchievements] = useState(bestAchievements);
-  const [editedPlayerType, setEditedPlayerType] = useState(playerType);
-  const [editedPastClubStatus, setEditedPastClubStatus] = useState(pastClubStatus);
   const [playerImage, setPlayerImage] = useState("./player.png");
+
+  useEffect(() => {
+    // Fetch player data from the backend
+    fetch('http://localhost:3000/api/player')
+      .then(response => response.json())
+      .then(data => {
+        setPlayerData(data);
+        setUsername(data.playerName);
+      })
+      .catch(error => console.error('Error fetching player data:', error));
+  }, []);
 
   const toggleFavorite = () => setIsFavorite(!isFavorite);
   const toggleClubs = () => setIsClubsOpen(!isClubsOpen);
@@ -80,7 +82,7 @@ const PlayerProfile = ({
 
   return (
     <>
-    <Navbar />
+      <Navbar />
       <div className="player-profile-container">
         <div className="relative">
           <img
@@ -90,12 +92,12 @@ const PlayerProfile = ({
           />
           <div className="player-header">
             <div>
-              <h1 className="player-name">{playerName}</h1>
-              <p className="player-location">{location}</p>
+              <h1 className="player-name">{playerData.playerName}</h1>
+              <p className="player-location">{playerData.location}</p>
             </div>
             <div className="flex items-center gap-4">
               <div className="rating-container">
-                <div className="rating-value">{rating}</div>
+                <div className="rating-value">{playerData.rating}</div>
                 <div className="rating-label">Ratings</div>
               </div>
               <button className="message-button">
@@ -121,31 +123,31 @@ const PlayerProfile = ({
           <div className="space-y-4">
             <div className="info-section">
               <h2>About</h2>
-              <p>{about}</p>
+              <p>{playerData.about}</p>
             </div>
             <div className="info-section">
-              <h2>Age: {age} years</h2>
+              <h2>Age: {playerData.age} years</h2>
             </div>
             <div className="info-section">
-              <h2>Position: {position}</h2>
+              <h2>Position: {playerData.position}</h2>
             </div>
             <div className="info-section">
-              <h2>Sport Type: {sportType}</h2>
+              <h2>Sport Type: {playerData.sportType}</h2>
             </div>
             <div className="info-section">
-              <h2>Recent Performance: {recentPerformance}</h2>
+              <h2>Recent Performance: {playerData.recentPerformance}</h2>
             </div>
             <div className="info-section">
-              <h2>Participate Matches Count: {participateMatchesCount}</h2>
+              <h2>Participate Matches Count: {playerData.participateMatchesCount}</h2>
             </div>
             <div className="info-section">
-              <h2>Best Achievements: {bestAchievements}</h2>
+              <h2>Best Achievements: {playerData.bestAchievements}</h2>
             </div>
             <div className="info-section">
-              <h2>Player Type: {playerType}</h2>
+              <h2>Player Type: {playerData.playerType}</h2>
             </div>
             <div className="info-section">
-              <h2>Past Club Status: {pastClubStatus}</h2>
+              <h2>Past Club Status: {playerData.pastClubStatus}</h2>
             </div>
             <div className="info-section">
               <h2>Achievements</h2>
@@ -153,8 +155,8 @@ const PlayerProfile = ({
                 <label>
                   <span>Sports achievements 🏆</span>
                   <textarea
-                    value={achievements}
-                    onChange={(e) => onAchievementsChange(e.target.value)}
+                    value={playerData.achievements}
+                    onChange={(e) => setPlayerData({ ...playerData, achievements: e.target.value })}
                     className="textarea-field"
                     placeholder="Enter your sports achievements..."
                     aria-label="Sports achievements"
@@ -224,8 +226,8 @@ const PlayerProfile = ({
                 </div>
                 <input
                   type="text"
-                  value={editedLocation}
-                  onChange={(e) => setEditedLocation(e.target.value)}
+                  value={playerData.location}
+                  onChange={(e) => setPlayerData({ ...playerData, location: e.target.value })}
                   className="input-field"
                   placeholder="Enter new location"
                 />
@@ -240,8 +242,8 @@ const PlayerProfile = ({
                   <h3>About</h3>
                 </div>
                 <textarea
-                  value={editedAbout}
-                  onChange={(e) => setEditedAbout(e.target.value)}
+                  value={playerData.about}
+                  onChange={(e) => setPlayerData({ ...playerData, about: e.target.value })}
                   className="textarea-field"
                   placeholder="Enter new about text"
                 />
@@ -257,8 +259,8 @@ const PlayerProfile = ({
                 </div>
                 <input
                   type="number"
-                  value={editedAge}
-                  onChange={(e) => setEditedAge(e.target.value)}
+                  value={playerData.age}
+                  onChange={(e) => setPlayerData({ ...playerData, age: e.target.value })}
                   className="input-field"
                   placeholder="Enter new age"
                 />
@@ -274,8 +276,8 @@ const PlayerProfile = ({
                 </div>
                 <input
                   type="text"
-                  value={editedSportType}
-                  onChange={(e) => setEditedSportType(e.target.value)}
+                  value={playerData.sportType}
+                  onChange={(e) => setPlayerData({ ...playerData, sportType: e.target.value })}
                   className="input-field"
                   placeholder="Enter new sport type"
                 />
@@ -291,8 +293,8 @@ const PlayerProfile = ({
                 </div>
                 <input
                   type="text"
-                  value={editedRecentPerformance}
-                  onChange={(e) => setEditedRecentPerformance(e.target.value)}
+                  value={playerData.recentPerformance}
+                  onChange={(e) => setPlayerData({ ...playerData, recentPerformance: e.target.value })}
                   className="input-field"
                   placeholder="Enter recent performance"
                 />
@@ -308,8 +310,8 @@ const PlayerProfile = ({
                 </div>
                 <input
                   type="number"
-                  value={editedParticipateMatchesCount}
-                  onChange={(e) => setEditedParticipateMatchesCount(e.target.value)}
+                  value={playerData.participateMatchesCount}
+                  onChange={(e) => setPlayerData({ ...playerData, participateMatchesCount: e.target.value })}
                   className="input-field"
                   placeholder="Enter participate matches count"
                 />
@@ -324,8 +326,8 @@ const PlayerProfile = ({
                   <h3>Best Achievements</h3>
                 </div>
                 <textarea
-                  value={editedBestAchievements}
-                  onChange={(e) => setEditedBestAchievements(e.target.value)}
+                  value={playerData.bestAchievements}
+                  onChange={(e) => setPlayerData({ ...playerData, bestAchievements: e.target.value })}
                   className="textarea-field"
                   placeholder="Enter best achievements"
                 />
@@ -340,8 +342,8 @@ const PlayerProfile = ({
                   <h3>Player Type</h3>
                 </div>
                 <select
-                  value={editedPlayerType}
-                  onChange={(e) => setEditedPlayerType(e.target.value)}
+                  value={playerData.playerType}
+                  onChange={(e) => setPlayerData({ ...playerData, playerType: e.target.value })}
                   className="input-field"
                 >
                   <option value="Beginner">Beginner</option>
@@ -359,8 +361,8 @@ const PlayerProfile = ({
                   <h3>Past Club Status</h3>
                 </div>
                 <textarea
-                  value={editedPastClubStatus}
-                  onChange={(e) => setEditedPastClubStatus(e.target.value)}
+                  value={playerData.pastClubStatus}
+                  onChange={(e) => setPlayerData({ ...playerData, pastClubStatus: e.target.value })}
                   className="textarea-field"
                   placeholder="Enter past club status"
                 />
