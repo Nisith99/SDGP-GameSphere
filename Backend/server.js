@@ -8,6 +8,7 @@ import userRoutes from "./routes/user.route.js";
 import playerRoutes from "./routes/player.route.js";
 import clubRoutes from "./routes/club.route.js";
 import ratingRoutes from "./routes/rating.route.js";
+import { sendMessage } from "./controllers/message.controller.js";
 
 
 const app = express();
@@ -42,3 +43,4 @@ app.use("/api/v1/user", userRoutes)
 app.use("/api/v1/player", playerRoutes)
 app.use("/api/v1/club", clubRoutes)
 app.use("/api/v1/rating", ratingRoutes)
+app.use("/api/v1/message", sendMessage)

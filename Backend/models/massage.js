@@ -1,29 +1,32 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const messageSchema = new mongoose.Schema({
-  sender: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+const messageSchema = new mongoose.Schema(
+  {
+    sender: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    receiver: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null, // Direct messages don't require a receiver
+    },
+    content: {
+      type: String,
+      required: true,
+    },
+    roomId: {
+      type: String,
+      default: null, // Room ID is optional
+    },
+    status: {
+      type: String,
+      enum: ["sent", "delivered", "read"],
+      default: "sent",
+    },
   },
-  receiver: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
-  content: {
-    type: String,
-    required: true
-  },
-  timestamp: {
-    type: Date,
-    default: Date.now
-  },
-  roomId: {
-    type: String,
-    required: true
-  }
-  
-});
+  { timestamps: true }
+);
 
-export default mongoose.model('Message', messageSchema);
+export default mongoose.model("Message", messageSchema);
