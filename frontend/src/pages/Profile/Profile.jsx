@@ -473,9 +473,10 @@ export const Profile = ({
               </button>
             </div>
           </div>
-          <Footer />
+          
         </div>
       )}
+      <Footer />
     </>
   );
 };

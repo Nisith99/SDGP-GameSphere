@@ -17,9 +17,9 @@ import './PlayerProfile.css'; // Import the CSS file
 
 const PlayerProfile = () => {
   const [playerData, setPlayerData] = useState({
-    playerName: "",
+    playerName: "Name",
     rating: 0,
-    location: "",
+    location: "Location",
     about: "",
     age: 0,
     position: "",
