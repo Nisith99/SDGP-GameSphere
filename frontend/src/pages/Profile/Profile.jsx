@@ -189,7 +189,7 @@ export const Profile = () => {
                 className="w-full p-4 flex items-center justify-between hover:bg-gray-100 transition-colors"
                 aria-expanded={isPlayersOpen}
               >
-                <h2 className="section-title">Our current players</h2>
+                <h2 className="section-title">Our Current players</h2>
                 <ChevronDown
                   size={20}
                   className={`transform transition-transform duration-200 ${
