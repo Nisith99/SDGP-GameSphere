@@ -5,10 +5,10 @@
   }
   
   .player-avatar {
-    width: 150px;
-    height: 150px;
-    object-fit: contain;
-    margin: 0 auto;
+    width: 200px;
+    height: 200px;
+    margin: 100px auto;
+    border-radius: 50%;
   }
   
   .player-header {

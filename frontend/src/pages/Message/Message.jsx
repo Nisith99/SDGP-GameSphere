@@ -1,6 +1,8 @@
+import Navbar from "../../Components/Navbar";
 import React, { useState } from 'react';
 import { FiSearch, FiHome, FiMessageSquare, FiBell, FiUser, FiSend } from 'react-icons/fi';
 import './Message.css';
+import { Footer } from "../../Components/footer";
 
 const Message = () => {
     const [messages, setMessages] = useState([
@@ -26,32 +28,7 @@ const Message = () => {
 
     return (
         <div className="container">
-            {/* Header */}
-            <header className="header">
-                <div className="header-content">
-                    <div className="logo-container">
-                        <img src="gameSphere_logo.png" alt="GameSphere" className="logo" />
-                        <span className="brand">GameSphere</span>
-                    </div>
-
-                    <div className="search-container">
-                        <input
-                            type="text"
-                            placeholder="Search here............"
-                            className="search-input"
-                        />
-                        <FiSearch className="search-icon" />
-                    </div>
-
-                    <nav className="nav">
-                        <FiHome className="nav-icon" />
-                        <FiMessageSquare className="nav-icon active" />
-                        <FiBell className="nav-icon" />
-                        <FiUser className="nav-icon" />
-                    </nav>
-                </div>
-            </header>
-
+            <Navbar />
             {/* Main Content */}
             <main className="main-content">
                 {/* Sidebar */}
@@ -112,6 +89,7 @@ const Message = () => {
                     </form>
                 </div>
             </main>
+            <Footer />
         </div>
     );
 };

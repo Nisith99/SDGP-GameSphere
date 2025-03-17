@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Bell, MessageSquare, ThumbsUp, Share2, Eye, Trash2 } from "lucide-react";
 //import { FaEye, FaTrash, FaThumbsUp, FaComment, FaShareAlt } from "react-icons/fa";
 import "./Notifications.css";
+import { Footer } from "../Components/footer";
 
 const initialNotifications = [
   { id: 1, type: "comment", user: "Olivia Pearson", message: "commented on your post", time: "2 minutes ago", read: false, postText: "Confirming with the lads Claude can't replace us!" },
@@ -65,6 +66,7 @@ const Notifications = () => {
           <p className="no-notifications">No notifications available.</p>
         )}
       </div>
+      <Footer />
     </div>
   );
 };
