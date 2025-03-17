@@ -28,10 +28,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "",
     },
-    coverImg: {
-        type: String,
-        default: "",
-    },
     location: {
         type: String,
         default: "",
