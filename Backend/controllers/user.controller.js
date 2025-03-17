@@ -35,10 +35,6 @@ export const updateUserProfile = async (req, res) => {
         await user.save();
         res.status(200).json({ 
             message: "Profile updated successfully", 
-            user: {
-                fullName: user.fullName,
-                profilePicture: user.profilePicture
-            } 
         });
 
     } catch (error) {
