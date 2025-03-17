@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Bell, MessageSquare, ThumbsUp, Share2, Eye, Trash2 } from "lucide-react";
+import { FaEye, FaTrash, FaThumbsUp, FaComment, FaShareAlt } from "react-icons/fa";
 import "./Notifications.css";
 
 const initialNotifications = [
