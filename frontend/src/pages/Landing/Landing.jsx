@@ -54,13 +54,18 @@ const Landing = () => {
         </div>
         <div className="space-x-4">
         <Link
-          to="/"
-          className="bg-white text-blue-600 hover:bg-zinc-200 px-5 py-3 rounded-full transition duration-300 shadow-lg transform hover:scale-110 mt-20"
+          to="/login"
+          className="bg-black text-blue-600 hover:bg-zinc-200 px-5 py-3 rounded-full transition duration-300 shadow-lg transform hover:scale-110 mt-20"
         >
           Sign in
         </Link>
-              <button className="bg-black text-blue-600 hover:bg-zinc-800 px-5 py-3 rounded-full transition duration-300 shadow-lg transform hover:scale-110">Register</button>
-            </div>
+        <Link 
+          to="/signup"
+          className="bg-black text-blue-600 hover:bg-zinc-200 px-5 py-3 rounded-full transition duration-300 shadow-lg transform hover:scale-110 mt-20"
+        >
+          Register
+        </Link>
+        </div>
 
       </nav>
 

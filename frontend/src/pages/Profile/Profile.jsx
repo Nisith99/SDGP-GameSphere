@@ -1,3 +1,4 @@
+import Navbar from "../../Components/Navbar";
 import React, { useState } from "react";
 import {
   MessageSquare,
@@ -14,6 +15,7 @@ import {
   X,
   Lock,
 } from "lucide-react";
+import "./Profile.css"; // Import the CSS file
 
 export const Profile = ({
   clubName = "Club Name",
@@ -99,39 +101,37 @@ export const Profile = ({
       alert("New passwords don't match!");
       return;
     }
-    // Update the state variables directly
     setIsSettingsOpen(false);
     console.log("All changes saved!");
   };
 
   return (
     <>
-      <div className="max-w-7xl mx-auto p-6">
+    <Navbar />
+      <div className="profile-container">
         <div className="relative">
           <img
             src={clubLogo}
             alt="Club logo"
-            className="w-150 h-150 object-contain mx-auto"
+            className="club-logo"
           />
-          <div className="flex items-center justify-between mb-8">
+          <div className="header">
             <div>
-              <h1 className="text-3xl font-bold mb-1">{clubName}</h1>
-              <p className="text-gray-600">{location}</p>
+              <h1 className="club-name">{clubName}</h1>
+              <p className="location">{location}</p>
             </div>
             <div className="flex items-center gap-4">
               <div className="text-center">
-                <div className="text-xl font-bold">{rating}</div>
-                <div className="text-sm text-gray-600">Ratings</div>
+                <div className="rating">{rating}</div>
+                <div className="rating-label">Ratings</div>
               </div>
-              <button className="flex items-center gap-2 bg-black hover:bg-gray-800 transition-colors text-white px-8 py-3 rounded-lg font-medium">
+              <button className="button">
                 <MessageSquare size={18} />
                 Message
               </button>
               <button
                 onClick={toggleFavorite}
-                className={`p-2 rounded-full border hover:bg-gray-50 transition-colors ${
-                  isFavorite ? "border-red-500 text-red-500" : "border-gray-300"
-                }`}
+                className={`favorite-button ${isFavorite ? "active" : ""}`}
                 aria-label={`${
                   isFavorite ? "Remove from favorites" : "Add to favorites"
                 }`}
@@ -140,7 +140,7 @@ export const Profile = ({
               </button>
               <button
                 onClick={toggleSettings}
-                className="p-2 rounded-full border border-gray-300 hover:bg-gray-50 transition-colors"
+                className="settings-button"
                 aria-label="Open settings"
               >
                 <Settings size={20} />
@@ -148,22 +148,22 @@ export const Profile = ({
             </div>
           </div>
           <div className="space-y-4">
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h2 className="text-lg font-semibold mb-2">About</h2>
-              <p className="text-gray-600">{about}</p>
+            <div className="section">
+              <h2 className="section-title">About</h2>
+              <p className="section-content">{about}</p>
             </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h2 className="text-lg font-semibold">
+            <div className="section">
+              <h2 className="section-title">
                 Age Range: {ageRange.min}yr - {ageRange.max}yr
               </h2>
             </div>
-            <div className="bg-gray-50 rounded-lg overflow-hidden">
+            <div className="section">
               <button
                 onClick={togglePlayers}
                 className="w-full p-4 flex items-center justify-between hover:bg-gray-100 transition-colors"
                 aria-expanded={isPlayersOpen}
               >
-                <h2 className="text-lg font-semibold">Our current players</h2>
+                <h2 className="section-title">Our current players</h2>
                 <ChevronDown
                   size={20}
                   className={`transform transition-transform duration-200 ${
@@ -173,18 +173,18 @@ export const Profile = ({
               </button>
               {isPlayersOpen && (
                 <div className="border-t border-gray-200 p-4">
-                  <div className="space-y-3">
+                  <div className="players-list">
                     {players.map((player) => (
                       <div
                         key={player.id}
-                        className="flex items-center gap-3 p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                        className="player-item"
                       >
-                        <div className="p-2 bg-gray-200 rounded-full">
+                        <div className="player-icon">
                           <User size={20} className="text-gray-600" />
                         </div>
                         <div>
-                          <div className="font-medium">{player.name}</div>
-                          <div className="text-sm text-gray-600">
+                          <div className="player-name">{player.name}</div>
+                          <div className="player-details">
                             {player.position} • {player.age} years
                           </div>
                         </div>
@@ -194,29 +194,27 @@ export const Profile = ({
                 </div>
               )}
             </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h2 className="text-lg font-semibold mb-6">Opportunities</h2>
+            <div className="section">
+              <h2 className="section-title">Opportunities</h2>
               <div className="space-y-4">
                 {opportunities.map((opportunity) => (
                   <div
                     key={opportunity.id}
-                    className="flex items-start gap-4 p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                    className="opportunity-item"
                   >
-                    <div className="p-2 bg-gray-50 rounded-lg">
+                    <div className="opportunity-icon">
                       {getOpportunityIcon(opportunity.icon)}
                     </div>
                     <div>
-                      <h3 className="font-semibold text-lg mb-1">
-                        {opportunity.title}
-                      </h3>
-                      <p className="text-gray-600">{opportunity.description}</p>
+                      <h3 className="opportunity-title">{opportunity.title}</h3>
+                      <p className="opportunity-description">{opportunity.description}</p>
                     </div>
                   </div>
                 ))}
               </div>
             </div>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h2 className="text-lg font-semibold mb-4">Requirements</h2>
+            <div className="section">
+              <h2 className="section-title">Requirements</h2>
               <div className="mb-4">
                 <label className="block">
                   <span className="font-semibold mb-2 block">
@@ -225,7 +223,7 @@ export const Profile = ({
                   <textarea
                     value={achievements}
                     onChange={(e) => onAchievementsChange(e.target.value)}
-                    className="w-full min-h-[120px] p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors resize-y"
+                    className="requirements-textarea"
                     placeholder="Enter your sports achievements..."
                     aria-label="Sports achievements"
                   />
@@ -238,23 +236,23 @@ export const Profile = ({
 
       {/* User Settings Modal */}
       {isSettingsOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-          <div className="bg-white rounded-xl shadow-lg w-full max-w-md max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between p-4 border-b sticky top-0 bg-white">
-              <h2 className="text-xl font-semibold">Settings</h2>
+        <div className="settings-modal">
+          <div className="settings-content">
+            <div className="settings-header">
+              <h2 className="settings-title">Settings</h2>
               <button
                 onClick={() => setIsSettingsOpen(false)}
-                className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+                className="close-button"
                 aria-label="Close settings"
               >
                 <X size={20} />
               </button>
             </div>
-            <div className="p-4 space-y-6">
+            <div className="settings-body">
               {/* Change Club Logo Section */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 bg-green-100 rounded-lg">
+              <div className="settings-section">
+                <div className="settings-section-title">
+                  <div className="settings-section-icon green">
                     <User size={20} className="text-green-600" />
                   </div>
                   <h3 className="font-medium">Change Club Logo</h3>
@@ -263,14 +261,14 @@ export const Profile = ({
                   type="file"
                   accept="image/*"
                   onChange={handleImageChange}
-                  className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                  className="settings-input"
                 />
               </div>
 
               {/* Club Name Section */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 bg-green-100 rounded-lg">
+              <div className="settings-section">
+                <div className="settings-section-title">
+                  <div className="settings-section-icon green">
                     <User size={20} className="text-green-600" />
                   </div>
                   <h3 className="font-medium">Club Name</h3>
@@ -279,15 +277,15 @@ export const Profile = ({
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                  className="settings-input"
                   placeholder="Enter new club name"
                 />
               </div>
 
               {/* Location Section */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 bg-blue-100 rounded-lg">
+              <div className="settings-section">
+                <div className="settings-section-title">
+                  <div className="settings-section-icon blue">
                     <Eye size={20} className="text-blue-600" />
                   </div>
                   <h3 className="font-medium">Location</h3>
@@ -296,15 +294,15 @@ export const Profile = ({
                   type="text"
                   value={editedLocation}
                   onChange={(e) => setEditedLocation(e.target.value)}
-                  className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                  className="settings-input"
                   placeholder="Enter new location"
                 />
               </div>
 
               {/* About Section */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 bg-purple-100 rounded-lg">
+              <div className="settings-section">
+                <div className="settings-section-title">
+                  <div className="settings-section-icon purple">
                     <MessageSquare size={20} className="text-purple-600" />
                   </div>
                   <h3 className="font-medium">About</h3>
@@ -312,15 +310,15 @@ export const Profile = ({
                 <textarea
                   value={editedAbout}
                   onChange={(e) => setEditedAbout(e.target.value)}
-                  className="w-full min-h-[120px] p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors resize-y"
+                  className="settings-textarea"
                   placeholder="Enter new about text"
                 />
               </div>
 
               {/* Age Range Section */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 bg-yellow-100 rounded-lg">
+              <div className="settings-section">
+                <div className="settings-section-title">
+                  <div className="settings-section-icon yellow">
                     <Target size={20} className="text-yellow-600" />
                   </div>
                   <h3 className="font-medium">Age Range</h3>
@@ -335,7 +333,7 @@ export const Profile = ({
                         min: parseInt(e.target.value),
                       })
                     }
-                    className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                    className="settings-input"
                     placeholder="Min age"
                   />
                   <input
@@ -347,16 +345,16 @@ export const Profile = ({
                         max: parseInt(e.target.value),
                       })
                     }
-                    className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                    className="settings-input"
                     placeholder="Max age"
                   />
                 </div>
               </div>
 
               {/* Change Password Section */}
-              <div className="space-y-4">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 bg-red-100 rounded-lg">
+              <div className="settings-section">
+                <div className="settings-section-title">
+                  <div className="settings-section-icon red">
                     <Lock size={20} className="text-red-600" />
                   </div>
                   <h3 className="font-medium">Change Password</h3>
@@ -366,21 +364,21 @@ export const Profile = ({
                     type={showPasswords ? "text" : "password"}
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
-                    className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                    className="settings-input"
                     placeholder="Current password"
                   />
                   <input
                     type={showPasswords ? "text" : "password"}
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
-                    className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                    className="settings-input"
                     placeholder="New password"
                   />
                   <input
                     type={showPasswords ? "text" : "password"}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full p-3 rounded-lg border bg-white focus:border-gray-400 focus:ring-1 focus:ring-gray-400 outline-none transition-colors"
+                    className="settings-input"
                     placeholder="Confirm new password"
                   />
                   <label className="flex items-center gap-2 text-sm text-gray-600">
@@ -397,9 +395,9 @@ export const Profile = ({
 
               {/* Notifications Section */}
               <div className="border-t -mx-4 my-6"></div>
-              <div className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-purple-100 rounded-lg">
+              <div className="settings-toggle">
+                <div className="settings-toggle-label">
+                  <div className="settings-toggle-icon purple">
                     <Bell size={20} className="text-purple-600" />
                   </div>
                   <div>
@@ -409,21 +407,21 @@ export const Profile = ({
                     </p>
                   </div>
                 </div>
-                <label className="relative inline-flex items-center cursor-pointer">
+                <label className="settings-toggle-switch">
                   <input
                     type="checkbox"
                     className="sr-only peer"
                     checked={notifications}
                     onChange={(e) => setNotifications(e.target.checked)}
                   />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                  <div className="settings-toggle-slider"></div>
                 </label>
               </div>
 
               {/* Profile Visibility Section */}
-              <div className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-blue-100 rounded-lg">
+              <div className="settings-toggle">
+                <div className="settings-toggle-label">
+                  <div className="settings-toggle-icon blue">
                     <Eye size={20} className="text-blue-600" />
                   </div>
                   <div>
@@ -436,7 +434,7 @@ export const Profile = ({
                 <select
                   value={profileVisibility}
                   onChange={(e) => setProfileVisibility(e.target.value)}
-                  className="p-2 rounded-lg border bg-white outline-none focus:bg-white"
+                  className="settings-input"
                 >
                   <option value="public">Public</option>
                   <option value="private">Private</option>
@@ -444,9 +442,9 @@ export const Profile = ({
               </div>
 
               {/* Dark Mode Section */}
-              <div className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-yellow-100 rounded-lg">
+              <div className="settings-toggle">
+                <div className="settings-toggle-label">
+                  <div className="settings-toggle-icon yellow">
                     <Moon size={20} className="text-yellow-600" />
                   </div>
                   <div>
@@ -454,21 +452,21 @@ export const Profile = ({
                     <p className="text-sm text-gray-600">Toggle dark theme</p>
                   </div>
                 </div>
-                <label className="relative inline-flex items-center cursor-pointer">
+                <label className="settings-toggle-switch">
                   <input
                     type="checkbox"
                     className="sr-only peer"
                     checked={darkMode}
                     onChange={(e) => setDarkMode(e.target.checked)}
                   />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-yellow-600"></div>
+                  <div className="settings-toggle-slider"></div>
                 </label>
               </div>
             </div>
-            <div className="p-4 border-t sticky bottom-0 bg-white">
+            <div className="settings-footer">
               <button
                 onClick={handleSave}
-                className="w-full bg-black text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors"
+                className="save-button"
               >
                 Save Changes
               </button>

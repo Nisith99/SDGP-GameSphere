@@ -28,6 +28,7 @@ const Signup = () => {
       if (response.status === 201) {
         console.log('Signup successful:', response.data);
         alert('Signup successful!');
+        window.location.href = '/login';
       }
     } catch (error) {
       if (error.response) {
@@ -55,9 +56,9 @@ const Signup = () => {
           <div className="inputs">
             <input
               type="text"
-              name="fulltName"
+              name="fullName"
               placeholder="Full Name"
-              value={formData.firstName}
+              value={formData.fullName}
               onChange={handleChange}
               required
             />
@@ -68,7 +69,7 @@ const Signup = () => {
               type="text"
               name="userName"
               placeholder="Username"
-              value={formData.lastName}
+              value={formData.userName}
               onChange={handleChange}
               required
             />
