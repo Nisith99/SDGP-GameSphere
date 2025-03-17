@@ -248,4 +248,6 @@ body, html {
   background: #2c2c2c;
 }
 
-
+.dark-mode .theme-toggle {
+  background-color: #333;
+}
