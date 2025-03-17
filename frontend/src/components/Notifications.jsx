@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Bell, MessageSquare, ThumbsUp, Share2, Eye, Trash2 } from "lucide-react";
-import { FaEye, FaTrash, FaThumbsUp, FaComment, FaShareAlt } from "react-icons/fa";
+//import { FaEye, FaTrash, FaThumbsUp, FaComment, FaShareAlt } from "react-icons/fa";
 import "./Notifications.css";
 
 const initialNotifications = [
@@ -33,9 +33,11 @@ const Notifications = () => {
   return (
     <div className="notifications-container">
       <h2>Notifications</h2>
+
       <div className="notifications-list">
         {notifications.length > 0 ? (
           notifications.map((notification) => (
+
             <div key={notification.id} className={`notification-item ${notification.read ? "read" : "unread"}`}>
               <div className="icon-wrapper">{getIcon(notification.type)}</div>
               <div className="notification-content">
@@ -45,6 +47,7 @@ const Notifications = () => {
                 <span className="time">{notification.time}</span>
                 {notification.postText && <div className="related-post">{notification.postText}</div>}
               </div>
+
               <div className="actions">
                 {!notification.read && (
                   <button className="mark-read" onClick={() => markAsRead(notification.id)}>
@@ -54,7 +57,8 @@ const Notifications = () => {
                 <button className="delete" onClick={() => deleteNotification(notification.id)}>
                   <Trash2 size={16} />
                 </button>
-              </div>
+              </div> 
+
             </div>
           ))
         ) : (
