@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from "../../Components/Navbar";
+import { Footer } from "../../Components/footer";
+
 import {
   MessageSquare,
   Heart,
@@ -495,6 +497,7 @@ const PlayerProfile = () => {
           </div>
         </div>
       )}
+      <Footer />
     </>
   );
 };
