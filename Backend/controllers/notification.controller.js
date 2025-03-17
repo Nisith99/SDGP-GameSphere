@@ -2,10 +2,10 @@ import Notification from "../models/Notification.model.js";
 
 export const getUserNotifications = async (req, res) => {
 	try {
-		const notifications = await Notification.find({ recipient: req.user._id })
+		const notifications = await Notification.find({ receiver: req.user._id })
 			.sort({ createdAt: -1 })
 			.populate("relatedUser", "name username profilePicture")
-			.populate("relatedPost", "content image");
+			
 
 		res.status(200).json(notifications);
 	} catch (error) {
@@ -18,7 +18,7 @@ export const markNotificationAsRead = async (req, res) => {
 	const notificationId = req.params.id;
 	try {
 		const notification = await Notification.findByIdAndUpdate(
-			{ _id: notificationId, recipient: req.user._id },
+			{ _id: notificationId, receiver: req.user._id },
 			{ read: true },
 			{ new: true }
 		);
@@ -36,7 +36,7 @@ export const deleteNotification = async (req, res) => {
 	try {
 		await Notification.findOneAndDelete({
 			_id: notificationId,
-			recipient: req.user._id,
+			receiver: req.user._id,
 		});
 
 		res.json({ message: "Notification deleted successfully" });
