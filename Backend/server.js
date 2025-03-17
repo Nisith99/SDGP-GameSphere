@@ -12,7 +12,7 @@ import clubRoutes from "./routes/club.route.js";
 import ratingRoutes from "./routes/rating.route.js";
 import connectionRoutes from "./routes/connection.route.js";
 import postRoutes from  "./routes/post.route.js";
-import notifyRoute from "./routes/notifications.route.js"
+
 
 const app = express();
 
@@ -48,6 +48,5 @@ app.use("/api/v1/club", clubRoutes);
 app.use("/api/v1/rating", ratingRoutes);
 app.use("/api/v1/connections",connectionRoutes);
 app.use("/api/v1/post", postRoutes);
-app.use("/api/v1/notify", notifyRoute)
 app.use("/api/v1/user", userRoutes)
 
