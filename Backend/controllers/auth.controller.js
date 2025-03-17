@@ -36,7 +36,7 @@ export const signup =async(req, res) => {
 		});
 		await user.save();
 
-		const token = jwt.sign({userId:user._id}, process.env.JWT_SECRET, {expiresIn: '2d'});
+		const token = jwt.sign({userId:user._id}, process.env.JWT_SECRET, {expiresIn: '2d'})
 		res.cookie('jwt-gamesphere', token, {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === 'production',
@@ -67,8 +67,9 @@ export const login = async (req, res) => {
 		if (!isMatch) {
 			return res.status(400).json({ message: "Invalid password" });
 		}
-		
+
 		const token = jwt.sign({userId:user._id}, process.env.JWT_SECRET, {expiresIn: '2d'});
+
 		res.cookie('jwt-gamesphere', token, {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === 'production',
