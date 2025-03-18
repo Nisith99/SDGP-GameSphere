@@ -224,9 +224,11 @@
   .close-button:hover {
     background-color: #f0f0f0;
   }
+
+  /* Settings part*/
   
   .settings-body {
-    padding: 16px;
+    padding: 0;
   }
   
   .settings-section {

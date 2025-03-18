@@ -1,5 +1,6 @@
+import React, { useState, useEffect } from "react";
 import Navbar from "../../Components/Navbar";
-import React, { useState } from "react";
+import { Footer } from "../../Components/footer";
 import {
   MessageSquare,
   Heart,
@@ -17,56 +18,51 @@ import {
 } from "lucide-react";
 import "./Profile.css"; // Import the CSS file
 
-export const Profile = ({
-  clubName = "Club Name",
-  rating = 8.9,
-  location = "Sri Lanka",
-  about = "This is a brief description about the club.",
-  ageRange = { min: 17, max: 35 },
-  opportunities = [
-    {
-      id: 1,
-      title: "Professional Training",
-      description: "Access to professional training facilities and experienced coaches",
-      icon: "star",
-    },
-    {
-      id: 2,
-      title: "Tournament Participation",
-      description: "Opportunity to participate in national and international tournaments",
-      icon: "trophy",
-    },
-    {
-      id: 3,
-      title: "Career Development",
-      description: "Career guidance and development programs for aspiring professional players",
-      icon: "target",
-    },
-  ],
-  achievements = "",
-  onAchievementsChange = () => {},
-  players = [
-    { id: 1, name: "John Smith", position: "Forward", age: 23 },
-    { id: 2, name: "David Wilson", position: "Midfielder", age: 25 },
-    { id: 3, name: "Michael Brown", position: "Defender", age: 22 },
-    { id: 4, name: "Robert Taylor", position: "Goalkeeper", age: 28 },
-  ],
-}) => {
+export const Profile = () => {
+  const [clubData, setClubData] = useState({
+    clubName: "",
+    rating: 0,
+    location: "",
+    about: "",
+    ageRange: { min: 0, max: 0 },
+    opportunities: [],
+    players: [],
+    achievements: "",
+  });
   const [isFavorite, setIsFavorite] = useState(false);
   const [isPlayersOpen, setIsPlayersOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [notifications, setNotifications] = useState(true);
   const [profileVisibility, setProfileVisibility] = useState("public");
   const [darkMode, setDarkMode] = useState(false);
-  const [username, setUsername] = useState(clubName);
+  const [username, setUsername] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPasswords, setShowPasswords] = useState(false);
-  const [editedLocation, setEditedLocation] = useState(location);
-  const [editedAbout, setEditedAbout] = useState(about);
-  const [editedAgeRange, setEditedAgeRange] = useState(ageRange);
+  const [editedLocation, setEditedLocation] = useState("");
+  const [editedAbout, setEditedAbout] = useState("");
+  const [editedAgeRange, setEditedAgeRange] = useState({ min: 0, max: 0 });
   const [clubLogo, setClubLogo] = useState("./soccer.png");
+
+  // Fetch data from the backend
+  useEffect(() => {
+    const fetchClubData = async () => {
+      try {
+        const response = await fetch("https://api.example.com/club-data");
+        const data = await response.json();
+        setClubData(data);
+        setUsername(data.clubName);
+        setEditedLocation(data.location);
+        setEditedAbout(data.about);
+        setEditedAgeRange(data.ageRange);
+      } catch (error) {
+        console.error("Error fetching club data:", error);
+      }
+    };
+
+    fetchClubData();
+  }, []);
 
   const toggleFavorite = () => setIsFavorite(!isFavorite);
   const togglePlayers = () => setIsPlayersOpen(!isPlayersOpen);
@@ -96,33 +92,63 @@ export const Profile = ({
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    // Validate new password
     if (newPassword && newPassword !== confirmPassword) {
       alert("New passwords don't match!");
       return;
     }
-    setIsSettingsOpen(false);
-    console.log("All changes saved!");
+
+    // Prepare updated data
+    const updatedData = {
+      clubName: username,
+      location: editedLocation,
+      about: editedAbout,
+      ageRange: editedAgeRange,
+      opportunities: clubData.opportunities,
+      players: clubData.players,
+      achievements: clubData.achievements,
+      notifications,
+      profileVisibility,
+      darkMode,
+    };
+
+    // Send updated data to the backend
+    try {
+      const response = await fetch("https://api.example.com/update-club-data", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedData),
+      });
+
+      if (response.ok) {
+        alert("Changes saved successfully!");
+        setIsSettingsOpen(false);
+      } else {
+        alert("Failed to save changes.");
+      }
+    } catch (error) {
+      console.error("Error saving changes:", error);
+      alert("An error occurred while saving changes.");
+    }
   };
 
   return (
     <>
-    <Navbar />
+      <Navbar />
       <div className="profile-container">
         <div className="relative">
-          <img
-            src={clubLogo}
-            alt="Club logo"
-            className="club-logo"
-          />
+          <img src={clubLogo} alt="Club logo" className="club-logo" />
           <div className="header">
             <div>
-              <h1 className="club-name">{clubName}</h1>
-              <p className="location">{location}</p>
+              <h1 className="club-name">{clubData.clubName}</h1>
+              <p className="location">{clubData.location}</p>
             </div>
             <div className="flex items-center gap-4">
               <div className="text-center">
-                <div className="rating">{rating}</div>
+                <div className="rating">{clubData.rating}</div>
                 <div className="rating-label">Ratings</div>
               </div>
               <button className="button">
@@ -150,11 +176,11 @@ export const Profile = ({
           <div className="space-y-4">
             <div className="section">
               <h2 className="section-title">About</h2>
-              <p className="section-content">{about}</p>
+              <p className="section-content">{clubData.about}</p>
             </div>
             <div className="section">
               <h2 className="section-title">
-                Age Range: {ageRange.min}yr - {ageRange.max}yr
+                Age Range: {clubData.ageRange.min}yr - {clubData.ageRange.max}yr
               </h2>
             </div>
             <div className="section">
@@ -163,7 +189,7 @@ export const Profile = ({
                 className="w-full p-4 flex items-center justify-between hover:bg-gray-100 transition-colors"
                 aria-expanded={isPlayersOpen}
               >
-                <h2 className="section-title">Our current players</h2>
+                <h2 className="section-title">Our Current players</h2>
                 <ChevronDown
                   size={20}
                   className={`transform transition-transform duration-200 ${
@@ -174,11 +200,8 @@ export const Profile = ({
               {isPlayersOpen && (
                 <div className="border-t border-gray-200 p-4">
                   <div className="players-list">
-                    {players.map((player) => (
-                      <div
-                        key={player.id}
-                        className="player-item"
-                      >
+                    {clubData.players.map((player) => (
+                      <div key={player.id} className="player-item">
                         <div className="player-icon">
                           <User size={20} className="text-gray-600" />
                         </div>
@@ -197,17 +220,16 @@ export const Profile = ({
             <div className="section">
               <h2 className="section-title">Opportunities</h2>
               <div className="space-y-4">
-                {opportunities.map((opportunity) => (
-                  <div
-                    key={opportunity.id}
-                    className="opportunity-item"
-                  >
+                {clubData.opportunities.map((opportunity) => (
+                  <div key={opportunity.id} className="opportunity-item">
                     <div className="opportunity-icon">
                       {getOpportunityIcon(opportunity.icon)}
                     </div>
                     <div>
                       <h3 className="opportunity-title">{opportunity.title}</h3>
-                      <p className="opportunity-description">{opportunity.description}</p>
+                      <p className="opportunity-description">
+                        {opportunity.description}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -221,8 +243,10 @@ export const Profile = ({
                     Sports achievements 🏆
                   </span>
                   <textarea
-                    value={achievements}
-                    onChange={(e) => onAchievementsChange(e.target.value)}
+                    value={clubData.achievements}
+                    onChange={(e) =>
+                      setClubData({ ...clubData, achievements: e.target.value })
+                    }
                     className="requirements-textarea"
                     placeholder="Enter your sports achievements..."
                     aria-label="Sports achievements"
@@ -351,6 +375,141 @@ export const Profile = ({
                 </div>
               </div>
 
+              {/* Our Current Players Section */}
+              <div className="settings-section">
+                <div className="settings-section-title">
+                  <div className="settings-section-icon blue">
+                    <User size={20} className="text-blue-600" />
+                  </div>
+                  <h3 className="font-medium">Our Current Players</h3>
+                </div>
+                <div className="space-y-3">
+                  {clubData.players.map((player, index) => (
+                    <div key={player.id} className="flex gap-4">
+                      <input
+                        type="text"
+                        value={player.name}
+                        onChange={(e) => {
+                          const updatedPlayers = [...clubData.players];
+                          updatedPlayers[index].name = e.target.value;
+                          setClubData({ ...clubData, players: updatedPlayers });
+                        }}
+                        className="settings-input"
+                        placeholder="Player Name"
+                      />
+                      <input
+                        type="text"
+                        value={player.position}
+                        onChange={(e) => {
+                          const updatedPlayers = [...clubData.players];
+                          updatedPlayers[index].position = e.target.value;
+                          setClubData({ ...clubData, players: updatedPlayers });
+                        }}
+                        className="settings-input"
+                        placeholder="Position"
+                      />
+                      <input
+                        type="number"
+                        value={player.age}
+                        onChange={(e) => {
+                          const updatedPlayers = [...clubData.players];
+                          updatedPlayers[index].age = parseInt(e.target.value);
+                          setClubData({ ...clubData, players: updatedPlayers });
+                        }}
+                        className="settings-input"
+                        placeholder="Age"
+                      />
+                    </div>
+                  ))}
+                  <button
+                    onClick={() => {
+                      const newPlayer = { id: clubData.players.length + 1, name: "", position: "", age: 0 };
+                      setClubData({ ...clubData, players: [...clubData.players, newPlayer] });
+                    }}
+                    className="add-button"
+                  >
+                    Add Player
+                  </button>
+                </div>
+              </div>
+
+              {/* Opportunities Section */}
+              <div className="settings-section">
+                <div className="settings-section-title">
+                  <div className="settings-section-icon yellow">
+                    <Target size={20} className="text-yellow-600" />
+                  </div>
+                  <h3 className="font-medium">Opportunities</h3>
+                </div>
+                <div className="space-y-3">
+                  {clubData.opportunities.map((opportunity, index) => (
+                    <div key={opportunity.id} className="space-y-2">
+                      <input
+                        type="text"
+                        value={opportunity.title}
+                        onChange={(e) => {
+                          const updatedOpportunities = [...clubData.opportunities];
+                          updatedOpportunities[index].title = e.target.value;
+                          setClubData({ ...clubData, opportunities: updatedOpportunities });
+                        }}
+                        className="settings-input"
+                        placeholder="Opportunity Title"
+                      />
+                      <textarea
+                        value={opportunity.description}
+                        onChange={(e) => {
+                          const updatedOpportunities = [...clubData.opportunities];
+                          updatedOpportunities[index].description = e.target.value;
+                          setClubData({ ...clubData, opportunities: updatedOpportunities });
+                        }}
+                        className="settings-textarea"
+                        placeholder="Opportunity Description"
+                      />
+                      <select
+                        value={opportunity.icon}
+                        onChange={(e) => {
+                          const updatedOpportunities = [...clubData.opportunities];
+                          updatedOpportunities[index].icon = e.target.value;
+                          setClubData({ ...clubData, opportunities: updatedOpportunities });
+                        }}
+                        className="settings-input"
+                      >
+                        <option value="star">Star</option>
+                        <option value="trophy">Trophy</option>
+                        <option value="target">Target</option>
+                      </select>
+                    </div>
+                  ))}
+                  <button
+                    onClick={() => {
+                      const newOpportunity = { id: clubData.opportunities.length + 1, title: "", description: "", icon: "star" };
+                      setClubData({ ...clubData, opportunities: [...clubData.opportunities, newOpportunity] });
+                    }}
+                    className="add-button"
+                  >
+                    Add Opportunity
+                  </button>
+                </div>
+              </div>
+
+              {/* Requirements Section */}
+              <div className="settings-section">
+                <div className="settings-section-title">
+                  <div className="settings-section-icon purple">
+                    <Trophy size={20} className="text-purple-600" />
+                  </div>
+                  <h3 className="font-medium">Requirements</h3>
+                </div>
+                <div className="space-y-3">
+                  <textarea
+                    value={clubData.achievements}
+                    onChange={(e) => setClubData({ ...clubData, achievements: e.target.value })}
+                    className="settings-textarea"
+                    placeholder="Enter sports achievements..."
+                  />
+                </div>
+              </div>
+
               {/* Change Password Section */}
               <div className="settings-section">
                 <div className="settings-section-title">
@@ -464,16 +623,14 @@ export const Profile = ({
               </div>
             </div>
             <div className="settings-footer">
-              <button
-                onClick={handleSave}
-                className="save-button"
-              >
+              <button onClick={handleSave} className="save-button">
                 Save Changes
               </button>
             </div>
           </div>
         </div>
       )}
+      <Footer />
     </>
   );
 };
