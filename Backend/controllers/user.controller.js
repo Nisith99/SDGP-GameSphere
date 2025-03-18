@@ -14,7 +14,7 @@ export const updateUserProfile = async (req, res) => {
         if (fullName) user.fullName = fullName;
         if (profilePicture) user.profilePicture = profilePicture;
         if (email) user.email = email;
-        if (location) user.location
+        if (location) user.location = location;
         if (about) user.about = about;
 
         if (user.role === 'player' && playerProfile) {
