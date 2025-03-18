@@ -15,7 +15,7 @@ export default function Navbar() {
           {/* Logo & Search */}
           <div className="navbar-logo-search">
             <div className="navbar-logo">
-              <img src="gameSphere_logo.png" alt="GameSphere Logo" />
+              <img src="/gameSphere_logo.png" alt="GameSphere Logo" />
             </div>
             <div className={`navbar-search-container ${searchFocused ? "focused" : ""}`}>
               <div className={`navbar-search ${searchFocused ? "focused" : ""}`}>
@@ -40,7 +40,7 @@ export default function Navbar() {
           <div className={`navbar-navigation ${isMobileMenuOpen ? "open" : ""}`}>
             <NavItem icon={<Home size={18} />} label="Home" link="/home" />
             <NavItem icon={<User size={18} />} label="Player" link="/players" />
-            <NavItem icon={<Users size={18} />} label="Club" link="" />
+            <NavItem icon={<Users size={18} />} label="Club" link="/Clublist" />
             <NavItem icon={<Bell size={18} />} label="Notifications" link="/notifications" />
             <NavItem icon={<MessageCircle size={18} />} label="Messages" link="/message" />
 
@@ -52,7 +52,6 @@ export default function Navbar() {
                 <ChevronDown style={{ width: "1rem", height: "1rem", color: "#ffffff" }} />
               </button>
 
-              {/* Dropdown Menu */}
               {isProfileOpen && (
                 <div className="profile-dropdown">
                   <a href="playerProfile" className="profile-dropdown-item">
