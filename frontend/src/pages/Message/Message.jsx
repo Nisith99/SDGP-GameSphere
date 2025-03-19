@@ -1,8 +1,10 @@
+
 import Navbar from "../../Components/Navbar";
 import React, { useState } from 'react';
 import { FiSearch, FiHome, FiMessageSquare, FiBell, FiUser, FiSend } from 'react-icons/fi';
 import './Message.css';
 import { Footer } from "../../Components/footer";
+
 
 const Message = () => {
     const [messages, setMessages] = useState([
