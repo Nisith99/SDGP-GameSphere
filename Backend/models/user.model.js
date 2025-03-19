@@ -37,11 +37,23 @@ const userSchema = new mongoose.Schema({
         default: "",
     },
     playerProfile: {
+        age: {
+            type: Number,
+            default: null
+        },
         sport: {
             type: String,
             default: "",
         },
         skills: {
+            type: [String],
+            default: [],
+        },
+        participateMatchesCount: {
+            type: Number,
+            default: null,
+        },
+        BestAchivements: {
             type: [String],
             default: [],
         },
