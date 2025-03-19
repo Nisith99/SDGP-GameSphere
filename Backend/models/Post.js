@@ -16,17 +16,18 @@ const replySchema = new mongoose.Schema({
 });
 
 const commentSchema = new mongoose.Schema({
+  _id: { type: mongoose.Schema.Types.ObjectId, default: () => new mongoose.Types.ObjectId() },
   content: {
     type: String,
     required: true,
     maxLength: 1000
   },
   author: {
-    _id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    _id: String,
     name: String,
-    avatar: String
+    image: String
   },
-  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  likes: [String],
   replies: [replySchema],
   createdAt: { type: Date, default: Date.now }
 });
@@ -43,13 +44,38 @@ const postSchema = new mongoose.Schema({
     required: true,
     maxLength: 2000
   },
+  media: {
+    type: {
+      type: String,
+      enum: ['image', 'video'],
+      required: function() {
+        return this.mediaUrl != null;
+      }
+    },
+    url: String,
+    caption: String
+  },
+  event: {
+    title: String,
+    description: String,
+    startDate: Date,
+    endDate: Date,
+    location: String
+  },
+  location: {
+    name: String,
+    coordinates: {
+      latitude: Number,
+      longitude: Number
+    }
+  },
   tags: [String],
   image: String,
-  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  likes: [String],
   comments: [commentSchema],
   isLiked: { type: Boolean, default: false }
 }, { 
-  timestamps: true,
+  timestamps: true,   
   toJSON: { virtuals: true },
   toObject: { virtuals: true }
 });

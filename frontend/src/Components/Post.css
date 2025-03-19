@@ -15,9 +15,43 @@
 
 .post-header {
   display: flex;
+  align-items: flex-start;
+  padding: 1rem;
+  position: relative;
+}
+
+.delete-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
+  justify-content: center;
+}
+
+.delete-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ff4d4d;
+  transform: scale(1.1);
+}
+
+.delete-button.confirm {
+  background: #ff4d4d;
+  color: white;
+}
+
+.delete-button.confirm:hover {
+  background: #ff3333;
+  transform: scale(1.1);
 }
 
 .profile-pic {

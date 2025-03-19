@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Navbar from "../../Components/Navbar";
 import Feed from "../../Components/Feed";
-import { getAllPosts, createPost, likePost, addComment } from "../../api/posts";
+import { getAllPosts, createPost, likePost, addComment, deletePost } from "../../api/posts";
 import "./Home.css";
 
 const defaultAuthor = {
@@ -15,27 +15,29 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
-
   const fetchPosts = async () => {
     try {
       setLoading(true);
       setError(null);
       const data = await getAllPosts();
-      setPosts(prevPosts => {
-        const uniquePosts = new Map(prevPosts.map(post => [post._id, post]));
-        data.forEach(post => {
-          uniquePosts.set(post._id, {
-            ...post,
-            author: post.author || defaultAuthor,
-            likes: post.likes || [],
-            comments: post.comments || []
-          });
+      if (!Array.isArray(data)) {
+        throw new Error('Invalid response format');
+      }
+      // Create a map of posts by ID to remove duplicates
+      const postsMap = new Map();
+      data.forEach(post => {
+        postsMap.set(post._id, {
+          ...post,
+          author: {
+            name: post.name || defaultAuthor.name,
+            image: post.profileImage || defaultAuthor.image,
+            profession: post.profession || defaultAuthor.profession
+          },
+          likes: post.likes || [],
+          comments: post.comments || []
         });
-        return Array.from(uniquePosts.values());
       });
+      setPosts(Array.from(postsMap.values()));
     } catch (error) {
       setError("Failed to load posts");
       console.error("Error fetching posts:", error);
@@ -44,24 +46,60 @@ export default function Home() {
     }
   };
 
+  useEffect(() => {
+    let mounted = true;
+    
+    const loadPosts = async () => {
+      if (mounted) {
+        await fetchPosts();
+      }
+    };
+    
+    loadPosts();
+    
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   const handleAddPost = async (postData) => {
     try {
       const newPost = await createPost({
         ...postData,
-        author: defaultAuthor  
+        author: defaultAuthor
       });
-      setPosts(prevPosts => [newPost, ...prevPosts.filter(post._id !== newPost._id)]);
+      
+      // Format the new post to match our data structure
+      const formattedPost = {
+        ...newPost,
+        author: {
+          name: newPost.name || defaultAuthor.name,
+          image: newPost.profileImage || defaultAuthor.image,
+          profession: newPost.profession || defaultAuthor.profession
+        },
+        likes: [],
+        comments: []
+      };
+      
+      // Update state with the new post at the beginning
+      setPosts(prevPosts => {
+        const newPosts = [formattedPost, ...prevPosts];
+        // Remove any duplicates based on _id
+        const uniquePosts = new Map();
+        newPosts.forEach(post => uniquePosts.set(post._id, post));
+        return Array.from(uniquePosts.values());
+      });
     } catch (error) {
       console.error("Error creating post:", error);
     }
   };
-
+ 
   const handleLikePost = async (postId) => {
     try {
-      const updatedPost = await likePost(postId);
+      const response = await likePost(postId);
       setPosts(prevPosts =>
         prevPosts.map(post =>
-          post._id === postId ? { ...post, likes: updatedPost.likes } : post
+          post._id === postId ? { ...post, likes: response.likes, isLiked: response.isLiked } : post
         )
       );
     } catch (error) {
@@ -71,16 +109,25 @@ export default function Home() {
 
   const handleAddComment = async (postId, comment) => {
     try {
-      const newComment = await addComment(postId, comment);
+      const response = await addComment(postId, comment);
       setPosts(prevPosts =>
         prevPosts.map(post =>
           post._id === postId
-            ? { ...post, comments: [...(post.comments || []), newComment] }
+            ? { ...post, comments: [...(post.comments || []), response.comment] }
             : post
         )
       );
     } catch (error) {
       console.error("Error adding comment:", error);
+    }
+  };
+
+  const handleDeletePost = async (postId) => {
+    try {
+      await deletePost(postId);
+      setPosts(prevPosts => prevPosts.filter(post => post._id !== postId));
+    } catch (error) {
+      console.error("Error deleting post:", error);
     }
   };
 
@@ -95,6 +142,7 @@ export default function Home() {
           onAddPost={handleAddPost}
           onLikePost={handleLikePost}
           onAddComment={handleAddComment}
+          onDeletePost={handleDeletePost}
         />
       </div>
     </div>

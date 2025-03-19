@@ -1,5 +1,6 @@
 import express from "express";
 import Post from "../models/Post.js";
+import mongoose from "mongoose";
 
 const router = express.Router();
 
@@ -44,16 +45,34 @@ router.post("/:id/like", async (req, res) => {
     }
     
     const userId = req.body.userId || "temp_user_id";
-    const likeIndex = post.likes.indexOf(userId);
+    const hasLiked = post.likes.includes(userId);
     
-    if (likeIndex === -1) {
-      post.likes.push(userId);
+    if (hasLiked) {
+      post.likes = post.likes.filter(id => id !== userId);
     } else {
-      post.likes.splice(likeIndex, 1);
+      post.likes.push(userId);
     }
 
     await post.save();
-    res.status(200).json(post);
+    res.status(200).json({ 
+      success: true, 
+      likes: post.likes,
+      isLiked: !hasLiked 
+    });
+  } catch (error) {
+    console.error("Error liking post:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Delete a post
+router.delete("/:id", async (req, res) => {
+  try {
+    const post = await Post.findByIdAndDelete(req.params.id);
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+    res.status(200).json({ message: "Post deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -68,19 +87,25 @@ router.post("/:id/comment", async (req, res) => {
     }
 
     const newComment = {
+      _id: new mongoose.Types.ObjectId(),
       content: req.body.content,
       author: {
         _id: req.body.userId || "temp_user_id",
         name: req.body.userName || "Temporary User",
-        avatar: req.body.userAvatar
+        image: req.body.userAvatar
       },
       likes: [],
-      replies: []
+      replies: [],
+      createdAt: new Date()
     };
 
     post.comments.push(newComment);
-    await post.save();
-    res.status(201).json(newComment);
+    const savedPost = await post.save();
+    res.status(200).json({
+      success: true,
+      comment: newComment,
+      message: "Comment added successfully"
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

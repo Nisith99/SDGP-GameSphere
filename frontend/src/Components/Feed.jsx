@@ -9,7 +9,8 @@ const Feed = ({
   error, 
   onAddPost,
   onLikePost,
-  onAddComment
+  onAddComment,
+  onDeletePost
 }) => {
   if (loading) {
     return <div className="feed-status">Loading posts...</div>;
@@ -33,6 +34,7 @@ const Feed = ({
               post={post}
               onLike={() => onLikePost(post._id)}
               onAddComment={(comment) => onAddComment(post._id, comment)}
+              onDelete={() => onDeletePost(post._id)}
             />
           ))}
         </div>

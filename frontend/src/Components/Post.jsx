@@ -1,16 +1,28 @@
 import React, { useState } from 'react';
-import { FaHeart, FaRegHeart, FaComment, FaShare } from 'react-icons/fa';
+import { FaHeart, FaRegHeart, FaComment, FaShare, FaTrash } from 'react-icons/fa';
 import './Post.css';
 
-const Post = ({ post, onLike, onAddComment }) => {
+const Post = ({ post, onLike, onAddComment, onDelete }) => {
   const [comment, setComment] = useState('');
   const [showComments, setShowComments] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const handleSubmitComment = (e) => {
     e.preventDefault();
     if (!comment.trim()) return;
     onAddComment(comment);
     setComment('');
+  };
+
+  const handleDelete = () => {
+    if (showDeleteConfirm) {
+      onDelete();
+      setShowDeleteConfirm(false);
+    } else {
+      setShowDeleteConfirm(true);
+      // Auto-hide confirmation after 3 seconds
+      setTimeout(() => setShowDeleteConfirm(false), 3000);
+    }
   };
 
   const handleShare = () => {
@@ -53,6 +65,13 @@ const Post = ({ post, onLike, onAddComment }) => {
           <p className="profession">{post.author?.profession || "Gamer"}</p>
           <p className="timestamp">{formatDate(post.createdAt)}</p>
         </div>
+        <button 
+          className={`delete-button ${showDeleteConfirm ? 'confirm' : ''}`}
+          onClick={handleDelete}
+          title={showDeleteConfirm ? "Click again to confirm deletion" : "Delete post"}
+        >
+          <FaTrash />
+        </button>
       </div>
 
       <div className="post-content">
@@ -61,10 +80,10 @@ const Post = ({ post, onLike, onAddComment }) => {
 
       <div className="post-actions">
         <button 
-          className={`action-button ${post.likes?.includes('current_user') ? 'liked' : ''}`} 
-          onClick={onLike}
+          className={`action-button ${post.likes?.includes('temp_user_id') ? 'liked' : ''}`} 
+          onClick={() => onLike('temp_user_id')}
         >
-          {post.likes?.includes('current_user') ? <FaHeart /> : <FaRegHeart />}
+          {post.likes?.includes('temp_user_id') ? <FaHeart /> : <FaRegHeart />}
           <span>{post.likes?.length || 0} Likes</span>
         </button>
         <button 
