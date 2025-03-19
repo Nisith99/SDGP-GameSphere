@@ -1,7 +1,7 @@
 import express from "express";
 import Post from "../models/Post.js";
 import mongoose from "mongoose";
-
+import Notifications from "../models/Notification.model.js";
 const router = express.Router();
 
 // Create a new post

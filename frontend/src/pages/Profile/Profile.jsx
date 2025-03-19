@@ -1,3 +1,4 @@
+import Navbar from "../../Components/Navbar";
 import React, { useState } from "react";
 import {
   MessageSquare,
@@ -106,6 +107,7 @@ export const Profile = ({
 
   return (
     <>
+    <Navbar />
       <div className="profile-container">
         <div className="relative">
           <img

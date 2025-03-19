@@ -3,6 +3,8 @@ import Navbar from "../../Components/Navbar";
 import Feed from "../../Components/Feed";
 import { getAllPosts, createPost, likePost, addComment, deletePost } from "../../api/posts";
 import "./Home.css";
+import Feed from "../../Components/Feed"
+import { Footer } from "../../Components/footer";
 
 const defaultAuthor = {
   name: 'User',
@@ -145,6 +147,7 @@ export default function Home() {
           onDeletePost={handleDeletePost}
         />
       </div>
+      <Footer />
     </div>
   );
 }
