@@ -1,8 +1,7 @@
-import "./ClubList.css";
-import React from "react";
+import React, { useState } from "react";
+import "./Clublist.css";
 import Navbar from "../../Components/Navbar";
 import { Footer } from "../../Components/footer";
-
 
 const mockPlayers = [
   { id: 1, name: "John Doe", position: "Forward", rating: 4.8, available: true, location: "USA" },
@@ -28,7 +27,7 @@ const mockPlayers = [
 
 ];
 
-const clubList = () => {
+const Clublist = () => {
   const [selectedPosition, setSelectedPosition] = useState("All");
   const [selectedAvailability, setSelectedAvailability] = useState("All");
   const [selectedLocation, setSelectedLocation] = useState("All");
@@ -114,4 +113,4 @@ const clubList = () => {
   );
 };
 
-export default clubList;
+export default Clublist;
