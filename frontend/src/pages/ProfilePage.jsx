@@ -31,13 +31,13 @@ const ProfilePage = () => {
     },
   });
 
-  if (isLoading || isUserProfileLoading)
+  if (isLoading || isUserProfileLoading) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div className="bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700">
+      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-blue-950 flex items-center justify-center">
+        <div className="bg-gray-900/90 backdrop-blur-md p-8 rounded-xl shadow-lg border border-blue-700/40">
           <div className="flex justify-center">
             <svg
-              className="animate-spin h-12 w-12 text-indigo-400"
+              className="animate-spin h-14 w-14 text-blue-400"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -49,22 +49,23 @@ const ProfilePage = () => {
                 r="10"
                 stroke="currentColor"
                 strokeWidth="4"
-              ></circle>
+              />
               <path
                 className="opacity-75"
                 fill="currentColor"
                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              ></path>
+              />
             </svg>
           </div>
-          <p className="text-center mt-4 text-gray-300 font-semibold">
-            Loading profile...
+          <p className="mt-4 text-center text-blue-300 text-lg font-medium tracking-wide">
+            Loading your GameSphere profile...
           </p>
         </div>
       </div>
     );
+  }
 
-  const isOwnProfile = authUser.username === userProfile.data.username;
+  const isOwnProfile = authUser?.username === userProfile?.data.username;
   const userData = isOwnProfile ? authUser : userProfile.data;
 
   const handleSave = (updatedData) => {
@@ -72,20 +73,19 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100">
-      <div className="max-w-6xl mx-auto py-10 px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-blue-950 text-gray-200">
+      <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column: Profile Header and About */}
-          <div className="lg:col-span-2 space-y-6">
-            <div className="bg-gray-800 rounded-xl shadow-xl p-6 border border-gray-700 transition-all duration-300 hover:shadow-2xl">
+          <div className="lg:col-span-2 space-y-8">
+          <div className="bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg p-6 border border-blue-700/40 hover:shadow-blue-700/20 transition-all duration-300">
               <ProfileHeader
                 userData={userData}
                 isOwnProfile={isOwnProfile}
                 onSave={handleSave}
               />
             </div>
-
-            <div className="bg-gray-800 rounded-xl shadow-xl p-6 border border-gray-700 transition-all duration-300 hover:shadow-2xl">
+            <div className="bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg p-6 border border-blue-700/40 hover:shadow-blue-700/20 transition-all duration-300">
               <AboutSection
                 userData={userData}
                 isOwnProfile={isOwnProfile}
@@ -95,9 +95,9 @@ const ProfilePage = () => {
           </div>
 
           {/* Right Column: Experience, Education, Skills */}
-          <div className="lg:col-span-1 space-y-6">
-            <div className="bg-gray-800 rounded-xl shadow-xl p-6 border border-gray-700 transition-all duration-300 hover:shadow-2xl">
-              <h2 className="text-xl font-semibold text-white mb-4 tracking-tight">
+          <div className="lg:col-span-1 space-y-8">
+          <div className="bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg p-6 border border-yellow-600/40 hover:shadow-yellow-600/20 transition-all duration-300">
+              <h2 className="text-2xl font-bold text-green-400 mb-5 tracking-tight drop-shadow-md">
                 Sports Experience
               </h2>
               <ExperienceSection
@@ -107,7 +107,10 @@ const ProfilePage = () => {
               />
             </div>
 
-            <div className="bg-gray-800 rounded-xl shadow-xl p-6 border border-gray-700 transition-all duration-300 hover:shadow-2xl">
+            <div className="bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg p-6 border border-purple-600/40 hover:shadow-purple-600/20 transition-all duration-300">
+              <h2 className="text-2xl font-bold text-purple-400 mb-5 tracking-tight drop-shadow-md">
+                Education
+              </h2>
               <EducationSection
                 userData={userData}
                 isOwnProfile={isOwnProfile}
@@ -115,8 +118,8 @@ const ProfilePage = () => {
               />
             </div>
 
-            <div className="bg-gray-800 rounded-xl shadow-xl p-6 border border-gray-700 transition-all duration-300 hover:shadow-2xl">
-              <h2 className="text-xl font-semibold text-white mb-4 tracking-tight">
+            <div className="bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg p-6 border border-orange-600/40 hover:shadow-orange-600/20 transition-all duration-300">
+              <h2 className="text-2xl font-bold text-orange-400 mb-5 tracking-tight drop-shadow-md">
                 Sports Skills & Interests
               </h2>
               <SkillsSection
@@ -129,31 +132,34 @@ const ProfilePage = () => {
         </div>
       </div>
 
-      <footer className="mt-10 pb-8 bg-gray-800 border-t border-gray-700">
-        <div className="max-w-6xl mx-auto px-6 text-center text-sm text-gray-400">
-          <div className="flex justify-center space-x-6 mb-4">
+      {/* Footer */}
+      <footer className="mt-12 py-8 bg-gray-900/95 backdrop-blur-md border-t border-blue-700/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-400">
+          <div className="flex justify-center space-x-8 mb-6">
             <a
               href="#"
-              className="hover:text-indigo-400 transition-colors duration-200"
+              className="text-blue-400 hover:text-blue-300 transition-colors duration-200 font-medium drop-shadow-sm"
             >
               Help Center
             </a>
             <a
               href="#"
-              className="hover:text-indigo-400 transition-colors duration-200"
+              className="text-blue-400 hover:text-blue-300 transition-colors duration-200 font-medium drop-shadow-sm"
             >
               Privacy & Terms
             </a>
             <a
               href="#"
-              className="hover:text-indigo-400 transition-colors duration-200"
+              className="text-blue-400 hover:text-blue-300 transition-colors duration-200 font-medium drop-shadow-sm"
             >
               Accessibility
             </a>
           </div>
-          <p className="text-gray-500">
-            GameSphere © {new Date().getFullYear()} | The Ultimate Sports Gaming
-            Platform
+          <p className="text-gray-300">
+            GameSphere © {new Date().getFullYear()} |{" "}
+            <span className="text-blue-400 font-semibold drop-shadow-md">
+              The Ultimate Sports Gaming Platform
+            </span>
           </p>
         </div>
       </footer>
