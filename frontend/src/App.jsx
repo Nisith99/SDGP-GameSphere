@@ -9,6 +9,7 @@ import { Profile } from './pages/Profile/Profile';
 import PlayerProfile from "./pages/Profile/PlayerProfile";
 import PlayerListView from "./pages/PlayerList/PlayerListView";
 import { UserRoleType } from "./pages/UserRoleType/UserRoleType";
+import Clublist from "./pages/Clublist/Clublist";
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
     <Route path="/playerProfile" element={<PlayerProfile />}></Route>
     <Route path="/players" element={<PlayerListView />}> </Route>
     <Route path="/user-role" element={<UserRoleType />}></Route>
+    <Route path='/Clublist' element={<Clublist/>}></Route>
    </Routes>
    </BrowserRouter>
   )

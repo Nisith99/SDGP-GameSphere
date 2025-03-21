@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import "./App.css";
+import "./Clublist.css";
+import Navbar from "../../Components/Navbar";
+import { Footer } from "../../Components/footer";
 
 const mockPlayers = [
   { id: 1, name: "John Doe", position: "Forward", rating: 4.8, available: true, location: "USA" },
@@ -25,28 +27,34 @@ const mockPlayers = [
 
 ];
 
-const ClubProfile = () => {
+const Clublist = () => {
   const [selectedPosition, setSelectedPosition] = useState("All");
+  const [selectedAvailability, setSelectedAvailability] = useState("All");
+  const [selectedLocation, setSelectedLocation] = useState("All");
   const [darkMode, setDarkMode] = useState(false);
 
   const toggleTheme = () => {
     setDarkMode(!darkMode);
   };
 
-  const filteredPlayers = selectedPosition === "All" ? mockPlayers : mockPlayers.filter(player => player.position === selectedPosition);
+  const filteredPlayers = mockPlayers.filter(player => {
+    return (
+      (selectedPosition === "All" || player.position === selectedPosition) &&
+      (selectedAvailability === "All" || (selectedAvailability === "Available" ? player.available : !player.available)) &&
+      (selectedLocation === "All" || player.location === selectedLocation)
+    );
+  });
 
   return (
     <div className={`container ${darkMode ? "dark-mode" : "light-mode"}`}>
-      
+      <Navbar />
 
-      {/* Theme Toggle Button */}
       <div className="theme-toggle-container">
         <button className="theme-toggle" onClick={toggleTheme}>
           {darkMode ? "Light Mode" : "Dark Mode"}
         </button>
       </div>
 
-      {/* Club Information Section */}
       <div className="club-info-box">
         <img src="/club_logo.png" alt="Club Logo" className="club-logo-large" />
         <div>
@@ -56,9 +64,8 @@ const ClubProfile = () => {
         </div>
       </div>
 
-      {/* Player Filters */}
       <div className="filter-section">
-        <label>Filter by Position:</label>
+        <label>Position:</label>
         <select onChange={(e) => setSelectedPosition(e.target.value)}>
           <option value="All">All</option>
           <option value="Forward">Forward</option>
@@ -66,9 +73,25 @@ const ClubProfile = () => {
           <option value="Defender">Defender</option>
           <option value="Goalkeeper">Goalkeeper</option>
         </select>
+
+        <label>Availability:</label>
+        <select onChange={(e) => setSelectedAvailability(e.target.value)}>
+          <option value="All">All</option>
+          <option value="Available">Available</option>
+          <option value="Unavailable">Unavailable</option>
+        </select>
+
+        <label>Location:</label>
+        <select onChange={(e) => setSelectedLocation(e.target.value)}>
+          <option value="All">All</option>
+          <option value="USA">USA</option>
+          <option value="UK">UK</option>
+          <option value="Germany">Germany</option>
+          <option value="Brazil">Brazil</option>
+          <option value="France">France</option>
+        </select>
       </div>
 
-      {/* Players List */}
       <div className="player-list">
         {filteredPlayers.map(player => (
           <div className="player-card" key={player.id}>
@@ -85,9 +108,9 @@ const ClubProfile = () => {
         ))}
       </div>
 
-      
+      <Footer />
     </div>
   );
 };
 
-export default ClubProfile;
+export default Clublist;

@@ -40,7 +40,7 @@ export default function Navbar() {
           <div className={`navbar-navigation ${isMobileMenuOpen ? "open" : ""}`}>
             <NavItem icon={<Home size={18} />} label="Home" link="/home" />
             <NavItem icon={<User size={18} />} label="Player" link="/players" />
-            <NavItem icon={<Users size={18} />} label="Club" link="" />
+            <NavItem icon={<Users size={18} />} label="Club" link="/Clublist" />
             <NavItem icon={<Bell size={18} />} label="Notifications" link="/notifications" />
             <NavItem icon={<MessageCircle size={18} />} label="Messages" link="/message" />
 
