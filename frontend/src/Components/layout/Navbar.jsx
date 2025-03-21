@@ -40,7 +40,7 @@ const Navbar = () => {
   const unreadConnectionRequestsCount = connectionRequests?.data?.length;
 
   return (
-    <nav className="bg-gradient-to-r from-green-600 to-blue-600 shadow-lg sticky top-0 z-10">
+    <nav className="bg-gradient-to-r from-gray-800 to-gray-900 shadow-lg sticky top-0 z-10">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center py-3">
           <div className="flex items-center space-x-4">
@@ -50,7 +50,7 @@ const Navbar = () => {
                 src="../../../public/gameSphere_logo.png"
                 alt="GameSphere"
               />
-              <span className="ml-2 text-white font-bold text-xl hidden md:block">
+              <span className="ml-2 text-gray-100 font-bold text-xl hidden md:block">
                 GameSphere
               </span>
             </Link>
@@ -60,34 +60,34 @@ const Navbar = () => {
               <>
                 <Link
                   to={"/"}
-                  className="text-white hover:text-yellow-200 flex flex-col items-center transition-colors duration-200"
+                  className="text-gray-300 hover:text-white flex flex-col items-center transition-colors duration-200"
                 >
                   <Home size={20} />
                   <span className="text-xs hidden md:block">Home</span>
                 </Link>
                 <Link
                   to="/leagues"
-                  className="text-white hover:text-yellow-200 flex flex-col items-center transition-colors duration-200"
+                  className="text-gray-300 hover:text-white flex flex-col items-center transition-colors duration-200"
                 >
                   <Trophy size={20} />
-                  <span className="text-xs hidden md:block">Leagues</span>
+                  <span className="text-xs hidden md:block">Clubs</span>
                 </Link>
                 <Link
                   to="/stats"
-                  className="text-white hover:text-yellow-200 flex flex-col items-center transition-colors duration-200"
+                  className="text-gray-300 hover:text-white flex flex-col items-center transition-colors duration-200"
                 >
                   <Activity size={20} />
                   <span className="text-xs hidden md:block">Live Stats</span>
                 </Link>
                 <Link
                   to="/network"
-                  className="text-white hover:text-yellow-200 flex flex-col items-center relative transition-colors duration-200"
+                  className="text-gray-300 hover:text-white flex flex-col items-center relative transition-colors duration-200"
                 >
                   <Users size={20} />
                   <span className="text-xs hidden md:block">Teams</span>
                   {unreadConnectionRequestsCount > 0 && (
                     <span
-                      className="absolute -top-1 -right-1 md:right-4 bg-yellow-400 text-blue-800 text-xs 
+                      className="absolute -top-1 -right-1 md:right-4 bg-yellow-400 text-gray-900 text-xs 
                       font-bold rounded-full size-3 md:size-4 flex items-center justify-center"
                     >
                       {unreadConnectionRequestsCount}
@@ -96,13 +96,13 @@ const Navbar = () => {
                 </Link>
                 <Link
                   to="/notifications"
-                  className="text-white hover:text-yellow-200 flex flex-col items-center relative transition-colors duration-200"
+                  className="text-gray-300 hover:text-white flex flex-col items-center relative transition-colors duration-200"
                 >
                   <Bell size={20} />
                   <span className="text-xs hidden md:block">Alerts</span>
                   {unreadNotificationCount > 0 && (
                     <span
-                      className="absolute -top-1 -right-1 md:right-4 bg-yellow-400 text-blue-800 text-xs 
+                      className="absolute -top-1 -right-1 md:right-4 bg-yellow-400 text-gray-900 text-xs 
                       font-bold rounded-full size-3 md:size-4 flex items-center justify-center"
                     >
                       {unreadNotificationCount}
@@ -111,13 +111,13 @@ const Navbar = () => {
                 </Link>
                 <Link
                   to={`/profile/${authUser.username}`}
-                  className="text-white hover:text-yellow-200 flex flex-col items-center transition-colors duration-200"
+                  className="text-gray-300 hover:text-white flex flex-col items-center transition-colors duration-200"
                 >
                   <User size={20} />
                   <span className="text-xs hidden md:block">Profile</span>
                 </Link>
                 <button
-                  className="flex items-center space-x-1 text-sm text-white hover:text-yellow-200 transition-colors duration-200"
+                  className="flex items-center space-x-1 text-sm text-gray-300 hover:text-white transition-colors duration-200"
                   onClick={() => logout()}
                 >
                   <LogOut size={20} />
@@ -128,13 +128,13 @@ const Navbar = () => {
               <>
                 <Link
                   to="/login"
-                  className="px-4 py-2 text-sm font-medium text-white border border-white rounded-md hover:bg-white hover:text-blue-600 transition-colors duration-200"
+                  className="px-4 py-2 text-sm font-medium text-gray-200 border border-gray-400 rounded-md hover:bg-gray-700 hover:text-white transition-colors duration-200"
                 >
                   Sign In
                 </Link>
                 <Link
                   to="/signup"
-                  className="px-4 py-2 text-sm font-medium text-blue-600 bg-white rounded-md hover:bg-yellow-400 transition-colors duration-200"
+                  className="px-4 py-2 text-sm font-medium text-gray-900 bg-gray-200 rounded-md hover:bg-yellow-400 transition-colors duration-200"
                 >
                   Join Team
                 </Link>
@@ -146,4 +146,5 @@ const Navbar = () => {
     </nav>
   );
 };
+
 export default Navbar;
