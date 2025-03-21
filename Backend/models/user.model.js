@@ -1,109 +1,61 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
-    fullName:{
-        type: String,
-        required: true 
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
     },
-    userName: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    email:{
-        type: String,
-        required: true,
-        unique: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    role: {
-        type: String,
-        enum: ["player", "club"],
-        default: null
-    },
+    username: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
     profilePicture: {
-        type: String,
-        default: "",
+      type: String,
+      default: "",
+    },
+    bannerImg: {
+      type: String,
+      default: "",
+    },
+    headline: {
+      type: String,
+      default: "Player",
     },
     location: {
-        type: String,
-        default: "",
+      type: String,
+      default: "SriLanka",
     },
     about: {
-        type: String,
-        default: "",
+      type: String,
+      default: "",
     },
-    playerProfile: {
-        age: {
-            type: Number,
-            default: null
-        },
-        sport: {
-            type: String,
-            default: "",
-        },
-        skills: {
-            type: [String],
-            default: [],
-        },
-        participateMatchesCount: {
-            type: Number,
-            default: null,
-        },
-        BestAchivements: {
-            type: [String],
-            default: [],
-        },
-        achievements: {
-            province:{
-                type: [String],
-                default: [],
-            },
-            district:{
-                type: [String],
-                default: [],
-            },
-            island:{
-                type: [String],
-                default: [],
-            }
-        }
-    },
-    clubProfile: {
-        sportType: {
-            type: String,
-            default: "",
-        },
-        ageRange: {
-            type: Number,
-            default: null,
-        },
-        opportunities: {
-            type: String,
-            default: null
-        },
-        rating: [ {
-            user: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'User',
-                required: true
-            },
-            rate: {
-                type: Number,
-                required: true,
-                min: 1,
-                max: 5
-            }
-        }],
-        avgRating: {
-            type: Number,
-            default: 0
-        }
-    }
-},{timestamps: true});
+    skills: [String],
+    experience: [
+      {
+        title: String,
+        company: String,
+        startDate: Date,
+        endDate: Date,
+        description: String,
+      },
+    ],
+    education: [
+      {
+        school: String,
+        fieldOfStudy: String,
+        startYear: Number,
+        endYear: Number,
+      },
+    ],
+    connections: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+  },
+  { timestamps: true }
+);
 
 const User = mongoose.model("User", userSchema);
 

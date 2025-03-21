@@ -1,72 +1,82 @@
 import User from "../models/user.model.js";
-import bcrypt from "bcryptjs";
+import cloudinary from "../lib/cloudinary.js";
 
-export const updateUserProfile = async (req, res) => {
-    try {
-        const userId = req.user._id;
-        const { fullName, profilePicture, email, location, about, playerProfile, clubProfile } = req.body;
+export const getSuggestedConnections = async (req, res) => {
+	try {
+		const currentUser = await User.findById(req.user._id).select("connections");
 
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
+		// find users who are not already connected, and also do not recommend our own profile!! right?
+		const suggestedUser = await User.find({
+			_id: {
+				$ne: req.user._id,
+				$nin: currentUser.connections,
+			},
+		})
+			.select("name username profilePicture headline")
+			.limit(3);
 
-        if (fullName) user.fullName = fullName;
-        if (profilePicture) user.profilePicture = profilePicture;
-        if (email) user.email = email;
-        if (location) user.location = location;
-        if (about) user.about = about;
-
-        if (user.role === 'player' && playerProfile) {
-            user.playerProfile.sport = playerProfile.sport || user.playerProfile.sport;
-            user.playerProfile.skills = playerProfile.skills || user.playerProfile.skills;
-            user.playerProfile.achievements.province = playerProfile.achievements?.province || user.playerProfile.achievements.province;
-            user.playerProfile.achievements.district = playerProfile.achievements?.district || user.playerProfile.achievements.district;
-            user.playerProfile.achievements.island = playerProfile.achievements?.island || user.playerProfile.achievements.island;
-        }
-
-        if (user.role === 'club' && clubProfile) {
-            user.clubProfile.sportType = clubProfile.sportType || user.clubProfile.sportType;
-            user.clubProfile.ageRange = clubProfile.ageRange ?? user.clubProfile.ageRange;
-            user.clubProfile.opportunities = clubProfile.opportunities || user.clubProfile.opportunities;
-        
-        }
-
-        await user.save();
-        res.status(200).json({ 
-            message: "Profile updated successfully", 
-        });
-
-    } catch (error) {
-        console.error("Error in updating profile:", error);
-        res.status(500).json({ message: "Server error" });
-    }
+		res.json(suggestedUser);
+	} catch (error) {
+		console.error("Error in getSuggestedConnections controller:", error);
+		res.status(500).json({ message: "Server error" });
+	}
 };
 
-export const getProfile = async (req, res) => {
-    try {
-       const userId = req.user._id; 
- 
-       const user = await User.findById(userId).select('-password').lean();
-       if (!user) {
-          return res.status(404).json({ message: "User not found" });
-       }
- 
-       res.json({ 
-          profile: {
-             fullName: user.fullName,
-             userName: user.userName,
-             email: user.email,
-             role: user.role,
-             profilePicture: user.profilePicture,
-             location: user.location,
-             about: user.about,
-             ...(user.role === 'player' ? { playerProfile: user.playerProfile } : {}),
-             ...(user.role === 'club' ? { clubProfile: user.clubProfile } : {})
-          }
-       });
-    } catch (error) {
-       console.error("Error in getProfile:", error.message);
-       res.status(500).json({ message: "Server error" });
-    }
- };
+export const getPublicProfile = async (req, res) => {
+	try {
+		const user = await User.findOne({ username: req.params.username }).select("-password");
+
+		if (!user) {
+			return res.status(404).json({ message: "User not found" });
+		}
+
+		res.json(user);
+	} catch (error) {
+		console.error("Error in getPublicProfile controller:", error);
+		res.status(500).json({ message: "Server error" });
+	}
+};
+
+export const updateProfile = async (req, res) => {
+	try {
+		const allowedFields = [
+			"name",
+			"username",
+			"headline",
+			"about",
+			"location",
+			"profilePicture",
+			"bannerImg",
+			"skills",
+			"experience",
+			"education",
+		];
+
+		const updatedData = {};
+
+		for (const field of allowedFields) {
+			if (req.body[field]) {
+				updatedData[field] = req.body[field];
+			}
+		}
+
+		if (req.body.profilePicture) {
+			const result = await cloudinary.uploader.upload(req.body.profilePicture);
+			updatedData.profilePicture = result.secure_url;
+		}
+
+		if (req.body.bannerImg) {
+			const result = await cloudinary.uploader.upload(req.body.bannerImg);
+			updatedData.bannerImg = result.secure_url;
+		}
+
+		const user = await User.findByIdAndUpdate(req.user._id, { $set: updatedData }, { new: true }).select(
+			"-password"
+		);
+
+		res.json(user);
+	} catch (error) {
+		console.error("Error in updateProfile controller:", error);
+		res.status(500).json({ message: "Server error" });
+	}
+};
