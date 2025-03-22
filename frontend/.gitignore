@@ -35,3 +35,8 @@ Thumbs.db
 # Package lock files (optional, if using yarn)
 package-lock.json
 yarn.lock
+
+.jpg
+.png
+.jpeg
+.avfi

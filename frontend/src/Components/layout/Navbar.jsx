@@ -54,7 +54,7 @@ const Navbar = () => {
             <Link to="/" className="flex items-center">
               <img
                 className="h-10 rounded"
-                src="../../../public/gameSphere_logo.png"
+                src="/gameSphere_logo.png"
                 alt="GameSphere"
               />
               <span className="ml-2 text-gray-100 font-bold text-xl hidden md:block">
