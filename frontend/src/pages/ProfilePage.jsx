@@ -1,10 +1,9 @@
-// ProfilePage.jsx
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "../lib/axios";
 import ProfileHeader from "../components/ProfileHeader";
 import RatingSection from "../components/RatingSection";
-import AboutSection from "../components/AboutSection";
+import AboutSection from "../Components/AboutSection";
 import ExperienceSection from "../components/ExperienceSection";
 import EducationSection from "../components/EducationSection";
 import SkillsSection from "../components/SkillsSection";
