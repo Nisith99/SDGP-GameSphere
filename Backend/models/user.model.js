@@ -53,9 +53,51 @@ const userSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
+    // New rating fields
+    ratings: [
+      {
+        ratedBy: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+        score: {
+          type: Number,
+          required: true,
+          min: 1,
+          max: 5,
+        },
+        comment: {
+          type: String,
+          default: "",
+        },
+        createdAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
+    averageRating: {
+      type: Number,
+      default: 0,
+    },
+    ratingCount: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );
+
+// Pre-save middleware to calculate average rating
+userSchema.pre("save", function (next) {
+  if (this.ratings.length > 0) {
+    const totalScore = this.ratings.reduce((sum, rating) => sum + rating.score, 0);
+    this.averageRating = parseFloat((totalScore / this.ratings.length).toFixed(1));
+    this.ratingCount = this.ratings.length;
+  }
+  next();
+});
 
 const User = mongoose.model("User", userSchema);
 
