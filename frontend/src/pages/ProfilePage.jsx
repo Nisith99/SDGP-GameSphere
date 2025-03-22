@@ -4,7 +4,7 @@ import { axiosInstance } from "../lib/axios";
 import ProfileHeader from "../components/ProfileHeader";
 import RatingSection from "../components/RatingSection";
 import AboutSection from "../Components/AboutSection";
-import ExperienceSection from "../components/ExperienceSection";
+import AchievementsSection from "../Components/AchievementsSection";
 import EducationSection from "../components/EducationSection";
 import SkillsSection from "../components/SkillsSection";
 import toast from "react-hot-toast";
@@ -105,9 +105,9 @@ const ProfilePage = () => {
           <div className="lg:col-span-1 space-y-8">
             <div className="bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg p-6 border border-yellow-600/40 hover:shadow-yellow-600/20 transition-all duration-300">
               <h2 className="text-2xl font-bold text-green-400 mb-5 tracking-tight drop-shadow-md">
-                Sports Experience
+                 Achievements
               </h2>
-              <ExperienceSection
+              <AchievementsSection
                 userData={userData}
                 isOwnProfile={isOwnProfile}
                 onSave={handleSave}
