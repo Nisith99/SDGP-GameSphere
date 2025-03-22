@@ -1,7 +1,7 @@
 import { Trophy, X } from "lucide-react";
 import { useState, useEffect } from "react";
 
-const AchievementsSection = ({ userData, isOwnProfile, onSave }) => {
+const AchievementsSection = ({ userData, isOwnProfile, onSave, queryClient, username }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [achievements, setAchievements] = useState(userData.achievements || []);
   const [newAchievement, setNewAchievement] = useState({
@@ -11,7 +11,6 @@ const AchievementsSection = ({ userData, isOwnProfile, onSave }) => {
   });
   const [totalScore, setTotalScore] = useState(0);
 
-  // Calculate score based on rank type and value
   const calculateScore = (rankType, rankValue) => {
     const rankNum = parseInt(rankValue) || 999;
     switch (rankType) {
@@ -35,13 +34,11 @@ const AchievementsSection = ({ userData, isOwnProfile, onSave }) => {
     }
   };
 
-  // Calculate total score
   useEffect(() => {
     const total = achievements.reduce((sum, ach) => sum + ach.score, 0);
     setTotalScore(total);
   }, [achievements]);
 
-  // Get overall ranking
   const getRanking = (score) => {
     if (score >= 500) return { label: "Gold", color: "bg-gradient-to-r from-yellow-400 to-yellow-600" };
     if (score >= 250) return { label: "Silver", color: "bg-gradient-to-r from-gray-300 to-gray-500" };
@@ -62,17 +59,27 @@ const AchievementsSection = ({ userData, isOwnProfile, onSave }) => {
   };
 
   const handleSaveChanges = () => {
-    onSave({ achievements });
+    const formData = new FormData();
+    console.log("Achievements before saving:", achievements);
+    formData.append("achievements", JSON.stringify(achievements));
+    for (let [key, value] of formData.entries()) {
+      console.log(`FormData - ${key}:`, value);
+    }
+    onSave(formData);
+    if (queryClient) {
+      queryClient.invalidateQueries(["userProfile", username]);
+      queryClient.invalidateQueries(["authUser"]);
+    }
     setIsEditing(false);
   };
 
+  
   return (
     <div className="bg-gray-900/95 backdrop-blur-xl rounded-2xl shadow-2xl p-6 border border-yellow-500/30 hover:shadow-yellow-500/10 transition-all duration-500 transform hover:-translate-y-1">
       <h2 className="text-3xl font-extrabold text-green-400 mb-6 tracking-wide drop-shadow-lg">
         Achievements
       </h2>
       <div className="space-y-6">
-        {/* Achievements List */}
         {achievements.length > 0 ? (
           achievements.map((ach) => (
             <div
@@ -85,7 +92,9 @@ const AchievementsSection = ({ userData, isOwnProfile, onSave }) => {
                   <h3 className="text-lg font-semibold text-gray-100 capitalize">
                     {ach.rankType} Rank: {ach.rankValue}
                   </h3>
-                  <p className="text-sm text-gray-400">Score: <span className="font-medium text-yellow-400">{ach.score}</span></p>
+                  <p className="text-sm text-gray-400">
+                    Score: <span className="font-medium text-yellow-400">{ach.score}</span>
+                  </p>
                 </div>
               </div>
               {isEditing && (
@@ -102,7 +111,6 @@ const AchievementsSection = ({ userData, isOwnProfile, onSave }) => {
           <p className="text-gray-500 text-center italic">No achievements to showcase yet.</p>
         )}
 
-        {/* Total Score and Ranking */}
         {achievements.length > 0 && (
           <div className="mt-6 p-4 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl border border-yellow-500/20">
             <p className="text-gray-200 text-lg">
@@ -119,7 +127,6 @@ const AchievementsSection = ({ userData, isOwnProfile, onSave }) => {
           </div>
         )}
 
-        {/* Edit Mode */}
         {isEditing && (
           <div className="mt-6 space-y-4">
             <div className="relative">
@@ -155,7 +162,6 @@ const AchievementsSection = ({ userData, isOwnProfile, onSave }) => {
           </div>
         )}
 
-        {/* Edit/Save Buttons */}
         {isOwnProfile && (
           <div className="mt-6">
             {isEditing ? (
