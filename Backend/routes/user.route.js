@@ -18,5 +18,6 @@ router.get("/:username", protectRoute, getPublicProfile);
 router.put("/profile", protectRoute, updateProfile);
 router.post("/rate/:userId", protectRoute, rateUser);
 router.get("/ratings/:username", protectRoute, getUserRatings);
+//router.put("/profile", protect, updateProfile);
 
 export default router;
