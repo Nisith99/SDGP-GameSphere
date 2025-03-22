@@ -2,60 +2,17 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
-    name: {
-      type: String,
-      required: true,
-      trim: true, // Remove unnecessary whitespace
-    },
-    username: {
-      type: String,
-      required: true,
-      unique: true,
-      lowercase: true, // Ensure consistency in searches
-      trim: true,
-    },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      lowercase: true,
-      trim: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
-    profilePicture: {
-      type: String,
-      default: "",
-    },
-    bannerImg: {
-      type: String,
-      default: "",
-    },
-    headline: {
-      type: String,
-      default: "Player",
-      maxLength: 100, // Limit length for brevity
-    },
-    location: {
-      type: String,
-      default: "Sri Lanka", // Corrected typo from "SriLanka"
-    },
-    about: {
-      type: String,
-      default: "",
-      maxLength: 500, // Limit bio length
-    },
-    sport: {
-      type: String,
-      default: "",
-      index: true, // Index for faster search queries
-    },
-    skills: {
-      type: [String],
-      default: [],
-    },
+    name: { type: String, required: true, trim: true },
+    username: { type: String, required: true, unique: true, lowercase: true, trim: true },
+    email: { type: String, required: true, unique: true, lowercase: true, trim: true },
+    password: { type: String, required: true },
+    profilePicture: { type: String, default: "" },
+    bannerImg: { type: String, default: "" },
+    headline: { type: String, default: "Player", maxLength: 100 },
+    location: { type: String, default: "Sri Lanka" },
+    about: { type: String, default: "", maxLength: 500 },
+    sport: { type: String, default: "", index: true },
+    skills: { type: [String], default: [] },
     experience: [
       {
         title: { type: String, required: true },
@@ -63,7 +20,7 @@ const userSchema = new mongoose.Schema(
         startDate: { type: Date },
         endDate: { type: Date },
         description: { type: String, maxLength: 300 },
-        _id: false, // Avoid generating _id for subdocuments if not needed
+        _id: false,
       },
     ],
     education: [
@@ -75,55 +32,27 @@ const userSchema = new mongoose.Schema(
         _id: false,
       },
     ],
-    connections: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
-    // New rating fields
+    connections: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     ratings: [
       {
-        ratedBy: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
-          required: true,
-        },
-        score: {
-          type: Number,
-          required: true,
-          min: 1,
-          max: 5,
-        },
-        comment: {
-          type: String,
-          default: "",
-        },
-        createdAt: {
-          type: Date,
-          default: Date.now,
-        },
+        ratedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+        score: { type: Number, required: true, min: 1, max: 5 },
+        comment: { type: String, default: "" },
+        createdAt: { type: Date, default: Date.now },
       },
     ],
-    averageRating: {
-      type: Number,
-      default: 0,
-    },
-    ratingCount: {
-      type: Number,
-      default: 0,
-    },
+    averageRating: { type: Number, default: 0 },
+    ratingCount: { type: Number, default: 0 },
     achievements: [
       {
         rankType: { type: String, enum: ["district", "island", "province"], required: true },
         rankValue: { type: String, required: true },
         score: { type: Number, required: true },
+        _id: { type: String }, // Allow frontend-generated _id
       },
     ],
   },
-  {
-    timestamps: true, // Keep createdAt and updatedAt
-  }
+  { timestamps: true }
 );
 
 // Pre-save middleware to calculate average rating

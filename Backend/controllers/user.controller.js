@@ -1,29 +1,62 @@
+import User from "../models/user.model.js";
+import path from "path";
+import fs from "fs/promises";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 export const updateProfile = async (req, res) => {
   try {
-    const userId = req.user._id;
-    const { name, headline, location, about, achievements, education, skills } = req.body;
+    console.log("Received PUT /users/profile request");
+    console.log("Request headers:", req.headers);
+    console.log("Request body:", req.body);
+    console.log("Authenticated user:", req.user);
 
+    const userId = req.user._id;
+    const user = await User.findById(userId);
     if (!user) {
-      console.error("User not found for ID:", req.user._id);
+      console.error("User not found for ID:", userId);
       return res.status(404).json({ message: "User not found" });
     }
+
+    const { name, headline, location, about, achievements, education, skills } = req.body;
 
     // Update text fields
     if (name !== undefined) user.name = name;
     if (headline !== undefined) user.headline = headline;
     if (location !== undefined) user.location = location;
     if (about !== undefined) user.about = about;
-    if (achievements !== undefined) user.achievements = JSON.parse(achievements);
-    if (education !== undefined) user.education = JSON.parse(education);
-    if (skills !== undefined) user.skills = JSON.parse(skills);
+    if (achievements !== undefined) {
+      try {
+        user.achievements = JSON.parse(achievements);
+      } catch (jsonError) {
+        console.error("Error parsing achievements:", jsonError);
+        return res.status(400).json({ message: "Invalid achievements data format" });
+      }
+    }
+    if (education !== undefined) {
+      try {
+        user.education = JSON.parse(education);
+      } catch (jsonError) {
+        console.error("Error parsing education:", jsonError);
+        return res.status(400).json({ message: "Invalid education data format" });
+      }
+    }
+    if (skills !== undefined) {
+      try {
+        user.skills = JSON.parse(skills);
+      } catch (jsonError) {
+        console.error("Error parsing skills:", jsonError);
+        return res.status(400).json({ message: "Invalid skills data format" });
+      }
+    }
 
-    // Define backend base URL (adjust port if different)
-    const BASE_URL = process.env.NODE_ENV === "production" 
-      ? "https://your-production-url.com" 
-      : "http://localhost:5000";
-
+    // Handle file uploads (if applicable)
     if (req.files) {
       console.log("Files received:", req.files);
+      const BASE_URL = process.env.NODE_ENV === "production"
+        ? "https://your-production-url.com"
+        : "http://localhost:5000";
       const { profilePicture, bannerImg } = req.files;
 
       if (profilePicture) {
@@ -50,6 +83,7 @@ export const updateProfile = async (req, res) => {
     await user.save();
 
     const updatedUser = await User.findById(userId).select("-password");
+    console.log("Updated user:", updatedUser);
     res.status(200).json({
       message: "Profile updated successfully",
       user: updatedUser,
@@ -70,7 +104,6 @@ export const updateProfile = async (req, res) => {
   }
 };
 
-// Update getPublicProfile to use absolute URLs too
 export const getPublicProfile = async (req, res) => {
   try {
     const { username } = req.params;
@@ -82,8 +115,8 @@ export const getPublicProfile = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const BASE_URL = process.env.NODE_ENV === "production" 
-      ? "https://your-production-url.com" 
+    const BASE_URL = process.env.NODE_ENV === "production"
+      ? "https://your-production-url.com"
       : "http://localhost:5000";
 
     if (user.profilePicture && !user.profilePicture.startsWith("http")) {
@@ -99,3 +132,6 @@ export const getPublicProfile = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+// Other exports remain unchanged
+export { rateUser, getUserRatings, getSuggestedConnections };
