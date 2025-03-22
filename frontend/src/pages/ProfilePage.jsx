@@ -1,7 +1,9 @@
+// ProfilePage.jsx
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "../lib/axios";
 import ProfileHeader from "../components/ProfileHeader";
+import RatingSection from "../components/RatingSection";
 import AboutSection from "../components/AboutSection";
 import ExperienceSection from "../components/ExperienceSection";
 import EducationSection from "../components/EducationSection";
@@ -12,49 +14,51 @@ const ProfilePage = () => {
   const { username } = useParams();
   const queryClient = useQueryClient();
 
-  const { data: authUser, isLoading } = useQuery({
+  const { data: authUser, isLoading: isAuthLoading } = useQuery({
     queryKey: ["authUser"],
+    queryFn: () => axiosInstance.get("/auth/me").then(res => res.data),
   });
 
-  const { data: userProfile, isLoading: isUserProfileLoading } = useQuery({
+  const { data: userProfile, isLoading: isProfileLoading } = useQuery({
     queryKey: ["userProfile", username],
-    queryFn: () => axiosInstance.get(`/users/${username}`),
+    queryFn: () => axiosInstance.get(`/users/${username}`).then(res => res.data),
+    enabled: !!username,
   });
 
-  const { mutate: updateProfile } = useMutation({
+  const { mutate: updateProfile, isLoading: isUpdating } = useMutation({
     mutationFn: async (updatedData) => {
-      await axiosInstance.put("/users/profile", updatedData);
+      const response = await axiosInstance.put("/users/profile", updatedData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      return response.data; // Return the full response data
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast.success("Profile updated successfully");
+      // Merge the updated data with existing authUser or userProfile
+      const updatedUserData = {
+        ...(authUser?.username === username ? authUser : userProfile),
+        ...data.user,
+      };
+      queryClient.setQueryData(["userProfile", username], updatedUserData);
+      if (authUser?.username === username) {
+        queryClient.setQueryData(["authUser"], updatedUserData);
+      }
       queryClient.invalidateQueries(["userProfile", username]);
     },
+    onError: (error) => {
+      console.error("Update profile error:", error.response?.data || error);
+      toast.error(error.response?.data?.message || "Failed to update profile");
+    },
   });
 
-  if (isLoading || isUserProfileLoading) {
+  if (isAuthLoading || isProfileLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-blue-950 flex items-center justify-center">
         <div className="bg-gray-900/90 backdrop-blur-md p-8 rounded-xl shadow-lg border border-blue-700/40">
           <div className="flex justify-center">
-            <svg
-              className="animate-spin h-14 w-14 text-blue-400"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              />
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              />
+            <svg className="animate-spin h-14 w-14 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
             </svg>
           </div>
           <p className="mt-4 text-center text-blue-300 text-lg font-medium tracking-wide">
@@ -65,8 +69,8 @@ const ProfilePage = () => {
     );
   }
 
-  const isOwnProfile = authUser?.username === userProfile?.data.username;
-  const userData = isOwnProfile ? authUser : userProfile.data;
+  const isOwnProfile = authUser?.username === username;
+  const userData = isOwnProfile ? authUser : userProfile;
 
   const handleSave = (updatedData) => {
     updateProfile(updatedData);
@@ -76,15 +80,20 @@ const ProfilePage = () => {
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-blue-950 text-gray-200">
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column: Profile Header and About */}
           <div className="lg:col-span-2 space-y-8">
-          <div className="bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg p-6 border border-blue-700/40 hover:shadow-blue-700/20 transition-all duration-300">
+            <div className="bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg p-6 border border-blue-700/40 hover:shadow-blue-700/20 transition-all duration-300">
               <ProfileHeader
                 userData={userData}
                 isOwnProfile={isOwnProfile}
                 onSave={handleSave}
               />
             </div>
+
+            <RatingSection
+              userData={userData}
+              isOwnProfile={isOwnProfile}
+            />
+
             <div className="bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg p-6 border border-blue-700/40 hover:shadow-blue-700/20 transition-all duration-300">
               <AboutSection
                 userData={userData}
@@ -94,9 +103,8 @@ const ProfilePage = () => {
             </div>
           </div>
 
-          {/* Right Column: Experience, Education, Skills */}
           <div className="lg:col-span-1 space-y-8">
-          <div className="bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg p-6 border border-yellow-600/40 hover:shadow-yellow-600/20 transition-all duration-300">
+            <div className="bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg p-6 border border-yellow-600/40 hover:shadow-yellow-600/20 transition-all duration-300">
               <h2 className="text-2xl font-bold text-green-400 mb-5 tracking-tight drop-shadow-md">
                 Sports Experience
               </h2>
@@ -132,26 +140,16 @@ const ProfilePage = () => {
         </div>
       </div>
 
-      {/* Footer */}
       <footer className="mt-12 py-8 bg-gray-900/95 backdrop-blur-md border-t border-blue-700/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-400">
           <div className="flex justify-center space-x-8 mb-6">
-            <a
-              href="#"
-              className="text-blue-400 hover:text-blue-300 transition-colors duration-200 font-medium drop-shadow-sm"
-            >
+            <a href="#" className="text-blue-400 hover:text-blue-300 transition-colors duration-200 font-medium drop-shadow-sm">
               Help Center
             </a>
-            <a
-              href="#"
-              className="text-blue-400 hover:text-blue-300 transition-colors duration-200 font-medium drop-shadow-sm"
-            >
+            <a href="#" className="text-blue-400 hover:text-blue-300 transition-colors duration-200 font-medium drop-shadow-sm">
               Privacy & Terms
             </a>
-            <a
-              href="#"
-              className="text-blue-400 hover:text-blue-300 transition-colors duration-200 font-medium drop-shadow-sm"
-            >
+            <a href="#" className="text-blue-400 hover:text-blue-300 transition-colors duration-200 font-medium drop-shadow-sm">
               Accessibility
             </a>
           </div>
