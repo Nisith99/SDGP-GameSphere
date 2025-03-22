@@ -5,7 +5,7 @@ import { axiosInstance } from "../lib/axios";
 import ProfileHeader from "../components/ProfileHeader";
 import RatingSection from "../components/RatingSection";
 import AboutSection from "../Components/AboutSection"; 
-import AchievementsSection from "../components/AchievementsSection"; 
+import AchievementsSection from "../Components/AchievementsSection"; 
 import EducationSection from "../components/EducationSection";
 import SkillsSection from "../components/SkillsSection";
 import toast from "react-hot-toast";
