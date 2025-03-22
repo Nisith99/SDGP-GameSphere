@@ -113,6 +113,13 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    achievements: [
+      {
+        rankType: { type: String, enum: ["district", "island", "province"], required: true },
+        rankValue: { type: String, required: true },
+        score: { type: Number, required: true },
+      },
+    ],
   },
   {
     timestamps: true, // Keep createdAt and updatedAt

@@ -167,6 +167,9 @@ export const updateProfile = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+    if (req.body.achievements) {
+      updatedData.achievements = req.body.achievements;
+    }
 
     // Update only the fields that are provided, preserving others
     if (name !== undefined) user.name = name;
