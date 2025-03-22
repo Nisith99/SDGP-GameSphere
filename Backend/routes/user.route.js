@@ -1,10 +1,21 @@
-import express from 'express';
-import { protectRoute } from '../middleware/auth.middleware.js';
-import { updateUserProfile , getProfile} from '../controllers/user.controller.js';
+import express from "express";
+import { protectRoute } from "../middleware/auth.middleware.js";
+import {
+  getSuggestedConnections,
+  getPublicProfile,
+  updateProfile,
+  rateUser,
+  getUserRatings,
+} from "../controllers/user.controller.js";
 
 const router = express.Router();
 
-router.put("/profile", protectRoute, updateUserProfile);
-router.get("/profile/:userId", protectRoute, getProfile);
+console.log("user.route.js loaded");
+
+router.get("/suggestions", protectRoute, getSuggestedConnections);
+router.get("/:username", protectRoute, getPublicProfile);
+router.put("/profile", protectRoute, updateProfile);
+router.post("/rate/:userId", protectRoute, rateUser);
+router.get("/ratings/:username", protectRoute, getUserRatings);
 
 export default router;

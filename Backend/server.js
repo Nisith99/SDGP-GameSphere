@@ -1,48 +1,57 @@
+// backend/server.js
 import express from "express";
-import mongoose from "mongoose";
-import cors from "cors"; // Fixed typo
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-
+import cors from "cors";
+import path from "path";
+import fileUpload from "express-fileupload";
 import authRoutes from "./routes/auth.route.js";
 import userRoutes from "./routes/user.route.js";
-import playerRoutes from "./routes/player.route.js";
-import clubRoutes from "./routes/club.route.js";
-import ratingRoutes from "./routes/rating.route.js";
-import postRoutes from  "./routes/post.route.js";
-import notifyRoute from "./routes/notifications.route.js"
-
-const app = express();
-
-app.use(express.json());
-app.use(cookieParser());
+import postRoutes from "./routes/post.route.js";
+import notificationRoutes from "./routes/notification.route.js";
+import connectionRoutes from "./routes/connection.route.js";
+import leagueRoutes from "./routes/league.route.js";
+import { connectDB } from "./lib/db.js";
+import fs from "fs/promises";
 
 dotenv.config();
 
+const app = express();
+const PORT = process.env.PORT || 5000;
+const __dirname = path.resolve();
+
+app.use(express.json({ limit: "5mb" }));
+app.use(cookieParser());
+app.use(fileUpload());
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.NODE_ENV === "production"
+      ? process.env.CLIENT_URL
+      : "http://localhost:5173",
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("Connected to database successfully"))
-  .catch((err) => console.log("Failed to connect to database", err));
+await fs.mkdir(path.join(__dirname, "uploads/profile"), { recursive: true });
+await fs.mkdir(path.join(__dirname, "uploads/banner"), { recursive: true });
 
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-const PORT = process.env.PORT || 3001;
+console.log("Mounting routes...");
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/posts", postRoutes);
+app.use("/api/v1/notifications", notificationRoutes);
+app.use("/api/v1/connections", connectionRoutes);
+app.use("/api/v1/leagues", leagueRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+app.use((req, res) => {
+  console.log(`404 Not Found: ${req.method} ${req.url}`);
+  res.status(404).json({ message: "Not Found" });
 });
 
-app.use("/api/v1/auth", authRoutes);
-app.use("/api/v1/user", userRoutes);
-app.use("/api/v1/player", playerRoutes);
-app.use("/api/v1/club", clubRoutes);
-app.use("/api/v1/rating", ratingRoutes);
-app.use("/api/v1/post", postRoutes);
-app.use("/api/v1/notify", notifyRoute)
-app.use("/api/v1/user", userRoutes)
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  connectDB();
+});

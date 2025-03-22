@@ -1,35 +1,52 @@
-import {BrowserRouter, Routes, Route} from 'react-router-dom'
-import Signup from './pages/Signup/Signup';
-import Login from './pages/Login/Login';
-import Landing from './pages/Landing/Landing';
-import Message from './pages/Message/Message';
-import Notification from './Components/Notifications';
-import Home from "./pages/Home/Home";
-import { Profile } from './pages/Profile/Profile';
-import PlayerProfile from "./pages/Profile/PlayerProfile";
-import PlayerListView from "./pages/PlayerList/PlayerListView";
-import { UserRoleType } from "./pages/UserRoleType/UserRoleType";
-
+import { Navigate, Route, Routes } from "react-router-dom";
+import Layout from "./components/layout/Layout";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/auth/LoginPage";
+import SignUpPage from "./pages/auth/SignUpPage";
+import toast, { Toaster } from "react-hot-toast";
+import { useQuery } from "@tanstack/react-query";
+import { axiosInstance } from "./lib/axios";
+import NotificationsPage from "./pages/NotificationsPage";
+import NetworkPage from "./pages/NetworkPage";
+import LeaguesPage from "./pages/LeaguesPage";
+import LeagueDetailsPage from "./pages/LeagueDetailsPage"; // Updated import
+import PostPage from "./pages/PostPage";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
-  return (
-   <BrowserRouter>
-   <Routes>
-    <Route path='/' element = {<Landing/>}></Route>
-    <Route path = '/signup' element = {<Signup/>}></Route>
-    <Route path='/login' element = {<Login/>}></Route>
-    <Route path='/Notifications' element={<Notification/>}></Route>
-    <Route path='/message' element={<Message/>}> </Route>
-    <Route path="/home" element= {<Home/>}></Route>
-    <Route path="/profile" element={<Profile />}></Route>
-    <Route path="/playerProfile" element={<PlayerProfile />}></Route>
-    <Route path="/players" element={<PlayerListView />}> </Route>
-    <Route path="/user-role" element={<UserRoleType />}></Route>
-   </Routes>
-   </BrowserRouter>
-  )
+  const { data: authUser, isLoading } = useQuery({
+    queryKey: ["authUser"],
+    queryFn: async () => {
+      try {
+        const res = await axiosInstance.get("/auth/me");
+        return res.data;
+      } catch (err) {
+        if (err.response && err.response.status === 401) {
+          return null;
+        }
+        toast.error(err.response.data.message || "Something went wrong");
+      }
+    },
+  });
 
+  if (isLoading) return null;
+
+  return (
+    <Layout>
+      <Routes>
+        <Route path="/" element={authUser ? <HomePage /> : <Navigate to={"/login"} />} />
+        <Route path="/signup" element={!authUser ? <SignUpPage /> : <Navigate to={"/"} />} />
+        <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to={"/"} />} />
+        <Route path="/notifications" element={authUser ? <NotificationsPage /> : <Navigate to={"/login"} />} />
+        <Route path="/network" element={authUser ? <NetworkPage /> : <Navigate to={"/login"} />} />
+        <Route path="/leagues" element={authUser ? <LeaguesPage /> : <Navigate to={"/login"} />} />
+        <Route path="/leagues/:leagueName" element={authUser ? <LeagueDetailsPage /> : <Navigate to={"/login"} />} />
+        <Route path="/post/:postId" element={authUser ? <PostPage /> : <Navigate to={"/login"} />} />
+        <Route path="/profile/:username" element={authUser ? <ProfilePage /> : <Navigate to={"/login"} />} />
+      </Routes>
+      <Toaster />
+    </Layout>
+  );
 }
 
-export default App;
-
+export default App;
