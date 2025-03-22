@@ -1,10 +1,11 @@
+// frontend/src/pages/ProfilePage.jsx
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "../lib/axios";
 import ProfileHeader from "../components/ProfileHeader";
 import RatingSection from "../components/RatingSection";
-import AboutSection from "../Components/AboutSection";
-import AchievementsSection from "../Components/AchievementsSection";
+import AboutSection from "../Components/AboutSection"; 
+import AchievementsSection from "../components/AchievementsSection"; 
 import EducationSection from "../components/EducationSection";
 import SkillsSection from "../components/SkillsSection";
 import toast from "react-hot-toast";
@@ -25,6 +26,7 @@ const ProfilePage = () => {
   });
   const { mutate: updateProfile, isLoading: isUpdating } = useMutation({
     mutationFn: async (updatedData) => {
+      console.log("Sending updated data:", updatedData); // Debug log
       const response = await axiosInstance.put("/users/profile", updatedData, {
         headers: { "Content-Type": "multipart/form-data" },
       });

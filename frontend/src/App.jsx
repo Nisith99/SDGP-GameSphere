@@ -9,7 +9,7 @@ import { axiosInstance } from "./lib/axios";
 import NotificationsPage from "./pages/NotificationsPage";
 import NetworkPage from "./pages/NetworkPage";
 import LeaguesPage from "./pages/LeaguesPage";
-import ClubDetailsPage from "./pages/ClubDetailsPage";
+import LeagueDetailsPage from "./pages/LeagueDetailsPage"; // Updated import
 import PostPage from "./pages/PostPage";
 import ProfilePage from "./pages/ProfilePage";
 
@@ -40,7 +40,7 @@ function App() {
         <Route path="/notifications" element={authUser ? <NotificationsPage /> : <Navigate to={"/login"} />} />
         <Route path="/network" element={authUser ? <NetworkPage /> : <Navigate to={"/login"} />} />
         <Route path="/leagues" element={authUser ? <LeaguesPage /> : <Navigate to={"/login"} />} />
-        <Route path="/clubs/:clubName" element={authUser ? <ClubDetailsPage /> : <Navigate to={"/login"} />} />
+        <Route path="/leagues/:leagueName" element={authUser ? <LeagueDetailsPage /> : <Navigate to={"/login"} />} />
         <Route path="/post/:postId" element={authUser ? <PostPage /> : <Navigate to={"/login"} />} />
         <Route path="/profile/:username" element={authUser ? <ProfilePage /> : <Navigate to={"/login"} />} />
       </Routes>
