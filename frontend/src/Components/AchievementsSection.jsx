@@ -5,7 +5,7 @@ const AchievementsSection = ({ userData, isOwnProfile, onSave }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [achievements, setAchievements] = useState(userData.achievements || []);
   const [newAchievement, setNewAchievement] = useState({
-    rankType: "district", // Default to district
+    rankType: "district",
     rankValue: "",
     score: 0,
   });
@@ -13,13 +13,13 @@ const AchievementsSection = ({ userData, isOwnProfile, onSave }) => {
 
   // Calculate score based on rank type and value
   const calculateScore = (rankType, rankValue) => {
-    const rankNum = parseInt(rankValue) || 999; // Default to low score if invalid
+    const rankNum = parseInt(rankValue) || 999;
     switch (rankType) {
       case "district":
         if (rankNum === 1) return 100;
         if (rankNum === 2) return 75;
         if (rankNum === 3) return 50;
-        return 25; // 4th or lower
+        return 25;
       case "island":
         if (rankNum === 1) return 200;
         if (rankNum === 2) return 150;
@@ -35,23 +35,23 @@ const AchievementsSection = ({ userData, isOwnProfile, onSave }) => {
     }
   };
 
-  // Calculate total score whenever achievements change
+  // Calculate total score
   useEffect(() => {
     const total = achievements.reduce((sum, ach) => sum + ach.score, 0);
     setTotalScore(total);
   }, [achievements]);
 
-  // Get overall ranking based on total score
+  // Get overall ranking
   const getRanking = (score) => {
-    if (score >= 500) return { label: "Gold", color: "text-yellow-400" };
-    if (score >= 250) return { label: "Silver", color: "text-gray-300" };
-    return { label: "Bronze", color: "text-orange-600" };
+    if (score >= 500) return { label: "Gold", color: "bg-gradient-to-r from-yellow-400 to-yellow-600" };
+    if (score >= 250) return { label: "Silver", color: "bg-gradient-to-r from-gray-300 to-gray-500" };
+    return { label: "Bronze", color: "bg-gradient-to-r from-orange-600 to-orange-800" };
   };
 
   const handleAddAchievement = () => {
     if (newAchievement.rankValue) {
       const score = calculateScore(newAchievement.rankType, newAchievement.rankValue);
-      const achievementWithScore = { ...newAchievement, score, _id: Date.now().toString() }; // Temp ID
+      const achievementWithScore = { ...newAchievement, score, _id: Date.now().toString() };
       setAchievements([...achievements, achievementWithScore]);
       setNewAchievement({ rankType: "district", rankValue: "", score: 0 });
     }
@@ -67,47 +67,52 @@ const AchievementsSection = ({ userData, isOwnProfile, onSave }) => {
   };
 
   return (
-    <div className="bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg p-6 border border-yellow-600/40 hover:shadow-yellow-600/20 transition-all duration-300">
-      <h2 className="text-2xl font-bold text-green-400 mb-5 tracking-tight drop-shadow-md">
+    <div className="bg-gray-900/95 backdrop-blur-xl rounded-2xl shadow-2xl p-6 border border-yellow-500/30 hover:shadow-yellow-500/10 transition-all duration-500 transform hover:-translate-y-1">
+      <h2 className="text-3xl font-extrabold text-green-400 mb-6 tracking-wide drop-shadow-lg">
         Achievements
       </h2>
-      <div className="space-y-4">
-        {/* Display Achievements */}
+      <div className="space-y-6">
+        {/* Achievements List */}
         {achievements.length > 0 ? (
           achievements.map((ach) => (
-            <div key={ach._id} className="flex justify-between items-start">
-              <div className="flex items-start">
-                <Trophy size={20} className="mr-2 mt-1 text-yellow-500" />
+            <div
+              key={ach._id}
+              className="flex justify-between items-center bg-gray-800/50 p-4 rounded-xl border border-gray-700/50 hover:bg-gray-800 transition-all duration-300"
+            >
+              <div className="flex items-center space-x-3">
+                <Trophy size={24} className="text-yellow-500 animate-pulse" />
                 <div>
-                  <h3 className="font-semibold text-gray-100 capitalize">
+                  <h3 className="text-lg font-semibold text-gray-100 capitalize">
                     {ach.rankType} Rank: {ach.rankValue}
                   </h3>
-                  <p className="text-gray-400 text-sm">Score: {ach.score}</p>
+                  <p className="text-sm text-gray-400">Score: <span className="font-medium text-yellow-400">{ach.score}</span></p>
                 </div>
               </div>
               {isEditing && (
                 <button
                   onClick={() => handleDeleteAchievement(ach._id)}
-                  className="text-red-500 hover:text-red-700"
+                  className="text-red-500 hover:text-red-400 transition-colors duration-200"
                 >
-                  <X size={20} />
+                  <X size={24} />
                 </button>
               )}
             </div>
           ))
         ) : (
-          <p className="text-gray-500">No achievements added yet.</p>
+          <p className="text-gray-500 text-center italic">No achievements to showcase yet.</p>
         )}
 
         {/* Total Score and Ranking */}
         {achievements.length > 0 && (
-          <div className="mt-4">
-            <p className="text-gray-300">
-              Total Score: <span className="font-semibold">{totalScore}</span>
+          <div className="mt-6 p-4 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl border border-yellow-500/20">
+            <p className="text-gray-200 text-lg">
+              Total Score: <span className="font-bold text-yellow-400">{totalScore}</span>
             </p>
-            <p className="text-lg">
+            <p className="text-xl mt-2">
               Overall Ranking:{" "}
-              <span className={`${getRanking(totalScore).color} font-bold`}>
+              <span
+                className={`${getRanking(totalScore).color} text-white px-3 py-1 rounded-full font-semibold inline-block shadow-md`}
+              >
                 {getRanking(totalScore).label}
               </span>
             </p>
@@ -116,31 +121,34 @@ const AchievementsSection = ({ userData, isOwnProfile, onSave }) => {
 
         {/* Edit Mode */}
         {isEditing && (
-          <div className="mt-6">
-            <select
-              value={newAchievement.rankType}
-              onChange={(e) =>
-                setNewAchievement({ ...newAchievement, rankType: e.target.value })
-              }
-              className="w-full p-2 border rounded mb-2 bg-gray-800 text-gray-100"
-            >
-              <option value="district">District Rank</option>
-              <option value="island">Island Rank</option>
-              <option value="province">Province Rank</option>
-            </select>
+          <div className="mt-6 space-y-4">
+            <div className="relative">
+              <select
+                value={newAchievement.rankType}
+                onChange={(e) => setNewAchievement({ ...newAchievement, rankType: e.target.value })}
+                className="w-full p-3 bg-gray-800 text-gray-100 border border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-yellow-500 focus:outline-none hover:bg-gray-700 transition-all duration-300 cursor-pointer"
+              >
+                <option value="district">District Rank</option>
+                <option value="island">Island Rank</option>
+                <option value="province">Province Rank</option>
+              </select>
+              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
             <input
               type="number"
               min="1"
               placeholder="Enter rank (e.g., 1, 2, 3)"
               value={newAchievement.rankValue}
-              onChange={(e) =>
-                setNewAchievement({ ...newAchievement, rankValue: e.target.value })
-              }
-              className="w-full p-2 border rounded mb-2 bg-gray-800 text-gray-100"
+              onChange={(e) => setNewAchievement({ ...newAchievement, rankValue: e.target.value })}
+              className="w-full p-3 bg-gray-800 text-gray-100 border border-gray-700 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:outline-none placeholder-gray-500 transition-all duration-300"
             />
             <button
               onClick={handleAddAchievement}
-              className="bg-yellow-600 text-white py-2 px-4 rounded hover:bg-yellow-700 transition duration-300"
+              className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-yellow-600 hover:to-yellow-700 transform hover:scale-105 transition-all duration-300 shadow-md"
             >
               Add Achievement
             </button>
@@ -149,18 +157,18 @@ const AchievementsSection = ({ userData, isOwnProfile, onSave }) => {
 
         {/* Edit/Save Buttons */}
         {isOwnProfile && (
-          <div className="mt-4">
+          <div className="mt-6">
             {isEditing ? (
               <button
                 onClick={handleSaveChanges}
-                className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300"
+                className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transform hover:scale-105 transition-all duration-300 shadow-md"
               >
                 Save Changes
               </button>
             ) : (
               <button
                 onClick={() => setIsEditing(true)}
-                className="text-yellow-400 hover:text-yellow-500 transition duration-300"
+                className="w-full bg-transparent text-yellow-400 py-2 px-6 rounded-lg font-semibold border border-yellow-400 hover:bg-yellow-400 hover:text-gray-900 transform hover:scale-105 transition-all duration-300"
               >
                 Edit Achievements
               </button>

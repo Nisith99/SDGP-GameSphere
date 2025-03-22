@@ -105,7 +105,6 @@ const ProfilePage = () => {
           <div className="lg:col-span-1 space-y-8">
             <div className="bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg p-6 border border-yellow-600/40 hover:shadow-yellow-600/20 transition-all duration-300">
               <h2 className="text-2xl font-bold text-green-400 mb-5 tracking-tight drop-shadow-md">
-                 Achievements
               </h2>
               <AchievementsSection
                 userData={userData}
