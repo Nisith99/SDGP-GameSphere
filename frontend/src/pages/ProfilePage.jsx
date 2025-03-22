@@ -1,11 +1,10 @@
-// frontend/src/pages/ProfilePage.jsx
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "../lib/axios";
 import ProfileHeader from "../components/ProfileHeader";
 import RatingSection from "../components/RatingSection";
-import AboutSection from "../Components/AboutSection"; 
-import AchievementsSection from "../Components/AchievementsSection"; 
+import AboutSection from "../Components/AboutSection";
+import AchievementsSection from "../Components/AchievementsSection";
 import EducationSection from "../components/EducationSection";
 import SkillsSection from "../components/SkillsSection";
 import toast from "react-hot-toast";
@@ -16,23 +15,28 @@ const ProfilePage = () => {
 
   const { data: authUser, isLoading: isAuthLoading } = useQuery({
     queryKey: ["authUser"],
-    queryFn: () => axiosInstance.get("/auth/me").then(res => res.data),
+    queryFn: () => axiosInstance.get("/auth/me").then((res) => res.data),
   });
 
   const { data: userProfile, isLoading: isProfileLoading } = useQuery({
     queryKey: ["userProfile", username],
-    queryFn: () => axiosInstance.get(`/users/${username}`).then(res => res.data),
+    queryFn: () => axiosInstance.get(`/users/${username}`).then((res) => res.data),
     enabled: !!username,
   });
+
   const { mutate: updateProfile, isLoading: isUpdating } = useMutation({
     mutationFn: async (updatedData) => {
-      console.log("Sending updated data:", updatedData); // Debug log
+      console.log("Sending updated data to server:", updatedData); // Log FormData
+      for (let [key, value] of updatedData.entries()) {
+        console.log(`FormData - ${key}:`, value);
+      }
       const response = await axiosInstance.put("/users/profile", updatedData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       return response.data;
     },
     onSuccess: (data) => {
+      console.log("Profile update success:", data);
       toast.success("Profile updated successfully");
       const updatedUserData = {
         ...(authUser?.username === username ? authUser : userProfile),
@@ -74,6 +78,7 @@ const ProfilePage = () => {
 
   const isOwnProfile = authUser?.username === username;
   const userData = isOwnProfile ? authUser : userProfile;
+  console.log("ProfilePage userData:", userData); // Log userData
 
   const handleSave = (updatedData) => {
     updateProfile(updatedData);
@@ -91,12 +96,7 @@ const ProfilePage = () => {
                 onSave={handleSave}
               />
             </div>
-
-            <RatingSection
-              userData={userData}
-              isOwnProfile={isOwnProfile}
-            />
-
+            <RatingSection userData={userData} isOwnProfile={isOwnProfile} />
             <div className="bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg p-6 border border-blue-700/40 hover:shadow-blue-700/20 transition-all duration-300">
               <AboutSection
                 userData={userData}
@@ -105,7 +105,6 @@ const ProfilePage = () => {
               />
             </div>
           </div>
-
           <div className="lg:col-span-1 space-y-8">
             <div className="bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg p-6 border border-yellow-600/40 hover:shadow-yellow-600/20 transition-all duration-300">
               <h2 className="text-2xl font-bold text-green-400 mb-5 tracking-tight drop-shadow-md">
@@ -119,7 +118,6 @@ const ProfilePage = () => {
                 username={username}
               />
             </div>
-
             <div className="bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg p-6 border border-purple-600/40 hover:shadow-purple-600/20 transition-all duration-300">
               <h2 className="text-2xl font-bold text-purple-400 mb-5 tracking-tight drop-shadow-md">
                 Education
@@ -130,7 +128,6 @@ const ProfilePage = () => {
                 onSave={handleSave}
               />
             </div>
-
             <div className="bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg p-6 border border-orange-600/40 hover:shadow-orange-600/20 transition-all duration-300">
               <h2 className="text-2xl font-bold text-orange-400 mb-5 tracking-tight drop-shadow-md">
                 Sports Skills & Interests
@@ -144,7 +141,6 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
-
       <footer className="mt-12 py-8 bg-gray-900/95 backdrop-blur-md border-t border-blue-700/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-gray-400">
           <div className="flex justify-center space-x-8 mb-6">

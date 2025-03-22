@@ -73,7 +73,6 @@ const AchievementsSection = ({ userData, isOwnProfile, onSave, queryClient, user
     setIsEditing(false);
   };
 
-  
   return (
     <div className="bg-gray-900/95 backdrop-blur-xl rounded-2xl shadow-2xl p-6 border border-yellow-500/30 hover:shadow-yellow-500/10 transition-all duration-500 transform hover:-translate-y-1">
       <h2 className="text-3xl font-extrabold text-green-400 mb-6 tracking-wide drop-shadow-lg">

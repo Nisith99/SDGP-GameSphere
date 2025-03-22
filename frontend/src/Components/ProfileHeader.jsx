@@ -5,11 +5,11 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState({});
 
-  console.log("ProfileHeader received userData:", userData); // Log incoming userData
+  console.log("ProfileHeader received userData:", userData);
 
   const handleSaveChanges = () => {
     if (Object.keys(editedData).length === 0) {
-      console.log("No changes to save, exiting edit mode"); // Log no changes
+      console.log("No changes to save, exiting edit mode");
       setIsEditing(false);
       return;
     }
@@ -25,12 +25,12 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
       name: editedData.name,
       headline: editedData.headline,
       location: editedData.location,
-      profilePicture: editedData.profilePicture?.name, // Log file name
-      bannerImg: editedData.bannerImg?.name, // Log file name
-    }); // Debug log for FormData content
+      profilePicture: editedData.profilePicture?.name,
+      bannerImg: editedData.bannerImg?.name,
+    });
 
-    onSave(formData); // Pass FormData to ProfilePage
-    console.log("FormData sent to onSave"); // Confirm send
+    onSave(formData);
+    console.log("FormData sent to onSave");
     setEditedData({});
     setIsEditing(false);
   };
@@ -38,13 +38,22 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
   const handleFileChange = (e, field) => {
     const file = e.target.files[0];
     if (file) {
-      console.log(`File selected for ${field}:`, file.name, file.size, file.type); // Log file details
+      console.log(`File selected for ${field}:`, file.name, file.size, file.type);
       setEditedData({ ...editedData, [field]: file });
-      console.log("Updated editedData with file:", editedData); // Log state update
+      console.log("Updated editedData with file:", editedData);
     } else {
       console.log(`No file selected for ${field}`);
     }
   };
+
+  // Calculate overall ranking
+  const totalScore = userData.achievements?.reduce((sum, ach) => sum + (ach.score || 0), 0) || 0;
+  const getRanking = (score) => {
+    if (score >= 500) return { label: "Gold", color: "bg-gradient-to-r from-yellow-400 to-yellow-600" };
+    if (score >= 250) return { label: "Silver", color: "bg-gradient-to-r from-gray-300 to-gray-500" };
+    return { label: "Bronze", color: "bg-gradient-to-r from-orange-600 to-orange-800" };
+  };
+  const ranking = getRanking(totalScore);
 
   return (
     <div className="bg-gray shadow rounded-lg mb-6">
@@ -83,7 +92,7 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
             }
             alt={userData.name}
             className="w-32 h-32 rounded-full border-4 border-white mx-auto"
-            onError={(e) => console.log("Profile picture load error:", e.target.src)} // Log image load errors
+            onError={(e) => console.log("Profile picture load error:", e.target.src)}
           />
           {isOwnProfile && isEditing && (
             <label className="absolute bottom-0 right-0 w-8 h-8 text-gray-500 cursor-pointer">
@@ -129,9 +138,9 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
                     key={star}
                     size={16}
                     className={`${star <= Math.round(userData.averageRating)
-                        ? "text-yellow-400 fill-yellow-400"
-                        : "text-gray-400"
-                      }`}
+                      ? "text-yellow-400 fill-yellow-400"
+                      : "text-gray-400"
+                    }`}
                   />
                 ))}
               </div>
@@ -141,18 +150,25 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
             </div>
           )}
 
-          <div className="flex justify-center items-center mt-2">
-            <MapPin size={16} className="text-gray-500 mr-1" />
-            {isEditing ? (
-              <input
-                type="text"
-                value={editedData.location ?? userData.location}
-                onChange={(e) => setEditedData({ ...editedData, location: e.target.value })}
-                className="text-gray-600 text-center bg-gray-800 text-white border-none"
-              />
-            ) : (
-              <span className="text-gray-600">{userData.location}</span>
-            )}
+          <div className="flex justify-center items-center mt-2 space-x-4">
+            <div className="flex items-center">
+              <MapPin size={16} className="text-gray-500 mr-1" />
+              {isEditing ? (
+                <input
+                  type="text"
+                  value={editedData.location ?? userData.location}
+                  onChange={(e) => setEditedData({ ...editedData, location: e.target.value })}
+                  className="text-gray-600 text-center bg-gray-800 text-white border-none"
+                />
+              ) : (
+                <span className="text-gray-600">{userData.location}</span>
+              )}
+            </div>
+            <span
+              className={`${ranking.color} text-white px-3 py-1 rounded-full text-sm font-medium`}
+            >
+              {ranking.label}
+            </span>
           </div>
         </div>
 
