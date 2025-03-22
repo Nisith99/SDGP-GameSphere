@@ -1,9 +1,11 @@
 // backend/controllers/user.controller.js
-import User from "../models/user.model.js";
 import mongoose from "mongoose";
 import path from "path";
 import fs from "fs/promises";
 import { fileURLToPath } from "url";
+//import { User } from "../models/user.model.js";
+import User from "../models/user.model.js";
+import cloudinary from "cloudinary";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -155,58 +157,86 @@ export const getSuggestedConnections = async (req, res) => {
   }
 };
 
-// Update profile
+// Configure Cloudinary (move to a config file if already done)
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 export const updateProfile = async (req, res) => {
   try {
-    const userId = req.user._id;
-    const { name, headline, location, about } = req.body;
+    console.log("Received PUT /users/profile request");
+    console.log("Request headers:", req.headers);
+    console.log("Request body:", req.body);
+    console.log("Authenticated user:", req.user);
 
-    const user = await User.findById(userId);
+    // Check authentication
+    if (!req.user || !req.user._id) {
+      console.error("No authenticated user found");
+      return res.status(401).json({ message: "Unauthorized - No user found" });
+    }
+
+    const allowedFields = [
+      "name",
+      "username",
+      "headline",
+      "about",
+      "location",
+      "profilePicture",
+      "bannerImg",
+      "skills",
+      "experience",
+      "education",
+      "sport",
+      "achievements",
+    ];
+
+    const updatedData = {};
+    for (const field of allowedFields) {
+      if (req.body[field] !== undefined && req.body[field] !== null) {
+        if (field === "achievements") {
+          try {
+            console.log("Raw achievements data:", req.body[field]);
+            updatedData[field] = JSON.parse(req.body[field]);
+            console.log("Parsed achievements:", updatedData[field]);
+          } catch (jsonError) {
+            console.error("Error parsing achievements:", jsonError);
+            return res.status(400).json({ message: "Invalid achievements data format", error: jsonError.message });
+          }
+        } else {
+          updatedData[field] = req.body[field];
+        }
+      }
+    }
+
+    console.log("Final data to update:", updatedData);
+
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      { $set: updatedData },
+      { new: true, runValidators: true }
+    ).select("-password");
+
     if (!user) {
+      console.error("User not found for ID:", req.user._id);
       return res.status(404).json({ message: "User not found" });
     }
-    if (req.body.achievements) {
-      updatedData.achievements = req.body.achievements;
-    }
 
-    if (name !== undefined) user.name = name;
-    if (headline !== undefined) user.headline = headline;
-    if (location !== undefined) user.location = location;
-    if (about !== undefined) user.about = about;
-
-    if (req.files) {
-      const { profilePicture, bannerImg } = req.files;
-
-      if (profilePicture) {
-        const profilePicturePath = path.join(
-          __dirname,
-          "../uploads/profile",
-          `${userId}-${Date.now()}-${profilePicture.name}`
-        );
-        await profilePicture.mv(profilePicturePath);
-        user.profilePicture = `/uploads/profile/${path.basename(profilePicturePath)}`;
-      }
-
-      if (bannerImg) {
-        const bannerImgPath = path.join(
-          __dirname,
-          "../uploads/banner",
-          `${userId}-${Date.now()}-${bannerImg.name}`
-        );
-        await bannerImg.mv(bannerImgPath);
-        user.bannerImg = `/uploads/banner/${path.basename(bannerImgPath)}`;
-      }
-    }
-
-    await user.save();
-
-    const updatedUser = await User.findById(userId).select("-password");
-    res.status(200).json({
-      message: "Profile updated successfully",
-      user: updatedUser,
-    });
+    console.log("Updated user:", user);
+    res.json({ user });
   } catch (error) {
-    console.error("Error in updateProfile:", error.message, error.stack);
-    res.status(500).json({ message: "Server error" });
+    console.error("Error in updateProfile controller:", {
+      message: error.message,
+      stack: error.stack,
+      details: error,
+    });
+    if (error.code === 11000) {
+      return res.status(400).json({ message: "Username or email already exists" });
+    }
+    if (error.name === "ValidationError") {
+      return res.status(400).json({ message: "Validation error", details: error.errors });
+    }
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
