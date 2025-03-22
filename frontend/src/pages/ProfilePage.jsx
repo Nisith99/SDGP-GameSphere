@@ -1,10 +1,11 @@
+// frontend/src/pages/ProfilePage.jsx
 import { useParams } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "../lib/axios";
 import ProfileHeader from "../components/ProfileHeader";
 import RatingSection from "../components/RatingSection";
-import AboutSection from "../Components/AboutSection";
-import AchievementsSection from "../Components/AchievementsSection";
+import AboutSection from "../Components/AboutSection"; 
+import AchievementsSection from "../components/AchievementsSection"; 
 import EducationSection from "../components/EducationSection";
 import SkillsSection from "../components/SkillsSection";
 import toast from "react-hot-toast";
@@ -26,14 +27,14 @@ const ProfilePage = () => {
 
   const { mutate: updateProfile, isLoading: isUpdating } = useMutation({
     mutationFn: async (updatedData) => {
+      console.log("Sending updated data:", updatedData); // Debug log
       const response = await axiosInstance.put("/users/profile", updatedData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      return response.data; // Return the full response data
+      return response.data;
     },
     onSuccess: (data) => {
       toast.success("Profile updated successfully");
-      // Merge the updated data with existing authUser or userProfile
       const updatedUserData = {
         ...(authUser?.username === username ? authUser : userProfile),
         ...data.user,
@@ -105,6 +106,7 @@ const ProfilePage = () => {
           <div className="lg:col-span-1 space-y-8">
             <div className="bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg p-6 border border-yellow-600/40 hover:shadow-yellow-600/20 transition-all duration-300">
               <h2 className="text-2xl font-bold text-green-400 mb-5 tracking-tight drop-shadow-md">
+                Achievements
               </h2>
               <AchievementsSection
                 userData={userData}

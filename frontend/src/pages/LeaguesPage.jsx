@@ -75,8 +75,9 @@ const LeaguesPage = () => {
                 {trendingLeagues.length > 0 ? (
                   <div className="flex overflow-x-auto space-x-6 pb-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
                     {trendingLeagues.map((league) => (
-                      <div
+                      <Link
                         key={league._id}
+                        to={`/leagues/${league.name.toLowerCase().replace(/\s+/g, "-")}`}
                         className="min-w-[240px] bg-white rounded-lg shadow-md p-5 border border-gray-100 hover:shadow-lg transition-all"
                       >
                         <div className="flex items-center mb-3">
@@ -95,13 +96,16 @@ const LeaguesPage = () => {
                           <span>Active: {league.active.toLocaleString()}</span>
                         </div>
                         <button
-                          onClick={() => joinLeagueMutation.mutate(league._id)}
+                          onClick={(e) => {
+                            e.preventDefault(); // Prevent Link navigation
+                            joinLeagueMutation.mutate(league._id);
+                          }}
                           disabled={joinLeagueMutation.isLoading}
                           className="w-full py-2 px-4 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors disabled:opacity-50"
                         >
                           {joinLeagueMutation.isLoading ? "Joining..." : "Join Now"}
                         </button>
-                      </div>
+                      </Link>
                     ))}
                   </div>
                 ) : (
@@ -118,8 +122,9 @@ const LeaguesPage = () => {
                 {newClubs.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {newClubs.map((club) => (
-                      <div
+                      <Link
                         key={club._id}
+                        to={`/leagues/${club.name.toLowerCase().replace(/\s+/g, "-")}`}
                         className="bg-white rounded-lg shadow-md p-5 border border-gray-100 hover:shadow-lg transition-all"
                       >
                         <div className="flex items-center mb-3">
@@ -139,20 +144,20 @@ const LeaguesPage = () => {
                         </div>
                         <div className="flex space-x-2">
                           <button
-                            onClick={() => joinLeagueMutation.mutate(club._id)}
+                            onClick={(e) => {
+                              e.preventDefault(); // Prevent Link navigation
+                              joinLeagueMutation.mutate(club._id);
+                            }}
                             disabled={joinLeagueMutation.isLoading}
                             className="flex-1 py-2 px-4 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors disabled:opacity-50"
                           >
                             {joinLeagueMutation.isLoading ? "Joining..." : "Join Now"}
                           </button>
-                          <Link
-                            to={`/clubs/${club.name.toLowerCase().replace(/\s+/g, "-")}`}
-                            className="flex-1 py-2 px-4 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors text-center"
-                          >
+                          <div className="flex-1 py-2 px-4 bg-blue-100 text-blue-700 rounded-lg hover:bg-blue-200 transition-colors text-center">
                             View Details
-                          </Link>
+                          </div>
                         </div>
-                      </div>
+                      </Link>
                     ))}
                   </div>
                 ) : (
