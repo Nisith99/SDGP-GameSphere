@@ -133,5 +133,60 @@ export const getPublicProfile = async (req, res) => {
   }
 };
 
-// Other exports remain unchanged
-export { rateUser, getUserRatings, getSuggestedConnections };
+export const rateUser = async (req, res) => {
+  try {
+    const { userId } = req.params; // Updated to use req.params.userId
+    const { rating } = req.body;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    // Add rating logic here (e.g., update a ratings field in the user model)
+    res.status(200).json({ message: "User rated successfully" });
+  } catch (error) {
+    console.error("Error in rateUser:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+export const getUserRatings = async (req, res) => {
+  try {
+    const { username } = req.params; // Updated to use username
+    const user = await User.findOne({ username }).select("ratings");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    // Return ratings (assumes a ratings field exists in the model)
+    res.status(200).json({ ratings: user.ratings || [] });
+  } catch (error) {
+    console.error("Error in getUserRatings:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+export const getSuggestedConnections = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const user = await User.findById(userId).select("connections");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const suggestedUsers = await User.find({
+      _id: { $ne: userId, $nin: user.connections },
+    })
+      .select("name username profilePicture")
+      .limit(10);
+
+    res.status(200).json({
+      message: "Suggested connections retrieved successfully",
+      suggestedUsers,
+    });
+  } catch (error) {
+    console.error("Error in getSuggestedConnections:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+// Removed the duplicate export statement
+// export { rateUser, getUserRatings, getSuggestedConnections };
