@@ -1,4 +1,4 @@
-// user.controller.js
+// backend/controllers/user.controller.js
 import User from "../models/user.model.js";
 import mongoose from "mongoose";
 import path from "path";
@@ -132,8 +132,6 @@ export const getUserRatings = async (req, res) => {
   }
 };
 
-
-
 // Get suggested connections
 export const getSuggestedConnections = async (req, res) => {
   try {
@@ -168,13 +166,11 @@ export const updateProfile = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Update only the fields that are provided, preserving others
     if (name !== undefined) user.name = name;
     if (headline !== undefined) user.headline = headline;
     if (location !== undefined) user.location = location;
     if (about !== undefined) user.about = about;
 
-    // Handle file uploads
     if (req.files) {
       const { profilePicture, bannerImg } = req.files;
 
@@ -201,7 +197,6 @@ export const updateProfile = async (req, res) => {
 
     await user.save();
 
-    // Return the full updated user object
     const updatedUser = await User.findById(userId).select("-password");
     res.status(200).json({
       message: "Profile updated successfully",
