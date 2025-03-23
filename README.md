@@ -54,9 +54,6 @@ PORT=5000
 MONGO_URI=mongodb+srv://<your-username>:<your-password>@cluster0.1kcfn.mongodb.net/gamesphere?retryWrites=true&w=majority
 JWT_SECRET=<yourverystrongsecret>
 NODE_ENV=development
-MAILTRAP_TOKEN=<your_mailtrap_token>
-EMAIL_FROM=mailtrap@demomailtrap.com
-EMAIL_FROM_NAME=<Your_Name>
 CLOUDINARY_API_KEY="134779465717673"
 CLOUDINARY_API_SECRET=iMKOOQwrfLj6PE-kXm2aRWpaYrk
 CLOUDINARY_CLOUD_NAME=dhc5jpevd
