@@ -31,9 +31,8 @@ const Navbar = () => {
     queryKey: ["searchUsers", searchQuery],
     queryFn: async () => {
       if (!searchQuery.trim()) return [];
-      // Corrected endpoint - removed extra /api
       const response = await axiosInstance.get(`/users/search?q=${searchQuery}`);
-      return response.data.users; // Adjust based on backend response structure
+      return response.data.users;
     },
     enabled: !!searchQuery.trim(),
     placeholderData: [],
@@ -57,24 +56,26 @@ const Navbar = () => {
     });
 
   return (
-    <nav className="bg-gradient-to-r from-gray-800 to-gray-900 shadow-lg sticky top-0 z-10">
-      <div className="max-w-7xl mx-auto px-4">
+    <nav className="bg-white text-gray-800 shadow-md sticky top-0 z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-3">
-          <div className="flex items-center space-x-4">
-            <Link to="/" className="flex items-center">
+          {/* Logo Section */}
+          <div className="flex items-center space-x-3">
+            <Link to="/" className="flex items-center group">
               <img
-                className="h-10 rounded"
+                className="h-10 rounded-md transition-transform duration-200 group-hover:scale-105"
                 src="/gameSphere_logo.png"
                 alt="GameSphere"
               />
-              <span className="ml-2 text-gray-100 font-bold text-xl hidden md:block">
+              <span className="ml-2 text-xl font-bold tracking-tight text-gray-900 group-hover:text-blue-600 transition-colors duration-200 hidden md:block">
                 GameSphere
               </span>
             </Link>
           </div>
 
+          {/* Search Bar (Authenticated Users) */}
           {authUser && (
-            <div className="flex-1 mx-6 relative">
+            <div className="flex-1 mx-4 md:mx-6 relative">
               <div className="max-w-md mx-auto">
                 <div className="relative">
                   <input
@@ -82,44 +83,44 @@ const Navbar = () => {
                     placeholder="Search people..."
                     value={searchQuery}
                     onChange={handleSearch}
-                    className="w-full py-2 px-4 pl-10 bg-gray-700 text-gray-100 border border-gray-600 rounded-full focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent placeholder-gray-400 text-sm shadow-md transition-all duration-200"
+                    className="w-full py-2 px-4 pl-10 bg-gray-100 text-gray-800 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-500 text-sm shadow-sm transition-all duration-300 hover:bg-gray-200"
                   />
                   <Search
                     size={18}
-                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
                   />
                 </div>
                 {searchQuery.trim() && (
-                  <div className="absolute top-full left-0 right-0 mt-2 bg-gray-800 border border-gray-700 rounded-lg shadow-xl max-h-72 overflow-y-auto z-20">
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg max-h-72 overflow-y-auto z-20">
                     {isSearching ? (
-                      <div className="px-4 py-3 text-gray-400 text-sm">Searching...</div>
+                      <div className="px-4 py-3 text-gray-600 text-sm">Searching...</div>
                     ) : suggestedPlayers?.length > 0 ? (
                       suggestedPlayers.map((user) => (
                         <Link
                           key={user._id || user.username}
                           to={`/profile/${user.username}`}
-                          className="flex items-center px-4 py-3 text-gray-200 hover:bg-gray-700 transition-colors duration-150 border-b border-gray-700 last:border-b-0"
+                          className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors duration-150 border-b border-gray-200 last:border-b-0"
                           onClick={() => setSearchQuery("")}
                         >
                           <img
                             src={user.profilePicture || "https://via.placeholder.com/40"}
                             alt={user.name}
-                            className="w-10 h-10 rounded-full mr-3 object-cover"
+                            className="w-10 h-10 rounded-full mr-3 object-cover border border-gray-300"
                           />
                           <div>
-                            <div className="font-semibold">{user.name}</div>
-                            <div className="text-xs text-gray-400">@{user.username}</div>
+                            <div className="font-medium text-gray-800">{user.name}</div>
+                            <div className="text-xs text-gray-500">@{user.username}</div>
                             {user.sport && (
-                              <div className="text-xs text-yellow-400">{user.sport}</div>
+                              <div className="text-xs text-blue-500">{user.sport}</div>
                             )}
                             {networkConnections.some((conn) => conn.userId === user._id) && (
-                              <div className="text-xs text-green-400">In your network</div>
+                              <div className="text-xs text-green-600">In your network</div>
                             )}
                           </div>
                         </Link>
                       ))
                     ) : (
-                      <div className="px-4 py-3 text-gray-400 text-sm">No users found</div>
+                      <div className="px-4 py-3 text-gray-500 text-sm">No users found</div>
                     )}
                   </div>
                 )}
@@ -127,61 +128,89 @@ const Navbar = () => {
             </div>
           )}
 
-          <div className="flex items-center gap-2 md:gap-6">
+          {/* Navigation Links */}
+          <div className="flex items-center gap-2 sm:gap-4 md:gap-6">
             {authUser ? (
               <>
-                <Link to="/" className="text-gray-300 hover:text-white flex flex-col items-center transition-colors duration-200">
-                  <Home size={20} />
-                  <span className="text-xs hidden md:block">Home</span>
+                <Link
+                  to="/"
+                  className="text-gray-600 hover:text-blue-600 flex flex-col items-center transition-all duration-200 hover:scale-105"
+                >
+                  <Home size={22} />
+                  <span className="text-xs mt-1 hidden md:block">Home</span>
                 </Link>
-                <Link to="/leagues" className="text-gray-300 hover:text-white flex flex-col items-center transition-colors duration-200">
-                  <Trophy size={20} />
-                  <span className="text-xs hidden md:block">Clubs</span>
+                <Link
+                  to="/leagues"
+                  className="text-gray-600 hover:text-blue-600 flex flex-col items-center transition-all duration-200 hover:scale-105"
+                >
+                  <Trophy size={22} />
+                  <span className="text-xs mt-1 hidden md:block">Clubs</span>
                 </Link>
-                <Link to="/stats" className="text-gray-300 hover:text-white flex flex-col items-center transition-colors duration-200">
-                  <Activity size={20} />
-                  <span className="text-xs hidden md:block">Live Stats</span>
+                <Link
+                  to="/stats"
+                  className="text-gray-600 hover:text-blue-600 flex flex-col items-center transition-all duration-200 hover:scale-105"
+                >
+                  <Activity size={22} />
+                  <span className="text-xs mt-1 hidden md:block">Live Stats</span>
                 </Link>
-                <Link to="/network" className="text-gray-300 hover:text-white flex flex-col items-center relative transition-colors duration-200">
-                  <Users size={20} />
-                  <span className="text-xs hidden md:block">Connections</span>
+                <Link
+                  to="/network"
+                  className="text-gray-600 hover:text-blue-600 flex flex-col items-center relative transition-all duration-200 hover:scale-105"
+                >
+                  <Users size={22} />
+                  <span className="text-xs mt-1 hidden md:block">Connections</span>
                   {unreadConnectionRequestsCount > 0 && (
-                    <span className="absolute -top-1 -right-1 md:right-4 bg-yellow-400 text-gray-900 text-xs font-bold rounded-full size-3 md:size-4 flex items-center justify-center">
+                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-md">
                       {unreadConnectionRequestsCount}
                     </span>
                   )}
                 </Link>
-                <Link to="/notifications" className="text-gray-300 hover:text-white flex flex-col items-center relative transition-colors duration-200">
-                  <Bell size={20} />
-                  <span className="text-xs hidden md:block">Alerts</span>
+                <Link
+                  to="/notifications"
+                  className="text-gray-600 hover:text-blue-600 flex flex-col items-center relative transition-all duration-200 hover:scale-105"
+                >
+                  <Bell size={22} />
+                  <span className="text-xs mt-1 hidden md:block">Alerts</span>
                   {unreadNotificationCount > 0 && (
-                    <span className="absolute -top-1 -right-1 md:right-4 bg-yellow-400 text-gray-900 text-xs font-bold rounded-full size-3 md:size-4 flex items-center justify-center">
+                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-md">
                       {unreadNotificationCount}
                     </span>
                   )}
                 </Link>
-                <Link to="/chat" className="text-gray-300 hover:text-white flex flex-col items-center relative transition-colors duration-200">
-                  <MessageSquare size={20} />
-                  <span className="text-xs hidden md:block">Messenger</span>
+                <Link
+                  to="/chat"
+                  className="text-gray-600 hover:text-blue-600 flex flex-col items-center relative transition-all duration-200 hover:scale-105"
+                >
+                  <MessageSquare size={22} />
+                  <span className="text-xs mt-1 hidden md:block">Messenger</span>
                 </Link>
-                <Link to={`/profile/${authUser.username}`} className="text-gray-300 hover:text-white flex flex-col items-center transition-colors duration-200">
-                  <User size={20} />
-                  <span className="text-xs hidden md:block">Profile</span>
+                <Link
+                  to={`/profile/${authUser.username}`}
+                  className="text-gray-600 hover:text-blue-600 flex flex-col items-center transition-all duration-200 hover:scale-105"
+                >
+                  <User size={22} />
+                  <span className="text-xs mt-1 hidden md:block">Profile</span>
                 </Link>
                 <button
-                  className="flex items-center space-x-1 text-sm text-gray-300 hover:text-white transition-colors duration-200"
+                  className="flex items-center space-x-1 text-gray-600 hover:text-red-600 transition-all duration-200 hover:scale-105"
                   onClick={() => logout()}
                 >
-                  <LogOut size={20} />
-                  <span className="hidden md:inline">Logout</span>
+                  <LogOut size={22} />
+                  <span className="text-xs hidden md:inline">Logout</span>
                 </button>
               </>
             ) : (
               <>
-                <Link to="/login" className="px-4 py-2 text-sm font-medium text-gray-200 border border-gray-400 rounded-md hover:bg-gray-700 hover:text-white transition-colors duration-200">
+                <Link
+                  to="/login"
+                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 hover:text-gray-800 transition-all duration-200 shadow-sm"
+                >
                   Sign In
                 </Link>
-                <Link to="/signup" className="px-4 py-2 text-sm font-medium text-gray-900 bg-gray-200 rounded-md hover:bg-yellow-400 transition-colors duration-200">
+                <Link
+                  to="/signup"
+                  className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-all duration-200 shadow-sm"
+                >
                   Join Team
                 </Link>
               </>
