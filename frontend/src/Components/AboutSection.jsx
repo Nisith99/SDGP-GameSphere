@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-const AboutSection = ({ userData, isOwnProfile, onSave }) => {
+const AboutSection = ({ userData, isOwnProfile, onSave, isUpdating }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [about, setAbout] = useState(userData.about || "");
+  const [about, setAbout] = useState(userData?.about || "");
 
   const handleSave = () => {
     setIsEditing(false);
@@ -11,7 +11,7 @@ const AboutSection = ({ userData, isOwnProfile, onSave }) => {
 
   return (
     <div className="bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg p-6 border border-blue-700/40 transition-all duration-300 hover:shadow-blue-700/20">
-      <h2 className="text-2xl font-bold text-blue-400 mb-5 tracking-tight drop-shadow-md">
+            <h2 className="text-2xl font-bold text-blue-400 mb-5 tracking-tight drop-shadow-md">
         About
       </h2>
       {isOwnProfile ? (
@@ -27,14 +27,15 @@ const AboutSection = ({ userData, isOwnProfile, onSave }) => {
             <button
               onClick={handleSave}
               className="bg-blue-600 text-white py-2 px-6 rounded-lg font-medium hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-300"
+              disabled={isUpdating} 
             >
-              Save
+              {isUpdating ? "Saving..." : "Save"}
             </button>
           </div>
         ) : (
           <div className="space-y-4">
             <p className="text-gray-300 leading-relaxed">
-              {userData.about || "No about info yet."}
+              {userData?.about || "No about info yet."}
             </p>
             <button
               onClick={() => setIsEditing(true)}
@@ -46,7 +47,7 @@ const AboutSection = ({ userData, isOwnProfile, onSave }) => {
         )
       ) : (
         <p className="text-gray-300 leading-relaxed">
-          {userData.about || "No about info available."}
+          {userData?.about || "No about info available."}
         </p>
       )}
     </div>
