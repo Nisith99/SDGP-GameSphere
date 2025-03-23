@@ -1,11 +1,52 @@
-import { useState } from "react";
-import { Camera, MapPin, Star } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Camera, MapPin, Star, Users } from "lucide-react"; // Added Users icon for leagues
+import axios from "axios";
 
 const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState({});
+  const [userLeagues, setUserLeagues] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   console.log("ProfileHeader received userData:", userData);
+
+  useEffect(() => {
+    const fetchUserLeagues = async () => {
+      if (!userData?._id) return;
+      
+      try {
+        setLoading(true);
+        const response = await axios.get('/api/leagues', {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        
+        const joinedLeagues = response.data.filter(league => {
+          return league.membersList.some(memberId => {
+            const memberIdStr = typeof memberId === 'object' ? 
+              (memberId.toString ? memberId.toString() : String(memberId)) : 
+              String(memberId);
+            
+            const userIdStr = typeof userData._id === 'object' ? 
+              (userData._id.toString ? userData._id.toString() : String(userData._id)) : 
+              String(userData._id);
+            
+            return memberIdStr === userIdStr;
+          });
+        });
+        
+        setUserLeagues(joinedLeagues);
+        console.log("User's leagues:", joinedLeagues);
+      } catch (error) {
+        console.error("Error fetching user leagues:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchUserLeagues();
+  }, [userData]);
 
   const handleSaveChanges = () => {
     if (Object.keys(editedData).length === 0) {
@@ -107,18 +148,17 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
         </div>
 
         <div className="text-center mb-4">
-          {isEditing ? (
-            <input
-              type="text"
-              value={editedData.name ?? userData.name}
-              onChange={(e) => setEditedData({ ...editedData, name: e.target.value })}
-              className="text-2xl font-bold mb-2 text-center w-full bg-white border border-gray-300 rounded-md text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 p-1"
-            />
-          ) : (
-            <h1 className="text-2xl font-bold mb-2 text-gray-800">{userData.name}</h1>
-          )}
-
-          <div className="text-center mb-4">
+            {isEditing ? (
+              <input
+                type="text"
+                value={editedData.name ?? userData.name}
+                onChange={(e) => setEditedData({ ...editedData, name: e.target.value })}
+                className="text-2xl font-bold mb-2 text-center w-full bg-white border border-gray-300 rounded-md text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 p-1"
+              />
+            ) : (
+              <h1 className="text-2xl font-bold mb-2 text-gray-800">{userData.name}</h1>
+            )}
+            <p className="text-gray-600 mt-1">@{userData.username}</p>
             {isEditing ? (
               <div className="flex items-center justify-center">
                 <span className="text-gray-500 mr-2">Player Type:</span>
@@ -135,7 +175,6 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
                 {userData.headline}
               </p>
             )}
-          </div>
           {userData.averageRating > 0 && !isEditing && (
             <div className="flex items-center justify-center mt-2 mb-2">
               <div className="flex">
@@ -176,6 +215,35 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
               {ranking.label}
             </span>
           </div>
+
+          {/* Leagues Section with robust ID comparison */}
+          {!isEditing && (
+            <div className="mt-4">
+              <div className="flex items-center justify-center">
+                <Users size={16} className="text-gray-500 mr-2" />
+                <span className="text-gray-500">Joined Leagues:</span>
+              </div>
+              {loading ? (
+                <p className="text-gray-500 text-sm mt-1">Loading leagues...</p>
+              ) : userLeagues.length > 0 ? (
+                <div className="flex flex-wrap justify-center gap-2 mt-1">
+                  {userLeagues.map((league) => (
+                    <span
+                      key={league._id}
+                      className="px-3 py-1 rounded-full text-sm shadow-sm text-white"
+                      style={{ 
+                        backgroundColor: league.color || '#3b82f6',
+                      }}
+                    >
+                      {league.name}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-gray-500 text-sm mt-1">Not a member of any leagues</p>
+              )}
+            </div>
+          )}
         </div>
 
         {isOwnProfile && (
