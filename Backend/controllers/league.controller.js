@@ -40,7 +40,7 @@ export const joinLeague = async (req, res) => {
 
     league.membersList.push(userId);
     league.members += 1;
-    league.active += 1; // Increment active for simplicity; adjust logic as needed
+    league.active += 1; 
     await league.save();
 
     res.status(200).json({ message: "Joined league successfully" });

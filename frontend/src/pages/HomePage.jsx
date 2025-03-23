@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "../lib/axios";
 import Sidebar from "../components/Sidebar";
 import PostCreation from "../components/PostCreation";
@@ -7,6 +7,8 @@ import { Trophy } from "lucide-react";
 import RecommendedUser from "../components/RecommendedUser";
 
 const HomePage = () => {
+  const queryClient = useQueryClient();
+
   const { data: authUser } = useQuery({ queryKey: ["authUser"] });
 
   const { data: recommendedUsers } = useQuery({
@@ -24,6 +26,30 @@ const HomePage = () => {
       return res.data;
     },
   });
+
+  // Mutation to send a connection request
+  const connectMutation = useMutation({
+    mutationFn: (userId) => axiosInstance.post(`/users/connect/${userId}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["recommendedUsers"]);
+    },
+  });
+
+  // Mutation to cancel a connection request
+  const cancelMutation = useMutation({
+    mutationFn: (userId) => axiosInstance.post(`/users/cancel-connect/${userId}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["recommendedUsers"]);
+    },
+  });
+
+  const handleConnectToggle = (userId, isPending) => {
+    if (isPending) {
+      cancelMutation.mutate(userId);
+    } else {
+      connectMutation.mutate(userId);
+    }
+  };
 
   const displayedUsers = recommendedUsers?.slice(0, Math.max(4, recommendedUsers?.length)) || [];
 
@@ -78,7 +104,11 @@ const HomePage = () => {
                   Players You May Know
                 </h2>
                 {displayedUsers.map((user) => (
-                  <RecommendedUser key={user._id} user={user} />
+                  <RecommendedUser
+                    key={user._id}
+                    user={user}
+                    onConnectToggle={handleConnectToggle}
+                  />
                 ))}
               </div>
             )}

@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 # GameSphere
 
+=======
+
+<<<<<<<< HEAD:Backend/README.md
+========
+>>>>>>> 6d4d32d40b35442b4c0b066d8b5030c8cd582296
 GameSphere is a gaming community platform designed to connect players, manage profiles, and foster engagement through features like user ratings and suggested connections. This repository contains both the backend (Node.js/Express) and frontend (assumed to be a Node-based framework like React/Vite) components of the application.
 
 ## Project Structure
@@ -54,9 +60,12 @@ PORT=5000
 MONGO_URI=mongodb+srv://<your-username>:<your-password>@cluster0.1kcfn.mongodb.net/gamesphere?retryWrites=true&w=majority
 JWT_SECRET=<yourverystrongsecret>
 NODE_ENV=development
+<<<<<<< HEAD
 MAILTRAP_TOKEN=<your_mailtrap_token>
 EMAIL_FROM=mailtrap@demomailtrap.com
 EMAIL_FROM_NAME=<Your_Name>
+=======
+>>>>>>> 6d4d32d40b35442b4c0b066d8b5030c8cd582296
 CLOUDINARY_API_KEY="134779465717673"
 CLOUDINARY_API_SECRET=iMKOOQwrfLj6PE-kXm2aRWpaYrk
 CLOUDINARY_CLOUD_NAME=dhc5jpevd
@@ -105,3 +114,7 @@ npm run dev
 - **PUT /api/v1/users/profile**: Update authenticated user's profile (requires token).
 - **POST /api/v1/users/rate/:userId**: Rate a user (requires token).
 - **GET /api/v1/users/suggestions**: Get suggested connections (requires token).
+<<<<<<< HEAD
+=======
+>>>>>>>> 6d4d32d40b35442b4c0b066d8b5030c8cd582296:README.md
+>>>>>>> 6d4d32d40b35442b4c0b066d8b5030c8cd582296
