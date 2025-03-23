@@ -14,7 +14,6 @@ import leagueRoutes from "./routes/league.route.js";
 import chatRoutes from "./routes/chat.route.js";
 import { connectDB } from "./lib/db.js";
 import fs from "fs/promises";
-import { searchUsers } from "./controllers/user.controller.js";
 import { protectRoute } from "./middleware/auth.middleware.js";
 
 dotenv.config();
@@ -27,6 +26,7 @@ app.use(express.json({ limit: "5mb" }));
 app.use(cookieParser());
 app.use(fileUpload());
 
+// Configure CORS once - don't duplicate this
 app.use(
   cors({
     origin: process.env.NODE_ENV === "production"
@@ -35,6 +35,11 @@ app.use(
     credentials: true,
   })
 );
+
+// This is duplicate and should be removed
+// app.use(cors());
+// This is duplicate and should be removed 
+// app.use(express.json());
 
 await fs.mkdir(path.join(__dirname, "uploads/profile"), { recursive: true });
 await fs.mkdir(path.join(__dirname, "uploads/banner"), { recursive: true });
@@ -51,10 +56,11 @@ app.use("/api/v1/connections", connectionRoutes);
 app.use("/api/v1/leagues", leagueRoutes);
 app.use("/api/v1/chats", chatRoutes);
 
-app.get("/api/v1/users/search", protectRoute, (req, res) => {
-  console.log("Direct /api/v1/users/search route hit with query:", req.query);
-  searchUsers(req, res);
-});
+// Remove this duplicate route - it's already defined in userRoutes
+// app.get("/api/v1/users/search", protectRoute, (req, res) => {
+//   console.log("Direct /api/v1/users/search route hit with query:", req.query);
+//   searchUsers(req, res);
+// });
 
 app.get("/api/v1/test", (req, res) => {
   console.log("Test endpoint hit");
