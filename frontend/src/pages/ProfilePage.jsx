@@ -3,8 +3,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "../lib/axios";
 import ProfileHeader from "../components/ProfileHeader";
 import RatingSection from "../components/RatingSection";
-import AboutSection from "../Components/AboutSection";
-import AchievementsSection from "../Components/AchievementsSection";
+import AboutSection from "../components/AboutSection"; // Fixed casing
+import AchievementsSection from "../components/AchievementsSection"; // Fixed casing
 import EducationSection from "../components/EducationSection";
 import SkillsSection from "../components/SkillsSection";
 import toast from "react-hot-toast";
@@ -18,22 +18,26 @@ const ProfilePage = () => {
     queryFn: () => axiosInstance.get("/auth/me").then((res) => res.data),
   });
 
-  const { data: userProfile, isLoading: isProfileLoading } = useQuery({
+  const { data: userProfile, isLoading: isProfileLoading, error } = useQuery({
     queryKey: ["userProfile", username],
-    queryFn: () => axiosInstance.get(`/users/${username}`).then((res) => res.data),
+    queryFn: () => axiosInstance.get(`/users/public/${username}`).then((res) => res.data),
     enabled: !!username,
   });
 
   const { mutate: updateProfile, isLoading: isUpdating } = useMutation({
     mutationFn: async (updatedData) => {
-      console.log("Sending updated data to server:", updatedData); // Log FormData
-      for (let [key, value] of updatedData.entries()) {
-        console.log(`FormData - ${key}:`, value);
+      console.log("Sending updated data to server:", updatedData);
+      if (updatedData instanceof FormData) {
+        for (let [key, value] of updatedData.entries()) {
+          console.log(`FormData - ${key}:`, value);
+        }
+        return axiosInstance.put("/users/profile", updatedData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        }).then((res) => res.data);
       }
-      const response = await axiosInstance.put("/users/profile", updatedData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      return response.data;
+      return axiosInstance.put("/users/profile", updatedData, {
+        headers: { "Content-Type": "application/json" },
+      }).then((res) => res.data);
     },
     onSuccess: (data) => {
       console.log("Profile update success:", data);
@@ -47,6 +51,7 @@ const ProfilePage = () => {
         queryClient.setQueryData(["authUser"], updatedUserData);
       }
       queryClient.invalidateQueries(["userProfile", username]);
+      queryClient.invalidateQueries(["authUser"]);
     },
     onError: (error) => {
       console.error("Update profile error:", {
@@ -76,9 +81,22 @@ const ProfilePage = () => {
     );
   }
 
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-blue-950 flex items-center justify-center">
+        <div className="bg-gray-900/90 backdrop-blur-md p-8 rounded-xl shadow-lg border border-red-700/40">
+          <h2 className="text-xl font-semibold text-red-400 mb-4">Error</h2>
+          <p className="text-gray-300">
+            {error.response?.data?.message || "Unable to load profile"}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   const isOwnProfile = authUser?.username === username;
   const userData = isOwnProfile ? authUser : userProfile;
-  console.log("ProfilePage userData:", userData); // Log userData
+  console.log("ProfilePage userData:", userData);
 
   const handleSave = (updatedData) => {
     updateProfile(updatedData);
@@ -102,6 +120,7 @@ const ProfilePage = () => {
                 userData={userData}
                 isOwnProfile={isOwnProfile}
                 onSave={handleSave}
+                isUpdating={isUpdating} // Pass isUpdating here
               />
             </div>
           </div>
@@ -126,6 +145,7 @@ const ProfilePage = () => {
                 userData={userData}
                 isOwnProfile={isOwnProfile}
                 onSave={handleSave}
+                isUpdating={isUpdating} // Pass isUpdating here
               />
             </div>
             <div className="bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg p-6 border border-orange-600/40 hover:shadow-orange-600/20 transition-all duration-300">
@@ -136,6 +156,7 @@ const ProfilePage = () => {
                 userData={userData}
                 isOwnProfile={isOwnProfile}
                 onSave={handleSave}
+                isUpdating={isUpdating} // Pass isUpdating here
               />
             </div>
           </div>
