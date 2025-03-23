@@ -32,29 +32,29 @@ const EducationSection = ({ userData, isOwnProfile, onSave, isUpdating }) => {
   };
 
   return (
-    <div className="bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg p-6 border border-purple-600/40 hover:shadow-purple-600/20 transition-all duration-300">
+    <div className="bg-white/90 rounded-xl shadow-md p-6 border border-purple-200 hover:shadow-lg transition-all duration-300">
       {educations.length > 0 ? (
         educations.map((edu) => (
           <div key={edu._id} className="mb-4 flex justify-between items-start">
             <div className="flex items-start">
-              <School size={20} className="mr-2 mt-1 text-purple-400" />
+              <School size={20} className="mr-2 mt-1 text-purple-600" />
               <div>
-                <h3 className="font-semibold text-gray-200">{edu.fieldOfStudy}</h3>
-                <p className="text-gray-400">{edu.school}</p>
+                <h3 className="font-semibold text-gray-800">{edu.fieldOfStudy}</h3>
+                <p className="text-gray-600">{edu.school}</p>
                 <p className="text-gray-500 text-sm">
                   {edu.startYear} - {edu.endYear || "Present"}
                 </p>
               </div>
             </div>
             {isEditing && (
-              <button onClick={() => handleDeleteEducation(edu._id)} className="text-red-500">
+              <button onClick={() => handleDeleteEducation(edu._id)} className="text-red-600">
                 <X size={20} />
               </button>
             )}
           </div>
         ))
       ) : (
-        <p className="text-gray-500">No education added yet.</p>
+        <p className="text-gray-600">No education added yet.</p>
       )}
       {isEditing && (
         <div className="mt-4 space-y-2">
@@ -63,32 +63,32 @@ const EducationSection = ({ userData, isOwnProfile, onSave, isUpdating }) => {
             placeholder="School *"
             value={newEducation.school}
             onChange={(e) => setNewEducation({ ...newEducation, school: e.target.value })}
-            className="w-full p-2 bg-gray-800 border border-purple-600/50 rounded text-gray-200"
+            className="w-full p-2 bg-gray-50 border border-purple-300 rounded text-gray-800"
           />
           <input
             type="text"
             placeholder="Field of Study *"
             value={newEducation.fieldOfStudy}
             onChange={(e) => setNewEducation({ ...newEducation, fieldOfStudy: e.target.value })}
-            className="w-full p-2 bg-gray-800 border border-purple-600/50 rounded text-gray-200"
+            className="w-full p-2 bg-gray-50 border border-purple-300 rounded text-gray-800"
           />
           <input
             type="number"
             placeholder="Start Year *"
             value={newEducation.startYear}
             onChange={(e) => setNewEducation({ ...newEducation, startYear: e.target.value })}
-            className="w-full p-2 bg-gray-800 border border-purple-600/50 rounded text-gray-200"
+            className="w-full p-2 bg-gray-50 border border-purple-300 rounded text-gray-800"
           />
           <input
             type="number"
             placeholder="End Year"
             value={newEducation.endYear}
             onChange={(e) => setNewEducation({ ...newEducation, endYear: e.target.value })}
-            className="w-full p-2 bg-gray-800 border border-purple-600/50 rounded text-gray-200"
+            className="w-full p-2 bg-gray-50 border border-purple-300 rounded text-gray-800"
           />
           <button
             onClick={handleAddEducation}
-            className="bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700 transition duration-300"
+            className="bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 transition duration-300"
           >
             Add Education
           </button>
@@ -99,15 +99,15 @@ const EducationSection = ({ userData, isOwnProfile, onSave, isUpdating }) => {
           {isEditing ? (
             <button
               onClick={handleSave}
-              className="bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700 transition duration-300"
-              disabled={isUpdating} // Now defined via props
+              className="bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 transition duration-300"
+              disabled={isUpdating}
             >
               {isUpdating ? "Saving..." : "Save Changes"}
             </button>
           ) : (
             <button
               onClick={() => setIsEditing(true)}
-              className="text-purple-400 hover:text-purple-300 transition duration-300"
+              className="text-purple-600 hover:text-purple-500 transition duration-300"
             >
               Edit Education
             </button>
