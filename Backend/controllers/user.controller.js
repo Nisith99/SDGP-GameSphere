@@ -219,6 +219,39 @@ export const getSuggestedConnections = async (req, res) => {
   }
 };
 
+export const getAllUserStats = async (req, res) => {
+  try {
+    console.log("Fetching stats for all users");
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+    const skip = (page - 1) * limit;
+
+    const users = await User.find()
+      .select("name username averageRating achievements")
+      .skip(skip)
+      .limit(limit)
+      .lean();
+
+    const totalUsers = await User.countDocuments();
+
+    if (!users || users.length === 0) {
+      console.log("No users found in the database");
+      return res.status(404).json({ message: "No users found" });
+    }
+
+    console.log(`Fetched stats for ${users.length} users on page ${page}`);
+    res.status(200).json({
+      users,
+      totalUsers,
+      totalPages: Math.ceil(totalUsers / limit),
+      currentPage: page,
+    });
+  } catch (error) {
+    console.error("Error in getAllUserStats:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 export const searchUsers = async (req, res) => {
   try {
     console.log("searchUsers function called with query:", req.query);
