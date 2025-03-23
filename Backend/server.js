@@ -12,6 +12,8 @@ import connectionRoutes from "./routes/connection.route.js";
 import leagueRoutes from "./routes/league.route.js";
 import { connectDB } from "./lib/db.js";
 import fs from "fs/promises";
+import { searchUsers } from "./controllers/user.controller.js"; // Direct import for testing
+import { protectRoute } from "./middleware/auth.middleware.js";
 
 dotenv.config();
 
@@ -45,15 +47,26 @@ app.use("/api/v1/notifications", notificationRoutes);
 app.use("/api/v1/connections", connectionRoutes);
 app.use("/api/v1/leagues", leagueRoutes);
 
+// Temporary direct route for debugging
+app.get("/api/v1/users/search", protectRoute, (req, res) => {
+  console.log("Direct /api/v1/users/search route hit with query:", req.query);
+  searchUsers(req, res); // Call the searchUsers function directly
+});
+
+// Test endpoint
+app.get("/api/v1/test", (req, res) => {
+  console.log("Test endpoint hit");
+  res.status(200).json({ message: "Server is running" });
+});
+
 app.use((req, res) => {
   console.log(`404 Not Found: ${req.method} ${req.url}`);
   res.status(404).json({ message: "Not Found" });
 });
 
-// Connect to DB and start server
 const startServer = async () => {
   try {
-    await connectDB(); // Ensure DB connects first
+    await connectDB();
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
