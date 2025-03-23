@@ -18,7 +18,6 @@ router.get("/public/:username", getPublicProfile);
 
 // Protected routes
 router.get("/suggestions", protectRoute, getSuggestedConnections);
-// Place the search route BEFORE the username parameter route to prevent conflicts
 router.get("/search", protectRoute, searchUsers);
 router.get("/:username", protectRoute, getPublicProfile);
 router.put("/profile", protectRoute, updateProfile);
