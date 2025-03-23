@@ -46,21 +46,21 @@ const LeagueDetailsPage = () => {
     },
     hover: {
       scale: 1.02,
-      boxShadow: "0 10px 20px rgba(0, 0, 0, 0.2)",
+      boxShadow: "0 10px 20px rgba(18, 13, 49, 0.2)",
       transition: { duration: 0.3 },
     },
   };
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-gray-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-[#F0D3F7] via-[#E0C2E5] to-[#B98EA7] flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="flex items-center space-x-3 text-gray-700"
+          className="flex items-center space-x-3 text-[#302F4D]"
         >
-          <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+          <Loader2 className="w-8 h-8 animate-spin text-[#A57982]" />
           <span className="text-lg font-medium">Loading league details...</span>
         </motion.div>
       </div>
@@ -69,12 +69,12 @@ const LeagueDetailsPage = () => {
 
   if (!league) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-gray-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-[#F0D3F7] via-[#E0C2E5] to-[#B98EA7] flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="text-gray-700 text-lg font-medium"
+          className="text-[#302F4D] text-lg font-medium"
         >
           League or club not found
         </motion.div>
@@ -85,7 +85,7 @@ const LeagueDetailsPage = () => {
   const isMember = league.membersList.some((memberId) => memberId.toString() === user?._id?.toString());
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-gray-100 text-gray-800">
+    <div className="min-h-screen bg-gradient-to-br from-[#F0D3F7] via-[#E0C2E5] to-[#B98EA7] text-[#120D31]">
       <motion.div
         className="container mx-auto py-12 px-6"
         variants={containerVariants}
@@ -101,51 +101,51 @@ const LeagueDetailsPage = () => {
           {/* Main Content */}
           <div className="col-span-1 lg:col-span-3">
             <motion.div
-              className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8"
+              className="bg-white rounded-2xl shadow-lg border border-[#302F4D]/20 p-8"
               variants={cardVariants}
               initial="hidden"
               animate="visible"
               whileHover="hover"
             >
-              <h1 className="text-4xl font-extrabold text-black mb-6 tracking-tight drop-shadow-md">
+              <h1 className="text-4xl font-extrabold text-[#120D31] mb-6 tracking-tight drop-shadow-md">
                 {league.name}
               </h1>
 
               <div className="mb-6 space-y-2">
-                <p className="text-gray-700 text-lg">
-                  <span className="font-semibold text-blue-600">
+                <p className="text-[#302F4D]/80 text-lg">
+                  <span className="font-semibold text-[#A57982]">
                     {league.members.toLocaleString()}
                   </span>{" "}
                   members •{" "}
-                  <span className="font-semibold text-green-600">
+                  <span className="font-semibold text-[#B98EA7]">
                     {league.active.toLocaleString()}
                   </span>{" "}
                   active
                 </p>
-                <p className="text-gray-600">
+                <p className="text-[#302F4D]/60">
                   Category:{" "}
-                  <span className="text-purple-600 capitalize">
+                  <span className="text-[#A57982] capitalize">
                     {league.category}
                   </span>
                 </p>
               </div>
 
               <motion.div
-                className="flex items-center text-gray-600 mb-6"
+                className="flex items-center text-[#302F4D]/80 mb-6"
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2, duration: 0.4 }}
               >
-                <Users size={20} className="mr-2 text-blue-600" />
+                <Users size={20} className="mr-2 text-[#A57982]" />
                 <span>Founded: {new Date(league.createdAt).toLocaleDateString()}</span>
               </motion.div>
 
               <div>
-                <h2 className="text-2xl font-semibold text-black mb-4 drop-shadow-sm">
+                <h2 className="text-2xl font-semibold text-[#120D31] mb-4 drop-shadow-sm">
                   About
                 </h2>
                 <motion.p
-                  className="text-gray-700 mb-6 leading-relaxed"
+                  className="text-[#302F4D]/80 mb-6 leading-relaxed"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.3, duration: 0.5 }}
