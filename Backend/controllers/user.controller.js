@@ -252,6 +252,18 @@ export const getAllUserStats = async (req, res) => {
   }
 };
 
+// Add test endpoint for getting user statistics
+export const getTestUserStats = async (req, res) => {
+  try {
+    const users = await User.find().select("name username averageRating achievements").lean();
+    console.log("Test stats fetched:", users);
+    res.status(200).json(users);
+  } catch (error) {
+    console.error("Error in getTestUserStats:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 export const searchUsers = async (req, res) => {
   try {
     console.log("searchUsers function called with query:", req.query);
