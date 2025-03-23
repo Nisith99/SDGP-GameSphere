@@ -10,9 +10,10 @@ import postRoutes from "./routes/post.route.js";
 import notificationRoutes from "./routes/notification.route.js";
 import connectionRoutes from "./routes/connection.route.js";
 import leagueRoutes from "./routes/league.route.js";
+import chatRoutes from "./routes/chat.route.js";
 import { connectDB } from "./lib/db.js";
 import fs from "fs/promises";
-import { searchUsers } from "./controllers/user.controller.js"; // Direct import for testing
+import { searchUsers } from "./controllers/user.controller.js";
 import { protectRoute } from "./middleware/auth.middleware.js";
 
 dotenv.config();
@@ -46,14 +47,13 @@ app.use("/api/v1/posts", postRoutes);
 app.use("/api/v1/notifications", notificationRoutes);
 app.use("/api/v1/connections", connectionRoutes);
 app.use("/api/v1/leagues", leagueRoutes);
+app.use("/api/v1/chats", chatRoutes);
 
-// Temporary direct route for debugging
 app.get("/api/v1/users/search", protectRoute, (req, res) => {
   console.log("Direct /api/v1/users/search route hit with query:", req.query);
-  searchUsers(req, res); // Call the searchUsers function directly
+  searchUsers(req, res);
 });
 
-// Test endpoint
 app.get("/api/v1/test", (req, res) => {
   console.log("Test endpoint hit");
   res.status(200).json({ message: "Server is running" });
