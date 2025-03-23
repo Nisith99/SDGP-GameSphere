@@ -1,7 +1,8 @@
+// frontend/components/Navbar.jsx
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "../../lib/axios";
 import { Link } from "react-router-dom";
-import { Bell, Home, LogOut, User, Users, Trophy, Activity, Search } from "lucide-react";
+import { Bell, Home, LogOut, User, Users, Trophy, Activity, Search, MessageSquare } from "lucide-react";
 import { useState } from "react";
 
 const Navbar = () => {
@@ -10,13 +11,13 @@ const Navbar = () => {
 
   const { data: notifications } = useQuery({
     queryKey: ["notifications"],
-    queryFn: async () => axiosInstance.get("/notifications"),
+    queryFn: async () => axiosInstance.get("/notifications").then((res) => res.data),
     enabled: !!authUser,
   });
 
   const { data: connectionRequests } = useQuery({
     queryKey: ["connectionRequests"],
-    queryFn: async () => axiosInstance.get("/connections/requests"),
+    queryFn: async () => axiosInstance.get("/connections/requests").then((res) => res.data),
     enabled: !!authUser,
   });
 
@@ -27,24 +28,34 @@ const Navbar = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
 
-  const { data: searchData, refetch: searchRefetch } = useQuery({
+  const { data: searchResults, isFetching: isSearching } = useQuery({
     queryKey: ["searchUsers", searchQuery],
     queryFn: async () => {
-      if (!searchQuery) return [];
-      const response = await axiosInstance.get(`users/search?q=${searchQuery}`);
-      return response.data;
+      if (!searchQuery.trim()) return [];
+      // Corrected endpoint - removed extra /api
+      const response = await axiosInstance.get(`/users/search?q=${searchQuery}`);
+      return response.data.users; // Adjust based on backend response structure
     },
-    enabled: false,
+    enabled: !!searchQuery.trim(),
+    placeholderData: [],
   });
 
   const handleSearch = (e) => {
     const value = e.target.value;
     setSearchQuery(value);
-    if (value.length > 0) searchRefetch();
   };
 
-  const unreadNotificationCount = notifications?.data.filter((notif) => !notif.read).length;
-  const unreadConnectionRequestsCount = connectionRequests?.data?.length;
+  const unreadNotificationCount = notifications?.filter((notif) => !notif.read).length || 0;
+  const unreadConnectionRequestsCount = connectionRequests?.length || 0;
+
+  const networkConnections = authUser?.connections || [];
+  const suggestedPlayers = searchResults
+    ?.filter((user) => user._id !== authUser?._id)
+    .sort((a, b) => {
+      const aIsConnected = networkConnections.some((conn) => conn.userId === a._id);
+      const bIsConnected = networkConnections.some((conn) => conn.userId === b._id);
+      return bIsConnected - aIsConnected;
+    });
 
   return (
     <nav className="bg-gradient-to-r from-gray-800 to-gray-900 shadow-lg sticky top-0 z-10">
@@ -79,29 +90,38 @@ const Navbar = () => {
                     className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
                   />
                 </div>
-                {searchData?.length > 0 && (
+                {searchQuery.trim() && (
                   <div className="absolute top-full left-0 right-0 mt-2 bg-gray-800 border border-gray-700 rounded-lg shadow-xl max-h-72 overflow-y-auto z-20">
-                    {searchData.map((user) => (
-                      <Link
-                        key={user._id || user.username}
-                        to={`/profile/${user.username}`}
-                        className="flex items-center px-4 py-3 text-gray-200 hover:bg-gray-700 transition-colors duration-150 border-b border-gray-700 last:border-b-0"
-                        onClick={() => setSearchQuery("")}
-                      >
-                        <img
-                          src={user.profilePicture || "https://via.placeholder.com/40"}
-                          alt={user.name}
-                          className="w-10 h-10 rounded-full mr-3 object-cover"
-                        />
-                        <div>
-                          <div className="font-semibold">{user.name}</div>
-                          <div className="text-xs text-gray-400">@{user.username}</div>
-                          {user.sport && (
-                            <div className="text-xs text-yellow-400">{user.sport}</div>
-                          )}
-                        </div>
-                      </Link>
-                    ))}
+                    {isSearching ? (
+                      <div className="px-4 py-3 text-gray-400 text-sm">Searching...</div>
+                    ) : suggestedPlayers?.length > 0 ? (
+                      suggestedPlayers.map((user) => (
+                        <Link
+                          key={user._id || user.username}
+                          to={`/profile/${user.username}`}
+                          className="flex items-center px-4 py-3 text-gray-200 hover:bg-gray-700 transition-colors duration-150 border-b border-gray-700 last:border-b-0"
+                          onClick={() => setSearchQuery("")}
+                        >
+                          <img
+                            src={user.profilePicture || "https://via.placeholder.com/40"}
+                            alt={user.name}
+                            className="w-10 h-10 rounded-full mr-3 object-cover"
+                          />
+                          <div>
+                            <div className="font-semibold">{user.name}</div>
+                            <div className="text-xs text-gray-400">@{user.username}</div>
+                            {user.sport && (
+                              <div className="text-xs text-yellow-400">{user.sport}</div>
+                            )}
+                            {networkConnections.some((conn) => conn.userId === user._id) && (
+                              <div className="text-xs text-green-400">In your network</div>
+                            )}
+                          </div>
+                        </Link>
+                      ))
+                    ) : (
+                      <div className="px-4 py-3 text-gray-400 text-sm">No users found</div>
+                    )}
                   </div>
                 )}
               </div>
@@ -140,6 +160,10 @@ const Navbar = () => {
                       {unreadNotificationCount}
                     </span>
                   )}
+                </Link>
+                <Link to="/chat" className="text-gray-300 hover:text-white flex flex-col items-center relative transition-colors duration-200">
+                  <MessageSquare size={20} />
+                  <span className="text-xs hidden md:block">Messenger</span>
                 </Link>
                 <Link to={`/profile/${authUser.username}`} className="text-gray-300 hover:text-white flex flex-col items-center transition-colors duration-200">
                   <User size={20} />
