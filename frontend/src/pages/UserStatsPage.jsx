@@ -1,11 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "../lib/axios";
-import { Trophy, Star, Loader2, Users } from "lucide-react";
+import { Trophy, Star, Loader2, Users, ArrowDown } from "lucide-react";
 import { motion } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useState, useMemo } from "react";
 import toast from "react-hot-toast";
 
 const UserStatsPage = () => {
+  // All hooks at the top level
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["allUserStats"],
     queryFn: async () => {
@@ -22,7 +23,24 @@ const UserStatsPage = () => {
     retryDelay: 1000,
   });
 
-  // Animation variants (unchanged)
+  const [sortBy, setSortBy] = useState(null);
+
+  const displayedUsers = useMemo(() => {
+    if (!data || !data.users) return [];
+    if (sortBy === "ratingDesc") {
+      return [...data.users].sort((a, b) => (b.averageRating || 0) - (a.averageRating || 0));
+    }
+    return data.users;
+  }, [data, sortBy]);
+
+  useEffect(() => {
+    if (error) {
+      toast.error("Failed to load users' stats. Please try again.");
+      console.error("Error details:", error);
+    }
+  }, [error]);
+
+  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
@@ -39,13 +57,7 @@ const UserStatsPage = () => {
     visible: { opacity: 1, x: 0, transition: { duration: 0.4 } },
   };
 
-  useEffect(() => {
-    if (error) {
-      toast.error("Failed to load users' stats. Please try again.");
-      console.error("Error details:", error);
-    }
-  }, [error]);
-
+  // Early returns after all hooks
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-white via-gray-100 to-blue-50 flex items-center justify-center">
@@ -73,8 +85,6 @@ const UserStatsPage = () => {
     );
   }
 
-  const { users } = data;
-
   const getAchievementTypeLabel = (type) => {
     const labels = {
       district: "District",
@@ -90,12 +100,19 @@ const UserStatsPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-gray-100 to-blue-50 text-gray-800">
       <motion.div className="container mx-auto py-16 px-6 max-w-5xl" variants={containerVariants} initial="hidden" animate="visible">
-        <h1 className="text-5xl font-extrabold text-gray-900 mb-12 text-center tracking-tight">
-          Users' Stats
-        </h1>
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-5xl font-extrabold text-gray-900 tracking-tight">Users' Stats</h1>
+          <button
+            onClick={() => setSortBy((prev) => (prev === "ratingDesc" ? null : "ratingDesc"))}
+            className="flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors shadow-md hover:shadow-lg"
+          >
+            <ArrowDown className="w-5 h-5 mr-2" />
+            {sortBy === "ratingDesc" ? "Reset Sort" : "Sort by Rating"}
+          </button>
+        </div>
 
         <div className="space-y-8">
-          {users.map((user, userIndex) => (
+          {displayedUsers.map((user, userIndex) => (
             <motion.div
               key={user._id || userIndex}
               className="bg-white/90 rounded-3xl shadow-md border border-blue-200 p-8"
@@ -107,9 +124,7 @@ const UserStatsPage = () => {
             >
               {/* User Header */}
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-semibold text-gray-900">
-                  {user.name}
-                </h2>
+                <h2 className="text-2xl font-semibold text-gray-900">{user.name}</h2>
               </div>
 
               {/* Average Rating */}
