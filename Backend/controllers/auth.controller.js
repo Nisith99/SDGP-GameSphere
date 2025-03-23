@@ -1,7 +1,6 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { sendWelcomeEmail } from "../emails/emailHandlers.js";
 
 export const signup = async (req, res) => {
   try {
@@ -40,7 +39,7 @@ export const signup = async (req, res) => {
       expiresIn: "3d",
     });
 
-    res.cookie("jwt-gameSphere", token, { // Removed extra space
+    res.cookie("jwt-gameSphere", token, {
       httpOnly: true,
       maxAge: 3 * 24 * 60 * 60 * 1000,
       sameSite: "strict",
@@ -48,14 +47,6 @@ export const signup = async (req, res) => {
     });
 
     res.status(201).json({ message: "User registered successfully" });
-
-    const profileUrl = process.env.CLIENT_URL + "/profile/" + user.username;
-
-    try {
-      await sendWelcomeEmail(user.email, user.name, profileUrl);
-    } catch (emailError) {
-      console.error("Error sending welcome Email", emailError);
-    }
   } catch (error) {
     console.log("Error in signup: ", error.message);
     res.status(500).json({ message: "Internal server error" });
@@ -79,7 +70,7 @@ export const login = async (req, res) => {
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "3d",
     });
-    res.cookie("jwt-gameSphere", token, { // Removed extra space
+    res.cookie("jwt-gameSphere", token, {
       httpOnly: true,
       maxAge: 3 * 24 * 60 * 60 * 1000,
       sameSite: "strict",
@@ -94,7 +85,7 @@ export const login = async (req, res) => {
 };
 
 export const logout = (req, res) => {
-  res.clearCookie("jwt-gameSphere"); // Removed extra space
+  res.clearCookie("jwt-gameSphere");
   res.json({ message: "Logged out successfully" });
 };
 
