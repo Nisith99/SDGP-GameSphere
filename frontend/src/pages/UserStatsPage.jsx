@@ -1,21 +1,24 @@
 import { useQuery } from "@tanstack/react-query";
 import { axiosInstance } from "../lib/axios";
-import { Trophy, Star, Loader2, Users, ArrowDown } from "lucide-react";
+import { Trophy, Star, Loader2, Users } from "lucide-react";
 import { motion } from "framer-motion";
 import { useEffect, useState, useMemo } from "react";
 import toast from "react-hot-toast";
 
+// Helper function to calculate total points from achievements
+const getTotalPoints = (achievements) => {
+  return achievements?.reduce((sum, ach) => sum + (parseInt(ach.score) || 0), 0) || 0;
+};
+
 const UserStatsPage = () => {
-  // All hooks at the top level
+  // Fetch user stats
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["allUserStats"],
     queryFn: async () => {
       try {
         const res = await axiosInstance.get("/stats/test");
-        console.log("Test stats API response:", res.data);
         return { users: res.data, totalUsers: res.data.length, totalPages: 1, currentPage: 1 };
       } catch (err) {
-        console.error("Failed to fetch stats:", err.message);
         throw err;
       }
     },
@@ -23,20 +26,24 @@ const UserStatsPage = () => {
     retryDelay: 1000,
   });
 
+  // State for sorting
   const [sortBy, setSortBy] = useState(null);
 
+  // Memoized sorted users list
   const displayedUsers = useMemo(() => {
     if (!data || !data.users) return [];
     if (sortBy === "ratingDesc") {
       return [...data.users].sort((a, b) => (b.averageRating || 0) - (a.averageRating || 0));
+    } else if (sortBy === "pointsDesc") {
+      return [...data.users].sort((a, b) => getTotalPoints(b.achievements) - getTotalPoints(a.achievements));
     }
-    return data.users;
+    return data.users; // Original order
   }, [data, sortBy]);
 
+  // Handle errors
   useEffect(() => {
     if (error) {
       toast.error("Failed to load users' stats. Please try again.");
-      console.error("Error details:", error);
     }
   }, [error]);
 
@@ -57,7 +64,7 @@ const UserStatsPage = () => {
     visible: { opacity: 1, x: 0, transition: { duration: 0.4 } },
   };
 
-  // Early returns after all hooks
+  // Loading state
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-white via-gray-100 to-blue-50 flex items-center justify-center">
@@ -69,6 +76,7 @@ const UserStatsPage = () => {
     );
   }
 
+  // Empty state
   if (!data || !data.users || data.users.length === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-white via-gray-100 to-blue-50 flex items-center justify-center">
@@ -85,6 +93,7 @@ const UserStatsPage = () => {
     );
   }
 
+  // Helper to format achievement type
   const getAchievementTypeLabel = (type) => {
     const labels = {
       district: "District",
@@ -102,13 +111,26 @@ const UserStatsPage = () => {
       <motion.div className="container mx-auto py-16 px-6 max-w-5xl" variants={containerVariants} initial="hidden" animate="visible">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-5xl font-extrabold text-gray-900 tracking-tight">Users' Stats</h1>
-          <button
-            onClick={() => setSortBy((prev) => (prev === "ratingDesc" ? null : "ratingDesc"))}
-            className="flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors shadow-md hover:shadow-lg"
-          >
-            <ArrowDown className="w-5 h-5 mr-2" />
-            {sortBy === "ratingDesc" ? "Reset Sort" : "Sort by Rating"}
-          </button>
+          <div className="flex space-x-4">
+            <button
+              onClick={() => setSortBy((prev) => (prev === "ratingDesc" ? null : "ratingDesc"))}
+              className={`flex items-center px-4 py-2 rounded-lg transition-colors shadow-md hover:shadow-lg ${
+                sortBy === "ratingDesc" ? "bg-blue-600 text-white" : "bg-blue-500 text-white hover:bg-blue-600"
+              }`}
+            >
+              <Star className="w-5 h-5 mr-2" />
+              {sortBy === "ratingDesc" ? "Reset Sort" : "Sort by Rating"}
+            </button>
+            <button
+              onClick={() => setSortBy((prev) => (prev === "pointsDesc" ? null : "pointsDesc"))}
+              className={`flex items-center px-4 py-2 rounded-lg transition-colors shadow-md hover:shadow-lg ${
+                sortBy === "pointsDesc" ? "bg-green-600 text-white" : "bg-green-500 text-white hover:bg-green-600"
+              }`}
+            >
+              <Trophy className="w-5 h-5 mr-2" />
+              {sortBy === "pointsDesc" ? "Reset Sort" : "Sort by Points"}
+            </button>
+          </div>
         </div>
 
         <div className="space-y-8">
@@ -125,6 +147,7 @@ const UserStatsPage = () => {
               {/* User Header */}
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-semibold text-gray-900">{user.name}</h2>
+                <span className="text-gray-600">Total Points: {getTotalPoints(user.achievements)}</span>
               </div>
 
               {/* Average Rating */}
