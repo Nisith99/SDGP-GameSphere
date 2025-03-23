@@ -274,11 +274,16 @@ export const searchUsers = async (req, res) => {
       return res.status(400).json({ message: "Search query is required" });
     }
 
-    // Simplified response for debugging
+    const users = await User.find({
+      $or: [
+        { name: { $regex: q, $options: 'i' } },
+        { username: { $regex: q, $options: 'i' } }
+      ]
+    }).select('_id name username profilePicture sport');
+
     res.status(200).json({
-      message: "Search endpoint reached",
-      query: q,
-      userId: req.user._id
+      users,
+      query: q
     });
   } catch (error) {
     console.error("Error in searchUsers:", {
