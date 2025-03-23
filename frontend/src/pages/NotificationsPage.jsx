@@ -1,4 +1,3 @@
-// frontend/pages/NotificationsPage.jsx
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "../lib/axios";
 import { toast } from "react-hot-toast";
@@ -27,10 +26,10 @@ const NotificationsPage = () => {
     queryKey: ["notifications"],
     queryFn: async () => {
       const response = await axiosInstance.get("/notifications");
-      console.log("Notifications API response:", response.data); // Debug log
-      return response.data; // Expecting an array or { data: array }
+      console.log("Notifications API response:", response.data);
+      return response.data;
     },
-    enabled: !!authUser, // Only fetch if authenticated
+    enabled: !!authUser,
   });
 
   const { mutate: markAsReadMutation } = useMutation({
@@ -63,6 +62,8 @@ const NotificationsPage = () => {
         return <MessageSquare className="text-blue-500" />;
       case "connectionAccepted":
         return <UserPlus className="text-green-600" />;
+      case "message":
+        return <MessageSquare className="text-purple-500" />;
       default:
         return null;
     }
@@ -98,6 +99,18 @@ const NotificationsPage = () => {
               {notification.relatedUser.name}
             </Link>{" "}
             accepted your team invite
+          </span>
+        );
+      case "message":
+        return (
+          <span>
+            <Link
+              to={`/profile/${notification.relatedUser.username}`}
+              className="font-bold"
+            >
+              {notification.relatedUser.name}
+            </Link>{" "}
+            sent you a message
           </span>
         );
       default:
@@ -264,4 +277,4 @@ const NotificationsPage = () => {
   );
 };
 
-export default NotificationsPage; 
+export default NotificationsPage;
