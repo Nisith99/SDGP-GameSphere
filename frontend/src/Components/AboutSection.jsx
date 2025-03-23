@@ -10,8 +10,8 @@ const AboutSection = ({ userData, isOwnProfile, onSave, isUpdating }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200 transition-all duration-300 hover:shadow-md">
-      <h2 className="text-xl font-semibold text-gray-800 mb-4 tracking-tight">
+    <div className="bg-white rounded-lg shadow-sm p-6 border border-[#F0D3F7] transition-all duration-300 hover:shadow-md">
+      <h2 className="text-xl font-semibold text-[#302F4D] mb-4 tracking-tight">
         About
       </h2>
       {isOwnProfile ? (
@@ -20,13 +20,13 @@ const AboutSection = ({ userData, isOwnProfile, onSave, isUpdating }) => {
             <textarea
               value={about}
               onChange={(e) => setAbout(e.target.value)}
-              className="w-full p-3 bg-white border border-gray-300 rounded-md text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
+              className="w-full p-3 bg-white border border-[#B98EA7] rounded-md text-[#302F4D] placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#A57982] transition-all duration-200"
               rows="4"
               placeholder="Tell us about yourself..."
             />
             <button
               onClick={handleSave}
-              className="bg-gray-100 text-white py-2 px-6 rounded-md font-medium hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-300"
+              className="bg-[#A57982] text-white py-2 px-6 rounded-md font-medium hover:bg-[#B98EA7] focus:ring-2 focus:ring-[#A57982] focus:outline-none transition-all duration-300"
               disabled={isUpdating}
             >
               {isUpdating ? "Saving..." : "Save"}
@@ -39,7 +39,7 @@ const AboutSection = ({ userData, isOwnProfile, onSave, isUpdating }) => {
             </p>
             <button
               onClick={() => setIsEditing(true)}
-              className="text-blue-600 hover:text-blue-700 font-medium transition-colors duration-200"
+              className="text-[#302F4D] hover:text-[#A57982] font-medium transition-colors duration-200"
             >
               Edit
             </button>

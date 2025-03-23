@@ -65,11 +65,11 @@ const RatingSection = ({ userData, isOwnProfile }) => {
                     onClick={() => interactive && setUserRating(starValue)}
                 >
                     {half ? (
-                        <StarHalf className="text-yellow-500 w-6 h-6" />
+                        <StarHalf className="text-[#B98EA7] w-6 h-6" />
                     ) : (
                         <Star
                             className={`w-6 h-6 ${
-                                filled ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300'
+                                filled ? 'text-[#B98EA7] fill-[#B98EA7]' : 'text-gray-300'
                             }`}
                         />
                     )}
@@ -81,7 +81,7 @@ const RatingSection = ({ userData, isOwnProfile }) => {
 
     if (isLoading) {
         return (
-            <div className="bg-white/90 rounded-xl shadow-md p-6 border border-blue-200">
+            <div className="bg-white/90 rounded-xl shadow-md p-6 border border-[#F0D3F7]">
                 <div className="animate-pulse flex flex-col items-center">
                     <div className="h-4 bg-gray-200 rounded w-1/4 mb-4"></div>
                     <div className="flex space-x-1 mb-4">
@@ -98,8 +98,8 @@ const RatingSection = ({ userData, isOwnProfile }) => {
     const { averageRating = 0, ratingCount = 0, ratings = [] } = ratingData || {};
 
     return (
-        <div className="bg-white/90 rounded-xl shadow-md p-6 border border-pink-200 hover:shadow-lg transition-all duration-300">
-            <h2 className="text-2xl font-bold text-pink-600 mb-4 tracking-tight">
+        <div className="bg-white/90 rounded-xl shadow-md p-6 border border-[#F0D3F7] hover:shadow-lg transition-all duration-300">
+            <h2 className="text-2xl font-bold text-[#A57982] mb-4 tracking-tight">
                 Player Rating
             </h2>
 
@@ -107,7 +107,7 @@ const RatingSection = ({ userData, isOwnProfile }) => {
                 <div className="flex flex-col items-center mb-4 md:mb-0">
                     <div className="flex items-center">
                         {renderStars(averageRating)}
-                        <span className="text-xl font-bold ml-2 text-gray-800">
+                        <span className="text-xl font-bold ml-2 text-[#302F4D]">
                             {averageRating.toFixed(1)}
                         </span>
                     </div>
@@ -118,17 +118,17 @@ const RatingSection = ({ userData, isOwnProfile }) => {
 
                 <button
                     onClick={() => setShowRatings(!showRatings)}
-                    className="px-4 py-2 text-sm bg-gray-100 text-blue-600 rounded-full hover:bg-gray-200 transition-colors"
+                    className="px-4 py-2 text-sm bg-[#F0D3F7] text-[#302F4D] rounded-full hover:bg-[#B98EA7] hover:text-white transition-colors"
                 >
                     {showRatings ? 'Hide Ratings' : 'View All Ratings'}
                 </button>
             </div>
 
             {showRatings && ratings.length > 0 && (
-                <div className="mb-6 max-h-64 overflow-y-auto rounded border border-gray-200 p-4">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-3">Recent Ratings</h3>
+                <div className="mb-6 max-h-64 overflow-y-auto rounded border border-[#F0D3F7] p-4">
+                    <h3 className="text-lg font-semibold text-[#302F4D] mb-3">Recent Ratings</h3>
                     {ratings.map((rating, index) => (
-                        <div key={index} className="p-3 rounded bg-gray-50 mb-2 last:mb-0">
+                        <div key={index} className="p-3 rounded bg-[#F0D3F7]/30 mb-2 last:mb-0">
                             <div className="flex items-center">
                                 <img
                                     src={rating.ratedBy.profilePicture || '/avatar.png'}
@@ -136,7 +136,7 @@ const RatingSection = ({ userData, isOwnProfile }) => {
                                     className="w-8 h-8 rounded-full mr-2"
                                 />
                                 <div>
-                                    <p className="font-medium text-gray-800">
+                                    <p className="font-medium text-[#302F4D]">
                                         {rating.ratedBy.name}
                                     </p>
                                     <div className="flex items-center">
@@ -158,8 +158,8 @@ const RatingSection = ({ userData, isOwnProfile }) => {
             )}
 
             {!isOwnProfile && (
-                <div className="border-t border-gray-200 pt-4 mt-4">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-3">
+                <div className="border-t border-[#F0D3F7] pt-4 mt-4">
+                    <h3 className="text-lg font-semibold text-[#302F4D] mb-3">
                         Rate This Player
                     </h3>
 
@@ -173,14 +173,14 @@ const RatingSection = ({ userData, isOwnProfile }) => {
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
                         placeholder="Leave a comment (optional)"
-                        className="w-full p-3 rounded bg-gray-50 text-gray-800 border border-gray-300 focus:border-pink-500 focus:outline-none mb-4"
+                        className="w-full p-3 rounded bg-[#F0D3F7]/30 text-[#302F4D] border border-[#B98EA7] focus:border-[#A57982] focus:outline-none mb-4"
                         rows="3"
                     />
 
                     <button
                         onClick={handleRatingSubmit}
                         disabled={isSubmitting || userRating === 0}
-                        className="w-full bg-pink-500 hover:bg-pink-600 text-white font-medium py-2 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full bg-[#A57982] hover:bg-[#B98EA7] text-white font-medium py-2 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {isSubmitting ? 'Submitting...' : 'Submit Rating'}
                     </button>

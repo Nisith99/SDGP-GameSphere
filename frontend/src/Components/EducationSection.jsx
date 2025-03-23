@@ -32,14 +32,14 @@ const EducationSection = ({ userData, isOwnProfile, onSave, isUpdating }) => {
   };
 
   return (
-    <div className="bg-white/90 rounded-xl shadow-md p-6 border border-purple-200 hover:shadow-lg transition-all duration-300">
+    <div className="bg-white/90 rounded-xl shadow-md p-6 border border-[#F0D3F7] hover:shadow-lg transition-all duration-300">
       {educations.length > 0 ? (
         educations.map((edu) => (
           <div key={edu._id} className="mb-4 flex justify-between items-start">
             <div className="flex items-start">
-              <School size={20} className="mr-2 mt-1 text-purple-600" />
+              <School size={20} className="mr-2 mt-1 text-[#302F4D]" />
               <div>
-                <h3 className="font-semibold text-gray-800">{edu.fieldOfStudy}</h3>
+                <h3 className="font-semibold text-[#302F4D]">{edu.fieldOfStudy}</h3>
                 <p className="text-gray-600">{edu.school}</p>
                 <p className="text-gray-500 text-sm">
                   {edu.startYear} - {edu.endYear || "Present"}
@@ -47,7 +47,7 @@ const EducationSection = ({ userData, isOwnProfile, onSave, isUpdating }) => {
               </div>
             </div>
             {isEditing && (
-              <button onClick={() => handleDeleteEducation(edu._id)} className="text-red-600">
+              <button onClick={() => handleDeleteEducation(edu._id)} className="text-[#A57982]">
                 <X size={20} />
               </button>
             )}
@@ -63,32 +63,32 @@ const EducationSection = ({ userData, isOwnProfile, onSave, isUpdating }) => {
             placeholder="School *"
             value={newEducation.school}
             onChange={(e) => setNewEducation({ ...newEducation, school: e.target.value })}
-            className="w-full p-2 bg-gray-50 border border-purple-300 rounded text-gray-800"
+            className="w-full p-2 bg-[#F0D3F7]/30 border border-[#B98EA7] rounded text-[#302F4D]"
           />
           <input
             type="text"
             placeholder="Field of Study *"
             value={newEducation.fieldOfStudy}
             onChange={(e) => setNewEducation({ ...newEducation, fieldOfStudy: e.target.value })}
-            className="w-full p-2 bg-gray-50 border border-purple-300 rounded text-gray-800"
+            className="w-full p-2 bg-[#F0D3F7]/30 border border-[#B98EA7] rounded text-[#302F4D]"
           />
           <input
             type="number"
             placeholder="Start Year *"
             value={newEducation.startYear}
             onChange={(e) => setNewEducation({ ...newEducation, startYear: e.target.value })}
-            className="w-full p-2 bg-gray-50 border border-purple-300 rounded text-gray-800"
+            className="w-full p-2 bg-[#F0D3F7]/30 border border-[#B98EA7] rounded text-[#302F4D]"
           />
           <input
             type="number"
             placeholder="End Year"
             value={newEducation.endYear}
             onChange={(e) => setNewEducation({ ...newEducation, endYear: e.target.value })}
-            className="w-full p-2 bg-gray-50 border border-purple-300 rounded text-gray-800"
+            className="w-full p-2 bg-[#F0D3F7]/30 border border-[#B98EA7] rounded text-[#302F4D]"
           />
           <button
             onClick={handleAddEducation}
-            className="bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 transition duration-300"
+            className="bg-[#302F4D] text-white py-2 px-4 rounded hover:bg-[#A57982] transition duration-300"
           >
             Add Education
           </button>
@@ -99,7 +99,7 @@ const EducationSection = ({ userData, isOwnProfile, onSave, isUpdating }) => {
           {isEditing ? (
             <button
               onClick={handleSave}
-              className="bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 transition duration-300"
+              className="bg-[#302F4D] text-white py-2 px-4 rounded hover:bg-[#A57982] transition duration-300"
               disabled={isUpdating}
             >
               {isUpdating ? "Saving..." : "Save Changes"}
@@ -107,7 +107,7 @@ const EducationSection = ({ userData, isOwnProfile, onSave, isUpdating }) => {
           ) : (
             <button
               onClick={() => setIsEditing(true)}
-              className="text-purple-600 hover:text-purple-500 transition duration-300"
+              className="text-[#302F4D] hover:text-[#A57982] transition duration-300"
             >
               Edit Education
             </button>
