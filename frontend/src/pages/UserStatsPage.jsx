@@ -4,6 +4,7 @@ import { Trophy, Star, Loader2, Users } from "lucide-react";
 import { motion } from "framer-motion";
 import { useEffect, useState, useMemo } from "react";
 import toast from "react-hot-toast";
+import { Link } from "react-router-dom"; // Import Link for navigation
 
 // Helper function to calculate total points from achievements
 const getTotalPoints = (achievements) => {
@@ -135,67 +136,72 @@ const UserStatsPage = () => {
 
         <div className="space-y-8">
           {displayedUsers.map((user, userIndex) => (
-            <motion.div
+            <Link
+              to={`/profile/${user.username}`}
               key={user._id || userIndex}
-              className="bg-white/90 rounded-3xl shadow-md border border-blue-200 p-8"
-              variants={cardVariants}
-              initial="hidden"
-              animate="visible"
-              whileHover="hover"
-              transition={{ delay: userIndex * 0.1 }}
+              className="block" // Ensure Link takes up full space
             >
-              {/* User Header */}
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-semibold text-gray-900">{user.name}</h2>
-                <span className="text-gray-600">Total Points: {getTotalPoints(user.achievements)}</span>
-              </div>
-
-              {/* Average Rating */}
-              <div className="flex items-center space-x-4 mb-6">
-                <Star className="w-6 h-6 text-yellow-500" />
-                <div className="flex">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <Star
-                      key={star}
-                      size={24}
-                      className={`${star <= Math.round(user.averageRating || 0) ? "text-yellow-500 fill-yellow-500" : "text-gray-300"}`}
-                    />
-                  ))}
+              <motion.div
+                className="bg-white/90 rounded-3xl shadow-md border border-blue-200 p-8 cursor-pointer"
+                variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                whileHover="hover"
+                transition={{ delay: userIndex * 0.1 }}
+              >
+                {/* User Header */}
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-semibold text-gray-900">{user.name}</h2>
+                  <span className="text-gray-600">Total Points: {getTotalPoints(user.achievements)}</span>
                 </div>
-                <span className="text-xl font-bold text-gray-900">{(user.averageRating || 0).toFixed(1)}</span>
-              </div>
 
-              {/* Achievements */}
-              <div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                  <Trophy className="w-6 h-6 text-yellow-500 mr-2" /> Achievements
-                </h3>
-                {user.achievements && user.achievements.length > 0 ? (
-                  <div className="space-y-4">
-                    {user.achievements.map((ach, achIndex) => (
-                      <motion.div
-                        key={ach._id || `ach-${achIndex}`}
-                        className="flex justify-between items-center bg-gray-50 p-3 rounded-xl border border-gray-200"
-                        variants={itemVariants}
-                        initial="hidden"
-                        animate="visible"
-                        transition={{ delay: achIndex * 0.1 }}
-                      >
-                        <div className="flex items-center space-x-3">
-                          <Trophy size={20} className="text-yellow-500" />
-                          <span className="text-gray-800 capitalize">
-                            {getAchievementTypeLabel(ach.rankType || "Unknown")} Rank: {ach.rankValue || "N/A"}
-                          </span>
-                        </div>
-                        <span className="text-gray-700 font-semibold">{ach.score || 0} pts</span>
-                      </motion.div>
+                {/* Average Rating */}
+                <div className="flex items-center space-x-4 mb-6">
+                  <Star className="w-6 h-6 text-yellow-500" />
+                  <div className="flex">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star
+                        key={star}
+                        size={24}
+                        className={`${star <= Math.round(user.averageRating || 0) ? "text-yellow-500 fill-yellow-500" : "text-gray-300"}`}
+                      />
                     ))}
                   </div>
-                ) : (
-                  <p className="text-gray-600 italic">No achievements yet</p>
-                )}
-              </div>
-            </motion.div>
+                  <span className="text-xl font-bold text-gray-900">{(user.averageRating || 0).toFixed(1)}</span>
+                </div>
+
+                {/* Achievements */}
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                    <Trophy className="w-6 h-6 text-yellow-500 mr-2" /> Achievements
+                  </h3>
+                  {user.achievements && user.achievements.length > 0 ? (
+                    <div className="space-y-4">
+                      {user.achievements.map((ach, achIndex) => (
+                        <motion.div
+                          key={ach._id || `ach-${achIndex}`}
+                          className="flex justify-between items-center bg-gray-50 p-3 rounded-xl border border-gray-200"
+                          variants={itemVariants}
+                          initial="hidden"
+                          animate="visible"
+                          transition={{ delay: achIndex * 0.1 }}
+                        >
+                          <div className="flex items-center space-x-3">
+                            <Trophy size={20} className="text-yellow-500" />
+                            <span className="text-gray-800 capitalize">
+                              {getAchievementTypeLabel(ach.rankType || "Unknown")} Rank: {ach.rankValue || "N/A"}
+                            </span>
+                          </div>
+                          <span className="text-gray-700 font-semibold">{ach.score || 0} pts</span>
+                        </motion.div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-gray-600 italic">No achievements yet</p>
+                  )}
+                </div>
+              </motion.div>
+            </Link>
           ))}
         </div>
       </motion.div>
