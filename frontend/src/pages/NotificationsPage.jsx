@@ -14,12 +14,12 @@ import Sidebar from "../components/Sidebar";
 import { formatDistanceToNow } from "date-fns";
 
 const NotificationsPage = () => {
-  const { data: authUser } = useQuery({ queryKey: ["authUser"] });
+  const { data: authUser, isLoading: authLoading } = useQuery({ queryKey: ["authUser"] });
   const queryClient = useQueryClient();
 
   const { 
     data: notifications, 
-    isLoading, 
+    isLoading: notificationsLoading, 
     isError, 
     error 
   } = useQuery({
@@ -39,7 +39,7 @@ const NotificationsPage = () => {
       toast.success("Notification marked as read");
     },
     onError: (error) => {
-      toast.error("Failed to mark as read: " + error.message);
+      toast.error("Failed to mark as read: " + (error.message || "Unknown error"));
     },
   });
 
@@ -50,7 +50,7 @@ const NotificationsPage = () => {
       toast.success("Notification deleted");
     },
     onError: (error) => {
-      toast.error("Failed to delete notification: " + error.message);
+      toast.error("Failed to delete notification: " + (error.message || "Unknown error"));
     },
   });
 
@@ -70,21 +70,21 @@ const NotificationsPage = () => {
   };
 
   const renderNotificationContent = (notification) => {
-    switch (notification.type) {
+    switch (notification?.type) {
       case "like":
         return (
           <span>
-            <strong>{notification.relatedUser.name}</strong> liked your post
+            <strong>{notification?.relatedUser?.name || "Someone"}</strong> liked your post
           </span>
         );
       case "comment":
         return (
           <span>
             <Link
-              to={`/profile/${notification.relatedUser.username}`}
+              to={`/profile/${notification?.relatedUser?.username || ""}`}
               className="font-bold"
             >
-              {notification.relatedUser.name}
+              {notification?.relatedUser?.name || "Someone"}
             </Link>{" "}
             commented on your post
           </span>
@@ -93,10 +93,10 @@ const NotificationsPage = () => {
         return (
           <span>
             <Link
-              to={`/profile/${notification.relatedUser.username}`}
+              to={`/profile/${notification?.relatedUser?.username || ""}`}
               className="font-bold"
             >
-              {notification.relatedUser.name}
+              {notification?.relatedUser?.name || "Someone"}
             </Link>{" "}
             accepted your team invite
           </span>
@@ -105,10 +105,10 @@ const NotificationsPage = () => {
         return (
           <span>
             <Link
-              to={`/profile/${notification.relatedUser.username}`}
+              to={`/profile/${notification?.relatedUser?.username || ""}`}
               className="font-bold"
             >
-              {notification.relatedUser.name}
+              {notification?.relatedUser?.name || "Someone"}
             </Link>{" "}
             sent you a message
           </span>
@@ -123,10 +123,10 @@ const NotificationsPage = () => {
 
     return (
       <Link
-        to={`/post/${relatedPost._id}`}
+        to={`/post/${relatedPost?._id || ""}`}
         className="mt-2 p-2 bg-green-50 rounded-md flex items-center space-x-2 hover:bg-green-100 transition-colors"
       >
-        {relatedPost.image && (
+        {relatedPost?.image && (
           <img
             src={relatedPost.image}
             alt="Post preview"
@@ -135,13 +135,22 @@ const NotificationsPage = () => {
         )}
         <div className="flex-1 overflow-hidden">
           <p className="text-sm text-gray-600 truncate">
-            {relatedPost.content}
+            {relatedPost?.content || "No content available"}
           </p>
         </div>
         <ExternalLink size={14} className="text-gray-400" />
       </Link>
     );
   };
+
+  // Early return for loading or no authUser
+  if (authLoading || !authUser) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center">
+        <p className="text-gray-600">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
@@ -155,19 +164,19 @@ const NotificationsPage = () => {
               Notifications
             </h1>
 
-            {isLoading ? (
+            {notificationsLoading ? (
               <p className="text-gray-600">Loading notifications...</p>
             ) : isError ? (
               <p className="text-red-600">
-                Error loading notifications: {error.message}
+                Error loading notifications: {error?.message || "Unknown error"}
               </p>
             ) : Array.isArray(notifications) && notifications.length > 0 ? (
               <ul>
                 {notifications.map((notification) => (
                   <li
-                    key={notification._id}
+                    key={notification?._id}
                     className={`bg-white border rounded-lg p-4 my-4 transition-all hover:shadow-md ${
-                      !notification.read
+                      !notification?.read
                         ? "border-green-500"
                         : "border-gray-200"
                     }`}
@@ -175,14 +184,14 @@ const NotificationsPage = () => {
                     <div className="flex items-start justify-between">
                       <div className="flex items-center space-x-4">
                         <Link
-                          to={`/profile/${notification.relatedUser.username}`}
+                          to={`/profile/${notification?.relatedUser?.username || ""}`}
                         >
                           <img
                             src={
-                              notification.relatedUser.profilePicture ||
+                              notification?.relatedUser?.profilePicture ||
                               "/avatar.png"
                             }
-                            alt={notification.relatedUser.name}
+                            alt={notification?.relatedUser?.name || "User"}
                             className="w-12 h-12 rounded-full object-cover border-2 border-green-200"
                           />
                         </Link>
@@ -190,26 +199,28 @@ const NotificationsPage = () => {
                         <div>
                           <div className="flex items-center gap-2">
                             <div className="p-1 bg-blue-50 rounded-full">
-                              {renderNotificationIcon(notification.type)}
+                              {renderNotificationIcon(notification?.type)}
                             </div>
                             <p className="text-sm">
                               {renderNotificationContent(notification)}
                             </p>
                           </div>
                           <p className="text-xs text-gray-500 mt-1">
-                            {formatDistanceToNow(
-                              new Date(notification.createdAt),
-                              { addSuffix: true }
-                            )}
+                            {notification?.createdAt
+                              ? formatDistanceToNow(
+                                  new Date(notification.createdAt),
+                                  { addSuffix: true }
+                                )
+                              : "Unknown time"}
                           </p>
-                          {renderRelatedPost(notification.relatedPost)}
+                          {renderRelatedPost(notification?.relatedPost)}
                         </div>
                       </div>
 
                       <div className="flex gap-2">
-                        {!notification.read && (
+                        {!notification?.read && (
                           <button
-                            onClick={() => markAsReadMutation(notification._id)}
+                            onClick={() => markAsReadMutation(notification?._id)}
                             className="p-1 bg-blue-100 text-blue-600 rounded hover:bg-blue-200 transition-colors"
                             aria-label="Mark as read"
                           >
@@ -219,7 +230,7 @@ const NotificationsPage = () => {
 
                         <button
                           onClick={() =>
-                            deleteNotificationMutation(notification._id)
+                            deleteNotificationMutation(notification?._id)
                           }
                           className="p-1 bg-red-100 text-red-600 rounded hover:bg-red-200 transition-colors"
                           aria-label="Delete notification"
