@@ -56,7 +56,7 @@ const Navbar = () => {
     });
 
   return (
-    <nav className="bg-white text-gray-800 shadow-md sticky top-0 z-10">
+    <nav className="bg-[#F0D3F7] text-[#302F4D] shadow-md sticky top-0 z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-3">
           {/* Logo Section */}
@@ -67,7 +67,7 @@ const Navbar = () => {
                 src="/gameSphere_logo.png"
                 alt="GameSphere"
               />
-              <span className="ml-2 text-xl font-bold tracking-tight text-gray-900 group-hover:text-blue-600 transition-colors duration-200 hidden md:block">
+              <span className="ml-2 text-xl font-bold tracking-tight text-[#302F4D] group-hover:text-[#A57982] transition-colors duration-200 hidden md:block">
                 GameSphere
               </span>
             </Link>
@@ -83,44 +83,44 @@ const Navbar = () => {
                     placeholder="Search people..."
                     value={searchQuery}
                     onChange={handleSearch}
-                    className="w-full py-2 px-4 pl-10 bg-gray-100 text-gray-800 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-500 text-sm shadow-sm transition-all duration-300 hover:bg-gray-200"
+                    className="w-full py-2 px-4 pl-10 bg-[#B98EA7] text-[#120D31] border border-[#A57982] rounded-full focus:outline-none focus:ring-2 focus:ring-[#302F4D] focus:border-transparent placeholder-[#302F4D] text-sm shadow-sm transition-all duration-300 hover:bg-[#A57982]"
                   />
                   <Search
                     size={18}
-                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#302F4D]"
                   />
                 </div>
                 {searchQuery.trim() && (
-                  <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg max-h-72 overflow-y-auto z-20">
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-[#F0D3F7] border border-[#A57982] rounded-lg shadow-lg max-h-72 overflow-y-auto z-20">
                     {isSearching ? (
-                      <div className="px-4 py-3 text-gray-600 text-sm">Searching...</div>
+                      <div className="px-4 py-3 text-[#302F4D] text-sm">Searching...</div>
                     ) : suggestedPlayers?.length > 0 ? (
                       suggestedPlayers.map((user) => (
                         <Link
                           key={user._id || user.username}
                           to={`/profile/${user.username}`}
-                          className="flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors duration-150 border-b border-gray-200 last:border-b-0"
+                          className="flex items-center px-4 py-3 text-[#302F4D] hover:bg-[#B98EA7] hover:text-[#120D31] transition-colors duration-150 border-b border-[#A57982] last:border-b-0"
                           onClick={() => setSearchQuery("")}
                         >
                           <img
                             src={user.profilePicture || "https://via.placeholder.com/40"}
                             alt={user.name}
-                            className="w-10 h-10 rounded-full mr-3 object-cover border border-gray-300"
+                            className="w-10 h-10 rounded-full mr-3 object-cover border border-[#A57982]"
                           />
                           <div>
-                            <div className="font-medium text-gray-800">{user.name}</div>
-                            <div className="text-xs text-gray-500">@{user.username}</div>
+                            <div className="font-medium text-[#302F4D]">{user.name}</div>
+                            <div className="text-xs text-[#120D31]">@{user.username}</div>
                             {user.sport && (
-                              <div className="text-xs text-blue-500">{user.sport}</div>
+                              <div className="text-xs text-[#A57982]">{user.sport}</div>
                             )}
                             {networkConnections.some((conn) => conn.userId === user._id) && (
-                              <div className="text-xs text-green-600">In your network</div>
+                              <div className="text-xs text-[#302F4D]">In your network</div>
                             )}
                           </div>
                         </Link>
                       ))
                     ) : (
-                      <div className="px-4 py-3 text-gray-500 text-sm">No users found</div>
+                      <div className="px-4 py-3 text-[#302F4D] text-sm">No users found</div>
                     )}
                   </div>
                 )}
@@ -134,65 +134,65 @@ const Navbar = () => {
               <>
                 <Link
                   to="/"
-                  className="text-gray-600 hover:text-blue-600 flex flex-col items-center transition-all duration-200 hover:scale-105"
+                  className="text-[#302F4D] hover:text-[#A57982] flex flex-col items-center transition-all duration-200 hover:scale-105"
                 >
                   <Home size={22} />
                   <span className="text-xs mt-1 hidden md:block">Home</span>
                 </Link>
                 <Link
                   to="/leagues"
-                  className="text-gray-600 hover:text-blue-600 flex flex-col items-center transition-all duration-200 hover:scale-105"
+                  className="text-[#302F4D] hover:text-[#A57982] flex flex-col items-center transition-all duration-200 hover:scale-105"
                 >
                   <Trophy size={22} />
                   <span className="text-xs mt-1 hidden md:block">Clubs</span>
                 </Link>
                 <Link
                   to="/stats"
-                  className="text-gray-600 hover:text-blue-600 flex flex-col items-center transition-all duration-200 hover:scale-105"
+                  className="text-[#302F4D] hover:text-[#A57982] flex flex-col items-center transition-all duration-200 hover:scale-105"
                 >
                   <Activity size={22} />
                   <span className="text-xs mt-1 hidden md:block">Live Stats</span>
                 </Link>
                 <Link
                   to="/network"
-                  className="text-gray-600 hover:text-blue-600 flex flex-col items-center relative transition-all duration-200 hover:scale-105"
+                  className="text-[#302F4D] hover:text-[#A57982] flex flex-col items-center relative transition-all duration-200 hover:scale-105"
                 >
                   <Users size={22} />
                   <span className="text-xs mt-1 hidden md:block">Connections</span>
                   {unreadConnectionRequestsCount > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-md">
+                    <span className="absolute -top-2 -right-2 bg-[#A57982] text-[#F0D3F7] text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-md">
                       {unreadConnectionRequestsCount}
                     </span>
                   )}
                 </Link>
                 <Link
                   to="/notifications"
-                  className="text-gray-600 hover:text-blue-600 flex flex-col items-center relative transition-all duration-200 hover:scale-105"
+                  className="text-[#302F4D] hover:text-[#A57982] flex flex-col items-center relative transition-all duration-200 hover:scale-105"
                 >
                   <Bell size={22} />
                   <span className="text-xs mt-1 hidden md:block">Alerts</span>
                   {unreadNotificationCount > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-md">
+                    <span className="absolute -top-2 -right-2 bg-[#A57982] text-[#F0D3F7] text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-md">
                       {unreadNotificationCount}
                     </span>
                   )}
                 </Link>
                 <Link
                   to="/chat"
-                  className="text-gray-600 hover:text-blue-600 flex flex-col items-center relative transition-all duration-200 hover:scale-105"
+                  className="text-[#302F4D] hover:text-[#A57982] flex flex-col items-center relative transition-all duration-200 hover:scale-105"
                 >
                   <MessageSquare size={22} />
                   <span className="text-xs mt-1 hidden md:block">Messenger</span>
                 </Link>
                 <Link
                   to={`/profile/${authUser.username}`}
-                  className="text-gray-600 hover:text-blue-600 flex flex-col items-center transition-all duration-200 hover:scale-105"
+                  className="text-[#302F4D] hover:text-[#A57982] flex flex-col items-center transition-all duration-200 hover:scale-105"
                 >
                   <User size={22} />
                   <span className="text-xs mt-1 hidden md:block">Profile</span>
                 </Link>
                 <button
-                  className="flex items-center space-x-1 text-gray-600 hover:text-red-600 transition-all duration-200 hover:scale-105"
+                  className="flex items-center space-x-1 text-[#302F4D] hover:text-[#A57982] transition-all duration-200 hover:scale-105"
                   onClick={() => logout()}
                 >
                   <LogOut size={22} />
@@ -203,13 +203,13 @@ const Navbar = () => {
               <>
                 <Link
                   to="/login"
-                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 hover:text-gray-800 transition-all duration-200 shadow-sm"
+                  className="px-4 py-2 text-sm font-medium text-[#302F4D] bg-[#B98EA7] border border-[#A57982] rounded-md hover:bg-[#A57982] hover:text-[#F0D3F7] transition-all duration-200 shadow-sm"
                 >
                   Sign In
                 </Link>
                 <Link
                   to="/signup"
-                  className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-all duration-200 shadow-sm"
+                  className="px-4 py-2 text-sm font-medium text-[#F0D3F7] bg-[#302F4D] rounded-md hover:bg-[#120D31] transition-all duration-200 shadow-sm"
                 >
                   Join Team
                 </Link>

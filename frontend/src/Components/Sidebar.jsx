@@ -1,14 +1,17 @@
-// Sidebar.jsx
 import { Link } from "react-router-dom";
-import { Home, UserPlus, Bell, Trophy } from "lucide-react"; // Added Trophy icon
+import { Home, UserPlus, Bell, Trophy } from "lucide-react";
 
 export default function Sidebar({ user }) {
   return (
-    <div className="bg-secondary rounded-lg shadow">
-      <div className="p-4 text-center">
+    <div style={{ backgroundColor: "#F0D3F7", borderRadius: "0.5rem", boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}>
+      <div style={{ padding: "1rem", textAlign: "center" }}>
         <div
-          className="h-16 rounded-t-lg bg-cover bg-center"
           style={{
+            height: "4rem",
+            borderTopLeftRadius: "0.5rem",
+            borderTopRightRadius: "0.5rem",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
             backgroundImage: `url("${user.bannerImg || "/banner.png"}")`,
           }}
         />
@@ -16,53 +19,126 @@ export default function Sidebar({ user }) {
           <img
             src={user.profilePicture || "/avatar.png"}
             alt={user.name}
-            className="w-20 h-20 rounded-full mx-auto mt-[-40px]"
+            style={{
+              width: "5rem",
+              height: "5rem",
+              borderRadius: "50%",
+              margin: "0 auto",
+              marginTop: "-2.5rem",
+            }}
           />
-          <h2 className="text-xl font-semibold mt-2">{user.name}</h2>
+          <h2 style={{ fontSize: "1.25rem", fontWeight: "600", marginTop: "0.5rem", color: "#120D31" }}>
+            {user.name}
+          </h2>
         </Link>
-        <p className="text-info">{user.headline}</p>
-        <p className="text-info text-xs">{user.connections.length} connections</p>
+        <p style={{ color: "#302F4D" }}>{user.headline}</p>
+        <p style={{ color: "#302F4D", fontSize: "0.75rem" }}>{user.connections.length} connections</p>
       </div>
-      <div className="border-t border-base-100 p-4">
+      <div style={{ borderTop: "1px solid #B98EA7", padding: "1rem" }}>
         <nav>
-          <ul className="space-y-2">
+          <ul style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             <li>
               <Link
                 to="/"
-                className="flex items-center py-2 px-4 rounded-md hover:bg-primary hover:text-white transition-colors"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  padding: "0.5rem 1rem",
+                  borderRadius: "0.375rem",
+                  color: "#302F4D",
+                  transition: "all 0.2s",
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.backgroundColor = "#302F4D";
+                  e.currentTarget.style.color = "#F0D3F7";
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.backgroundColor = "transparent";
+                  e.currentTarget.style.color = "#302F4D";
+                }}
               >
-                <Home className="mr-2" size={20} /> Home
+                <Home style={{ marginRight: "0.5rem" }} size={20} /> Home
               </Link>
             </li>
             <li>
               <Link
                 to="/network"
-                className="flex items-center py-2 px-4 rounded-md hover:bg-primary hover:text-white transition-colors"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  padding: "0.5rem 1rem",
+                  borderRadius: "0.375rem",
+                  color: "#302F4D",
+                  transition: "all 0.2s",
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.backgroundColor = "#302F4D";
+                  e.currentTarget.style.color = "#F0D3F7";
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.backgroundColor = "transparent";
+                  e.currentTarget.style.color = "#302F4D";
+                }}
               >
-                <UserPlus className="mr-2" size={20} /> My Network
+                <UserPlus style={{ marginRight: "0.5rem" }} size={20} /> My Network
               </Link>
             </li>
             <li>
               <Link
                 to="/leagues"
-                className="flex items-center py-2 px-4 rounded-md hover:bg-primary hover:text-white transition-colors"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  padding: "0.5rem 1rem",
+                  borderRadius: "0.375rem",
+                  color: "#302F4D",
+                  transition: "all 0.2s",
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.backgroundColor = "#302F4D";
+                  e.currentTarget.style.color = "#F0D3F7";
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.backgroundColor = "transparent";
+                  e.currentTarget.style.color = "#302F4D";
+                }}
               >
-                <Trophy className="mr-2" size={20} /> Leagues & Clubs
+                <Trophy style={{ marginRight: "0.5rem" }} size={20} /> Leagues & Clubs
               </Link>
             </li>
             <li>
               <Link
                 to="/notifications"
-                className="flex items-center py-2 px-4 rounded-md hover:bg-primary hover:text-white transition-colors"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  padding: "0.5rem 1rem",
+                  borderRadius: "0.375rem",
+                  color: "#302F4D",
+                  transition: "all 0.2s",
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.backgroundColor = "#302F4D";
+                  e.currentTarget.style.color = "#F0D3F7";
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.backgroundColor = "transparent";
+                  e.currentTarget.style.color = "#302F4D";
+                }}
               >
-                <Bell className="mr-2" size={20} /> Notifications
+                <Bell style={{ marginRight: "0.5rem" }} size={20} /> Notifications
               </Link>
             </li>
           </ul>
         </nav>
       </div>
-      <div className="border-t border-base-100 p-4">
-        <Link to={`/profile/${user.username}`} className="text-sm font-semibold">
+      <div style={{ borderTop: "1px solid #B98EA7", padding: "1rem" }}>
+        <Link
+          to={`/profile/${user.username}`}
+          style={{ fontSize: "0.875rem", fontWeight: "600", color: "#302F4D" }}
+          onMouseOver={(e) => (e.currentTarget.style.color = "#A57982")}
+          onMouseOut={(e) => (e.currentTarget.style.color = "#302F4D")}
+        >
           Visit your profile
         </Link>
       </div>

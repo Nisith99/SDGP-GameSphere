@@ -57,13 +57,13 @@ const NotificationsPage = () => {
   const renderNotificationIcon = (type) => {
     switch (type) {
       case "like":
-        return <ThumbsUp className="text-green-500" />;
+        return <ThumbsUp className="text-[#A57982]" />;
       case "comment":
-        return <MessageSquare className="text-blue-500" />;
+        return <MessageSquare className="text-[#B98EA7]" />;
       case "connectionAccepted":
-        return <UserPlus className="text-green-600" />;
+        return <UserPlus className="text-[#A57982]" />;
       case "message":
-        return <MessageSquare className="text-purple-500" />;
+        return <MessageSquare className="text-[#302F4D]" />;
       default:
         return null;
     }
@@ -82,7 +82,7 @@ const NotificationsPage = () => {
           <span>
             <Link
               to={`/profile/${notification?.relatedUser?.username || ""}`}
-              className="font-bold"
+              className="font-bold text-[#120D31]"
             >
               {notification?.relatedUser?.name || "Someone"}
             </Link>{" "}
@@ -94,7 +94,7 @@ const NotificationsPage = () => {
           <span>
             <Link
               to={`/profile/${notification?.relatedUser?.username || ""}`}
-              className="font-bold"
+              className="font-bold text-[#120D31]"
             >
               {notification?.relatedUser?.name || "Someone"}
             </Link>{" "}
@@ -106,7 +106,7 @@ const NotificationsPage = () => {
           <span>
             <Link
               to={`/profile/${notification?.relatedUser?.username || ""}`}
-              className="font-bold"
+              className="font-bold text-[#120D31]"
             >
               {notification?.relatedUser?.name || "Someone"}
             </Link>{" "}
@@ -124,21 +124,21 @@ const NotificationsPage = () => {
     return (
       <Link
         to={`/post/${relatedPost?._id || ""}`}
-        className="mt-2 p-2 bg-green-50 rounded-md flex items-center space-x-2 hover:bg-green-100 transition-colors"
+        className="mt-2 p-2 bg-[#F0D3F7]/50 rounded-md flex items-center space-x-2 hover:bg-[#B98EA7]/30 transition-colors"
       >
         {relatedPost?.image && (
           <img
             src={relatedPost.image}
             alt="Post preview"
-            className="w-10 h-10 object-cover rounded"
+            className="w-10 h-10 object-cover rounded border border-[#302F4D]/20"
           />
         )}
         <div className="flex-1 overflow-hidden">
-          <p className="text-sm text-gray-600 truncate">
+          <p className="text-sm text-[#302F4D]/80 truncate">
             {relatedPost?.content || "No content available"}
           </p>
         </div>
-        <ExternalLink size={14} className="text-gray-400" />
+        <ExternalLink size={14} className="text-[#A57982]" />
       </Link>
     );
   };
@@ -146,28 +146,28 @@ const NotificationsPage = () => {
   // Early return for loading or no authUser
   if (authLoading || !authUser) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center">
-        <p className="text-gray-600">Loading...</p>
+      <div className="min-h-screen bg-gradient-to-br from-[#F0D3F7] to-[#B98EA7] flex items-center justify-center">
+        <p className="text-[#302F4D]/80">Loading...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-[#F0D3F7] to-[#B98EA7]">
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 container mx-auto py-8 px-4">
         <div className="col-span-1 lg:col-span-1">
           <Sidebar user={authUser} />
         </div>
         <div className="col-span-1 lg:col-span-3">
-          <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
-            <h1 className="text-2xl font-extrabold text-gray-900 mb-6">
+          <div className="bg-white rounded-lg shadow-lg p-6 border border-[#302F4D]/20">
+            <h1 className="text-2xl font-extrabold text-[#120D31] mb-6">
               Notifications
             </h1>
 
             {notificationsLoading ? (
-              <p className="text-gray-600">Loading notifications...</p>
+              <p className="text-[#302F4D]/80">Loading notifications...</p>
             ) : isError ? (
-              <p className="text-red-600">
+              <p className="text-[#A57982]">
                 Error loading notifications: {error?.message || "Unknown error"}
               </p>
             ) : Array.isArray(notifications) && notifications.length > 0 ? (
@@ -177,8 +177,8 @@ const NotificationsPage = () => {
                     key={notification?._id}
                     className={`bg-white border rounded-lg p-4 my-4 transition-all hover:shadow-md ${
                       !notification?.read
-                        ? "border-green-500"
-                        : "border-gray-200"
+                        ? "border-[#B98EA7]"
+                        : "border-[#302F4D]/20"
                     }`}
                   >
                     <div className="flex items-start justify-between">
@@ -192,20 +192,20 @@ const NotificationsPage = () => {
                               "/avatar.png"
                             }
                             alt={notification?.relatedUser?.name || "User"}
-                            className="w-12 h-12 rounded-full object-cover border-2 border-green-200"
+                            className="w-12 h-12 rounded-full object-cover border-2 border-[#A57982]/50"
                           />
                         </Link>
 
                         <div>
                           <div className="flex items-center gap-2">
-                            <div className="p-1 bg-blue-50 rounded-full">
+                            <div className="p-1 bg-[#F0D3F7]/50 rounded-full">
                               {renderNotificationIcon(notification?.type)}
                             </div>
-                            <p className="text-sm">
+                            <p className="text-sm text-[#302F4D]">
                               {renderNotificationContent(notification)}
                             </p>
                           </div>
-                          <p className="text-xs text-gray-500 mt-1">
+                          <p className="text-xs text-[#302F4D]/60 mt-1">
                             {notification?.createdAt
                               ? formatDistanceToNow(
                                   new Date(notification.createdAt),
@@ -221,7 +221,7 @@ const NotificationsPage = () => {
                         {!notification?.read && (
                           <button
                             onClick={() => markAsReadMutation(notification?._id)}
-                            className="p-1 bg-blue-100 text-blue-600 rounded hover:bg-blue-200 transition-colors"
+                            className="p-1 bg-[#B98EA7]/20 text-[#B98EA7] rounded hover:bg-[#B98EA7]/40 transition-colors"
                             aria-label="Mark as read"
                           >
                             <Eye size={16} />
@@ -232,7 +232,7 @@ const NotificationsPage = () => {
                           onClick={() =>
                             deleteNotificationMutation(notification?._id)
                           }
-                          className="p-1 bg-red-100 text-red-600 rounded hover:bg-red-200 transition-colors"
+                          className="p-1 bg-[#A57982]/20 text-[#A57982] rounded hover:bg-[#A57982]/40 transition-colors"
                           aria-label="Delete notification"
                         >
                           <Trash2 size={16} />
@@ -244,19 +244,19 @@ const NotificationsPage = () => {
               </ul>
             ) : (
               <div className="text-center py-8">
-                <div className="bg-white p-3 rounded-full shadow-md inline-block mb-4">
+                <div className="bg-[#F0D3F7]/50 p-3 rounded-full shadow-md inline-block mb-4">
                   <svg
-                    className="h-8 w-8 text-blue-600"
+                    className="h-8 w-8 text-[#A57982]"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
                     <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" />
                   </svg>
                 </div>
-                <p className="text-lg font-semibold text-gray-700">
+                <p className="text-lg font-semibold text-[#120D31]">
                   No notifications at the moment
                 </p>
-                <p className="text-gray-500 mt-2">
+                <p className="text-[#302F4D]/60 mt-2">
                   Check back later for updates from your team!
                 </p>
               </div>
@@ -266,15 +266,15 @@ const NotificationsPage = () => {
       </div>
 
       <footer className="mt-8 pb-6">
-        <div className="max-w-md mx-auto px-4 text-center text-xs text-gray-500">
+        <div className="max-w-md mx-auto px-4 text-center text-xs text-[#302F4D]/60">
           <div className="mt-3 space-x-4">
-            <a href="#" className="hover:text-gray-700">
+            <a href="#" className="hover:text-[#120D31]">
               Help Center
             </a>
-            <a href="#" className="hover:text-gray-700">
+            <a href="#" className="hover:text-[#120D31]">
               Privacy & Terms
             </a>
-            <a href="#" className="hover:text-gray-700">
+            <a href="#" className="hover:text-[#120D31]">
               Accessibility
             </a>
           </div>
