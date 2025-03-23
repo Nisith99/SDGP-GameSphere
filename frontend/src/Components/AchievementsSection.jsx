@@ -40,9 +40,9 @@ const AchievementsSection = ({ userData, isOwnProfile, onSave, queryClient, user
   }, [achievements]);
 
   const getRanking = (score) => {
-    if (score >= 500) return { label: "Gold", color: "bg-gradient-to-r from-yellow-400 to-yellow-600" };
-    if (score >= 250) return { label: "Silver", color: "bg-gradient-to-r from-gray-300 to-gray-500" };
-    return { label: "Bronze", color: "bg-gradient-to-r from-orange-600 to-orange-800" };
+    if (score >= 500) return { label: "Gold", color: "bg-gradient-to-r from-yellow-300 to-yellow-500" };
+    if (score >= 250) return { label: "Silver", color: "bg-gradient-to-r from-gray-200 to-gray-400" };
+    return { label: "Bronze", color: "bg-gradient-to-r from-orange-400 to-orange-600" };
   };
 
   const handleAddAchievement = () => {
@@ -60,11 +60,7 @@ const AchievementsSection = ({ userData, isOwnProfile, onSave, queryClient, user
 
   const handleSaveChanges = () => {
     const formData = new FormData();
-    console.log("Achievements before saving:", achievements);
     formData.append("achievements", JSON.stringify(achievements));
-    for (let [key, value] of formData.entries()) {
-      console.log(`FormData - ${key}:`, value);
-    }
     onSave(formData);
     if (queryClient) {
       queryClient.invalidateQueries(["userProfile", username]);
@@ -74,32 +70,32 @@ const AchievementsSection = ({ userData, isOwnProfile, onSave, queryClient, user
   };
 
   return (
-    <div className="bg-gray-900/95 backdrop-blur-xl rounded-2xl shadow-2xl p-6 border border-yellow-500/30 hover:shadow-yellow-500/10 transition-all duration-500 transform hover:-translate-y-1">
-      <h2 className="text-3xl font-extrabold text-green-400 mb-6 tracking-wide drop-shadow-lg">
+    <div className="bg-white/90 rounded-xl shadow-md p-6 border border-yellow-200 hover:shadow-lg transition-all duration-300">
+      {/* <h2 className="text-3xl font-extrabold text-green-600 mb-6 tracking-wide">
         Achievements
-      </h2>
+      </h2> */}
       <div className="space-y-6">
         {achievements.length > 0 ? (
           achievements.map((ach) => (
             <div
               key={ach._id}
-              className="flex justify-between items-center bg-gray-800/50 p-4 rounded-xl border border-gray-700/50 hover:bg-gray-800 transition-all duration-300"
+              className="flex justify-between items-center bg-gray-50 p-4 rounded-xl border border-gray-200 hover:bg-gray-100 transition-all duration-300"
             >
               <div className="flex items-center space-x-3">
                 <Trophy size={24} className="text-yellow-500 animate-pulse" />
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-100 capitalize">
+                  <h3 className="text-lg font-semibold text-gray-800 capitalize">
                     {ach.rankType} Rank: {ach.rankValue}
                   </h3>
-                  <p className="text-sm text-gray-400">
-                    Score: <span className="font-medium text-yellow-400">{ach.score}</span>
+                  <p className="text-sm text-gray-600">
+                    Score: <span className="font-medium text-yellow-600">{ach.score}</span>
                   </p>
                 </div>
               </div>
               {isEditing && (
                 <button
                   onClick={() => handleDeleteAchievement(ach._id)}
-                  className="text-red-500 hover:text-red-400 transition-colors duration-200"
+                  className="text-red-600 hover:text-red-500 transition-colors duration-200"
                 >
                   <X size={24} />
                 </button>
@@ -107,13 +103,13 @@ const AchievementsSection = ({ userData, isOwnProfile, onSave, queryClient, user
             </div>
           ))
         ) : (
-          <p className="text-gray-500 text-center italic">No achievements to showcase yet.</p>
+          <p className="text-gray-600 text-center italic">No achievements to showcase yet.</p>
         )}
 
         {achievements.length > 0 && (
-          <div className="mt-6 p-4 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl border border-yellow-500/20">
-            <p className="text-gray-200 text-lg">
-              Total Score: <span className="font-bold text-yellow-400">{totalScore}</span>
+          <div className="mt-6 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl border border-yellow-200">
+            <p className="text-gray-800 text-lg">
+              Total Score: <span className="font-bold text-yellow-600">{totalScore}</span>
             </p>
             <p className="text-xl mt-2">
               Overall Ranking:{" "}
@@ -132,14 +128,14 @@ const AchievementsSection = ({ userData, isOwnProfile, onSave, queryClient, user
               <select
                 value={newAchievement.rankType}
                 onChange={(e) => setNewAchievement({ ...newAchievement, rankType: e.target.value })}
-                className="w-full p-3 bg-gray-800 text-gray-100 border border-gray-700 rounded-lg appearance-none focus:ring-2 focus:ring-yellow-500 focus:outline-none hover:bg-gray-700 transition-all duration-300 cursor-pointer"
+                className="w-full p-3 bg-gray-50 text-gray-800 border border-gray-300 rounded-lg appearance-none focus:ring-2 focus:ring-yellow-400 focus:outline-none hover:bg-gray-100 transition-all duration-300 cursor-pointer"
               >
                 <option value="district">District Rank</option>
                 <option value="island">Island Rank</option>
                 <option value="province">Province Rank</option>
               </select>
               <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                 </svg>
               </div>
@@ -150,11 +146,11 @@ const AchievementsSection = ({ userData, isOwnProfile, onSave, queryClient, user
               placeholder="Enter rank (e.g., 1, 2, 3)"
               value={newAchievement.rankValue}
               onChange={(e) => setNewAchievement({ ...newAchievement, rankValue: e.target.value })}
-              className="w-full p-3 bg-gray-800 text-gray-100 border border-gray-700 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:outline-none placeholder-gray-500 transition-all duration-300"
+              className="w-full p-3 bg-gray-50 text-gray-800 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:outline-none placeholder-gray-400 transition-all duration-300"
             />
             <button
               onClick={handleAddAchievement}
-              className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-yellow-600 hover:to-yellow-700 transform hover:scale-105 transition-all duration-300 shadow-md"
+              className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 text-white py-3 px-6 rounded-lg font-semibold hover:from-yellow-500 hover:to-yellow-600 transition-all duration-300 shadow-md"
             >
               Add Achievement
             </button>
@@ -166,14 +162,14 @@ const AchievementsSection = ({ userData, isOwnProfile, onSave, queryClient, user
             {isEditing ? (
               <button
                 onClick={handleSaveChanges}
-                className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transform hover:scale-105 transition-all duration-300 shadow-md"
+                className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all duration-300 shadow-md"
               >
                 Save Changes
               </button>
             ) : (
               <button
                 onClick={() => setIsEditing(true)}
-                className="w-full bg-transparent text-yellow-400 py-2 px-6 rounded-lg font-semibold border border-yellow-400 hover:bg-yellow-400 hover:text-gray-900 transform hover:scale-105 transition-all duration-300"
+                className="w-full bg-transparent text-yellow-600 py-2 px-6 rounded-lg font-semibold border border-yellow-400 hover:bg-yellow-400 hover:text-white transition-all duration-300"
               >
                 Edit Achievements
               </button>
