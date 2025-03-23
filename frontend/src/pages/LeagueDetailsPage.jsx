@@ -53,14 +53,14 @@ const LeagueDetailsPage = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-gray-100 flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="flex items-center space-x-3 text-gray-300"
+          className="flex items-center space-x-3 text-gray-700"
         >
-          <Loader2 className="w-8 h-8 animate-spin text-blue-400" />
+          <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
           <span className="text-lg font-medium">Loading league details...</span>
         </motion.div>
       </div>
@@ -69,12 +69,12 @@ const LeagueDetailsPage = () => {
 
   if (!league) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-gray-100 flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="text-gray-300 text-lg font-medium"
+          className="text-gray-700 text-lg font-medium"
         >
           League or club not found
         </motion.div>
@@ -85,7 +85,7 @@ const LeagueDetailsPage = () => {
   const isMember = league.membersList.some((memberId) => memberId.toString() === user?._id?.toString());
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-blue-900 text-gray-200">
+    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-gray-100 text-gray-800">
       <motion.div
         className="container mx-auto py-12 px-6"
         variants={containerVariants}
@@ -101,51 +101,51 @@ const LeagueDetailsPage = () => {
           {/* Main Content */}
           <div className="col-span-1 lg:col-span-3">
             <motion.div
-              className="bg-gray-800/90 backdrop-blur-md rounded-2xl shadow-lg border border-gray-700/50 p-8"
+              className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8"
               variants={cardVariants}
               initial="hidden"
               animate="visible"
               whileHover="hover"
             >
-              <h1 className="text-4xl font-extrabold text-white mb-6 tracking-tight drop-shadow-md">
+              <h1 className="text-4xl font-extrabold text-black mb-6 tracking-tight drop-shadow-md">
                 {league.name}
               </h1>
 
               <div className="mb-6 space-y-2">
-                <p className="text-gray-300 text-lg">
-                  <span className="font-semibold text-blue-400">
+                <p className="text-gray-700 text-lg">
+                  <span className="font-semibold text-blue-600">
                     {league.members.toLocaleString()}
                   </span>{" "}
                   members •{" "}
-                  <span className="font-semibold text-green-400">
+                  <span className="font-semibold text-green-600">
                     {league.active.toLocaleString()}
                   </span>{" "}
                   active
                 </p>
-                <p className="text-gray-400">
+                <p className="text-gray-600">
                   Category:{" "}
-                  <span className="text-purple-400 capitalize">
+                  <span className="text-purple-600 capitalize">
                     {league.category}
                   </span>
                 </p>
               </div>
 
               <motion.div
-                className="flex items-center text-gray-400 mb-6"
+                className="flex items-center text-gray-600 mb-6"
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2, duration: 0.4 }}
               >
-                <Users size={20} className="mr-2 text-blue-400" />
+                <Users size={20} className="mr-2 text-blue-600" />
                 <span>Founded: {new Date(league.createdAt).toLocaleDateString()}</span>
               </motion.div>
 
               <div>
-                <h2 className="text-2xl font-semibold text-white mb-4 drop-shadow-sm">
+                <h2 className="text-2xl font-semibold text-black mb-4 drop-shadow-sm">
                   About
                 </h2>
                 <motion.p
-                  className="text-gray-300 mb-6 leading-relaxed"
+                  className="text-gray-700 mb-6 leading-relaxed"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.3, duration: 0.5 }}
@@ -154,7 +154,7 @@ const LeagueDetailsPage = () => {
                 </motion.p>
               </div>
 
-              
+              {/* Add more sections here if needed */}
             </motion.div>
           </div>
         </div>
