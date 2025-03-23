@@ -8,6 +8,7 @@ import {
   rejectConnectionRequest,
   removeConnection,
   sendConnectionRequest,
+  cancelConnectionRequest,
 } from "../controllers/connection.controller.js";
 
 const router = express.Router();
@@ -15,6 +16,7 @@ const router = express.Router();
 router.post("/request/:userId", protectRoute, sendConnectionRequest);
 router.put("/accept/:requestId", protectRoute, acceptConnectionRequest);
 router.put("/reject/:requestId", protectRoute, rejectConnectionRequest);
+router.put("/cancel/:userId", protectRoute, cancelConnectionRequest);
 router.get("/requests", protectRoute, getConnectionRequests);
 router.get("/", protectRoute, getUserConnections);
 router.delete("/:userId", protectRoute, removeConnection);

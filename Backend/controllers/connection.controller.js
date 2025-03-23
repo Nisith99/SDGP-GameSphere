@@ -34,6 +34,7 @@ export const sendConnectionRequest = async (req, res) => {
 
     res.status(201).json({ message: "Connection request sent successfully" });
   } catch (error) {
+    console.error("Error in sendConnectionRequest:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -75,7 +76,7 @@ export const acceptConnectionRequest = async (req, res) => {
 
     res.json({ message: "Connection accepted successfully" });
   } catch (error) {
-    console.error("Error in acceptConnectionRequest controller:", error);
+    console.error("Error in acceptConnectionRequest:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -100,7 +101,34 @@ export const rejectConnectionRequest = async (req, res) => {
 
     res.json({ message: "Connection request rejected" });
   } catch (error) {
-    console.error("Error in rejectConnectionRequest controller:", error);
+    console.error("Error in rejectConnectionRequest:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const cancelConnectionRequest = async (req, res) => {
+  try {
+    const { userId } = req.params; // recipient's userId
+    const senderId = req.user._id;
+
+    console.log(`Cancelling request: sender=${senderId}, recipient=${userId}`);
+
+    const request = await ConnectionRequest.findOne({
+      sender: senderId,
+      recipient: userId,
+      status: "pending",
+    });
+
+    if (!request) {
+      console.log(`No pending request found for sender=${senderId}, recipient=${userId}`);
+      return res.status(404).json({ message: "No pending connection request found" });
+    }
+
+    await ConnectionRequest.deleteOne({ _id: request._id });
+
+    res.json({ message: "Connection request cancelled successfully" });
+  } catch (error) {
+    console.error("Error in cancelConnectionRequest:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -116,7 +144,7 @@ export const getConnectionRequests = async (req, res) => {
 
     res.json(requests);
   } catch (error) {
-    console.error("Error in getConnectionRequests controller:", error);
+    console.error("Error in getConnectionRequests:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -132,7 +160,7 @@ export const getUserConnections = async (req, res) => {
 
     res.json(user.connections);
   } catch (error) {
-    console.error("Error in getUserConnections controller:", error);
+    console.error("Error in getUserConnections:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -147,7 +175,7 @@ export const removeConnection = async (req, res) => {
 
     res.json({ message: "Connection removed successfully" });
   } catch (error) {
-    console.error("Error in removeConnection controller:", error);
+    console.error("Error in removeConnection:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -180,7 +208,7 @@ export const getConnectionStatus = async (req, res) => {
 
     res.json({ status: "not_connected" });
   } catch (error) {
-    console.error("Error in getConnectionStatus controller:", error);
+    console.error("Error in getConnectionStatus:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
