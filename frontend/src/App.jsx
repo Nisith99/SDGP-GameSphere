@@ -12,7 +12,8 @@ import LeaguesPage from "./pages/LeaguesPage";
 import LeagueDetailsPage from "./pages/LeagueDetailsPage";
 import PostPage from "./pages/PostPage";
 import ProfilePage from "./pages/ProfilePage";
-import ChatPage from "./pages/ChatPage"; // Add this import
+import ChatPage from "./pages/ChatPage"; 
+import UserStatsPage from "./pages/UserStatsPage";
 
 function App() {
   const { data: authUser, isLoading } = useQuery({
@@ -44,7 +45,8 @@ function App() {
         <Route path="/leagues/:leagueName" element={authUser ? <LeagueDetailsPage /> : <Navigate to={"/login"} />} />
         <Route path="/post/:postId" element={authUser ? <PostPage /> : <Navigate to={"/login"} />} />
         <Route path="/profile/:username" element={authUser ? <ProfilePage /> : <Navigate to={"/login"} />} />
-        <Route path="/chat" element={authUser ? <ChatPage /> : <Navigate to={"/login"} />} /> {/* Add this route */}
+        <Route path="/chat" element={authUser ? <ChatPage /> : <Navigate to={"/login"} />} /> 
+        <Route path="/stats" element={<UserStatsPage />} />
       </Routes>
       <Toaster />
     </Layout>
