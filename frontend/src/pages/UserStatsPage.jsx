@@ -108,7 +108,7 @@ const UserStatsPage = () => {
               {/* User Header */}
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-semibold text-gray-900">
-                  {user.name} (@{user.username || "unknown"})
+                  {user.name}
                 </h2>
               </div>
 
