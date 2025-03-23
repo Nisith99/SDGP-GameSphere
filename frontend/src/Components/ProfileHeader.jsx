@@ -46,17 +46,16 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
     }
   };
 
-  // Calculate overall ranking
   const totalScore = userData.achievements?.reduce((sum, ach) => sum + (ach.score || 0), 0) || 0;
   const getRanking = (score) => {
-    if (score >= 500) return { label: "Gold", color: "bg-gradient-to-r from-yellow-400 to-yellow-600" };
-    if (score >= 250) return { label: "Silver", color: "bg-gradient-to-r from-gray-300 to-gray-500" };
-    return { label: "Bronze", color: "bg-gradient-to-r from-orange-600 to-orange-800" };
+    if (score >= 500) return { label: "Gold", color: "bg-gradient-to-r from-yellow-300 to-yellow-500" };
+    if (score >= 250) return { label: "Silver", color: "bg-gradient-to-r from-gray-200 to-gray-400" };
+    return { label: "Bronze", color: "bg-gradient-to-r from-orange-500 to-orange-700" };
   };
   const ranking = getRanking(totalScore);
 
   return (
-    <div className="bg-gray shadow rounded-lg mb-6">
+    <div className="bg-white shadow-sm rounded-lg mb-6">
       <div className="relative">
         <img
           src={
@@ -65,11 +64,11 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
               : userData.bannerImg || "/banner-placeholder.jpg"
           }
           alt="Banner"
-          className="w-full h-56 object-cover"
+          className="w-full h-56 object-cover rounded-t-lg"
         />
         {isOwnProfile && isEditing && (
           <div className="absolute top-4 right-4">
-            <label className="cursor-pointer bg-gray-900/80 text-white px-3 py-1 rounded-lg shadow-md hover:bg-gray-700 transition-all duration-300">
+            <label className="cursor-pointer bg-white/90 text-gray-700 px-3 py-1 rounded-md shadow-sm hover:bg-gray-100 transition-all duration-300">
               Change Banner
               <input
                 type="file"
@@ -82,7 +81,7 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
         )}
       </div>
 
-      <div className="p-4">
+      <div className="p-6">
         <div className="relative -mt-16 mb-4">
           <img
             src={
@@ -91,11 +90,11 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
                 : userData.profilePicture || "/avatar.png"
             }
             alt={userData.name}
-            className="w-32 h-32 rounded-full border-4 border-white mx-auto"
+            className="w-32 h-32 rounded-full border-4 border-white mx-auto shadow-sm"
             onError={(e) => console.log("Profile picture load error:", e.target.src)}
           />
           {isOwnProfile && isEditing && (
-            <label className="absolute bottom-0 right-0 w-8 h-8 text-gray-500 cursor-pointer">
+            <label className="absolute bottom-0 right-1/2 transform translate-x-16 w-8 h-8 text-gray-600 cursor-pointer hover:text-gray-800 transition-colors">
               <Camera />
               <input
                 type="file"
@@ -113,10 +112,10 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
               type="text"
               value={editedData.name ?? userData.name}
               onChange={(e) => setEditedData({ ...editedData, name: e.target.value })}
-              className="text-2xl font-bold mb-2 text-center w-full bg-gray-800 text-white border-none"
+              className="text-2xl font-bold mb-2 text-center w-full bg-white border border-gray-300 rounded-md text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 p-1"
             />
           ) : (
-            <h1 className="text-2xl font-bold mb-2">{userData.name}</h1>
+            <h1 className="text-2xl font-bold mb-2 text-gray-800">{userData.name}</h1>
           )}
 
           {isEditing ? (
@@ -124,7 +123,7 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
               type="text"
               value={editedData.headline ?? userData.headline}
               onChange={(e) => setEditedData({ ...editedData, headline: e.target.value })}
-              className="text-gray-600 text-center w-full bg-gray-800 text-white border-none"
+              className="text-gray-600 text-center w-full bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 p-1"
             />
           ) : (
             <p className="text-gray-600">{userData.headline}</p>
@@ -139,12 +138,12 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
                     size={16}
                     className={`${star <= Math.round(userData.averageRating)
                       ? "text-yellow-400 fill-yellow-400"
-                      : "text-gray-400"
+                      : "text-gray-300"
                     }`}
                   />
                 ))}
               </div>
-              <span className="ml-2 text-gray-400 text-sm">
+              <span className="ml-2 text-gray-500 text-sm">
                 {userData.averageRating.toFixed(1)} ({userData.ratingCount})
               </span>
             </div>
@@ -158,14 +157,14 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
                   type="text"
                   value={editedData.location ?? userData.location}
                   onChange={(e) => setEditedData({ ...editedData, location: e.target.value })}
-                  className="text-gray-600 text-center bg-gray-800 text-white border-none"
+                  className="text-gray-600 text-center bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 p-1"
                 />
               ) : (
                 <span className="text-gray-600">{userData.location}</span>
               )}
             </div>
             <span
-              className={`${ranking.color} text-white px-3 py-1 rounded-full text-sm font-medium`}
+              className={`${ranking.color} text-white px-3 py-1 rounded-full text-sm font-medium shadow-sm`}
             >
               {ranking.label}
             </span>
@@ -178,7 +177,7 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
               <>
                 <button
                   onClick={handleSaveChanges}
-                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-300"
                 >
                   Save
                 </button>
@@ -187,7 +186,7 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
                     setEditedData({});
                     setIsEditing(false);
                   }}
-                  className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+                  className="bg-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-300 focus:ring-2 focus:ring-gray-400 focus:outline-none transition-all duration-300"
                 >
                   Cancel
                 </button>
@@ -195,7 +194,7 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
             ) : (
               <button
                 onClick={() => setIsEditing(true)}
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-300"
               >
                 Edit Profile
               </button>
