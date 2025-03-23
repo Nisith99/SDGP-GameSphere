@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import Layout from "./components/layout/Layout";
+import Layout from "./Components/layout/Layout";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/auth/LoginPage";
 import SignUpPage from "./pages/auth/SignUpPage";
@@ -9,9 +9,10 @@ import { axiosInstance } from "./lib/axios";
 import NotificationsPage from "./pages/NotificationsPage";
 import NetworkPage from "./pages/NetworkPage";
 import LeaguesPage from "./pages/LeaguesPage";
-import LeagueDetailsPage from "./pages/LeagueDetailsPage"; // Updated import
+import LeagueDetailsPage from "./pages/LeagueDetailsPage";
 import PostPage from "./pages/PostPage";
 import ProfilePage from "./pages/ProfilePage";
+import ChatPage from "./pages/ChatPage"; // Add this import
 
 function App() {
   const { data: authUser, isLoading } = useQuery({
@@ -43,6 +44,7 @@ function App() {
         <Route path="/leagues/:leagueName" element={authUser ? <LeagueDetailsPage /> : <Navigate to={"/login"} />} />
         <Route path="/post/:postId" element={authUser ? <PostPage /> : <Navigate to={"/login"} />} />
         <Route path="/profile/:username" element={authUser ? <ProfilePage /> : <Navigate to={"/login"} />} />
+        <Route path="/chat" element={authUser ? <ChatPage /> : <Navigate to={"/login"} />} /> {/* Add this route */}
       </Routes>
       <Toaster />
     </Layout>

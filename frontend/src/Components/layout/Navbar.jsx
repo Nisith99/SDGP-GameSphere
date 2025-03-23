@@ -1,4 +1,3 @@
-// frontend/components/Navbar.jsx
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "../../lib/axios";
 import { Link } from "react-router-dom";
@@ -145,7 +144,7 @@ const Navbar = () => {
                 </Link>
                 <Link to="/network" className="text-gray-300 hover:text-white flex flex-col items-center relative transition-colors duration-200">
                   <Users size={20} />
-                  <span className="text-xs hidden md:block">Teams</span>
+                  <span className="text-xs hidden md:block">Connections</span>
                   {unreadConnectionRequestsCount > 0 && (
                     <span className="absolute -top-1 -right-1 md:right-4 bg-yellow-400 text-gray-900 text-xs font-bold rounded-full size-3 md:size-4 flex items-center justify-center">
                       {unreadConnectionRequestsCount}
