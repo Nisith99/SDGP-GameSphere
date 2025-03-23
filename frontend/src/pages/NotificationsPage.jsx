@@ -1,3 +1,4 @@
+// frontend/pages/NotificationsPage.jsx
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "../lib/axios";
 import { toast } from "react-hot-toast";
@@ -15,18 +16,31 @@ import { formatDistanceToNow } from "date-fns";
 
 const NotificationsPage = () => {
   const { data: authUser } = useQuery({ queryKey: ["authUser"] });
-
   const queryClient = useQueryClient();
 
-  const { data: notifications, isLoading } = useQuery({
+  const { 
+    data: notifications, 
+    isLoading, 
+    isError, 
+    error 
+  } = useQuery({
     queryKey: ["notifications"],
-    queryFn: () => axiosInstance.get("/notifications"),
+    queryFn: async () => {
+      const response = await axiosInstance.get("/notifications");
+      console.log("Notifications API response:", response.data); // Debug log
+      return response.data; // Expecting an array or { data: array }
+    },
+    enabled: !!authUser, // Only fetch if authenticated
   });
 
   const { mutate: markAsReadMutation } = useMutation({
     mutationFn: (id) => axiosInstance.put(`/notifications/${id}/read`),
     onSuccess: () => {
       queryClient.invalidateQueries(["notifications"]);
+      toast.success("Notification marked as read");
+    },
+    onError: (error) => {
+      toast.error("Failed to mark as read: " + error.message);
     },
   });
 
@@ -36,13 +50,15 @@ const NotificationsPage = () => {
       queryClient.invalidateQueries(["notifications"]);
       toast.success("Notification deleted");
     },
+    onError: (error) => {
+      toast.error("Failed to delete notification: " + error.message);
+    },
   });
 
   const renderNotificationIcon = (type) => {
     switch (type) {
       case "like":
         return <ThumbsUp className="text-green-500" />;
-
       case "comment":
         return <MessageSquare className="text-blue-500" />;
       case "connectionAccepted":
@@ -85,7 +101,7 @@ const NotificationsPage = () => {
           </span>
         );
       default:
-        return null;
+        return <span>Unknown notification type</span>;
     }
   };
 
@@ -127,10 +143,14 @@ const NotificationsPage = () => {
             </h1>
 
             {isLoading ? (
-              <p>Loading notifications...</p>
-            ) : notifications && notifications.data.length > 0 ? (
+              <p className="text-gray-600">Loading notifications...</p>
+            ) : isError ? (
+              <p className="text-red-600">
+                Error loading notifications: {error.message}
+              </p>
+            ) : Array.isArray(notifications) && notifications.length > 0 ? (
               <ul>
-                {notifications.data.map((notification) => (
+                {notifications.map((notification) => (
                   <li
                     key={notification._id}
                     className={`bg-white border rounded-lg p-4 my-4 transition-all hover:shadow-md ${
@@ -166,9 +186,7 @@ const NotificationsPage = () => {
                           <p className="text-xs text-gray-500 mt-1">
                             {formatDistanceToNow(
                               new Date(notification.createdAt),
-                              {
-                                addSuffix: true,
-                              }
+                              { addSuffix: true }
                             )}
                           </p>
                           {renderRelatedPost(notification.relatedPost)}
@@ -245,4 +263,5 @@ const NotificationsPage = () => {
     </div>
   );
 };
-export default NotificationsPage;
+
+export default NotificationsPage; 
