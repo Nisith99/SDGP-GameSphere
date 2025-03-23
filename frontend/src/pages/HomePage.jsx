@@ -72,42 +72,42 @@ const HomePage = () => {
           </div>
 
           {/* Right Sidebar */}
-          {recommendedUsers?.length > 0 && (
-            <div className="col-span-1 lg:col-span-1 hidden lg:block">
-              {/* Players You May Know */}
-              {/* <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-4 mb-6">
+          <div className="col-span-1 lg:col-span-1 hidden lg:block">
+            {/* Players You May Know */}
+            {recommendedUsers?.length > 0 && (
+              <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-4 mb-6">
                 <h2 className="font-semibold mb-4 text-gray-900">
                   Players You May Know
                 </h2>
                 {displayedUsers.map((user) => (
                   <RecommendedUser key={user._id} user={user} />
                 ))}
-              </div> */}
+              </div>
+            )}
 
-              {/* Upcoming Games */}
-              <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-4">
-                <h2 className="font-semibold mb-4 text-gray-900">
-                  Upcoming Games
-                </h2>
-                <div className="space-y-4">
-                  <div className="p-3 bg-green-50 rounded-lg hover:bg-green-100 transition-colors cursor-pointer">
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium">Lakers vs. Warriors</span>
-                      <span className="text-sm text-gray-500">Today</span>
-                    </div>
-                    <div className="text-xs text-gray-500 mt-1">7:30 PM ET</div>
+            {/* Upcoming Games */}
+            <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-4">
+              <h2 className="font-semibold mb-4 text-gray-900">
+                Upcoming Games
+              </h2>
+              <div className="space-y-4">
+                <div className="p-3 bg-green-50 rounded-lg hover:bg-green-100 transition-colors cursor-pointer">
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium">Lakers vs. Warriors</span>
+                    <span className="text-sm text-gray-500">Today</span>
                   </div>
-                  <div className="p-3 bg-green-50 rounded-lg hover:bg-green-100 transition-colors cursor-pointer">
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium">Cowboys vs. Eagles</span>
-                      <span className="text-sm text-gray-500">Tomorrow</span>
-                    </div>
-                    <div className="text-xs text-gray-500 mt-1">4:15 PM ET</div>
+                  <div className="text-xs text-gray-500 mt-1">7:30 PM ET</div>
+                </div>
+                <div className="p-3 bg-green-50 rounded-lg hover:bg-green-100 transition-colors cursor-pointer">
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium">Cowboys vs. Eagles</span>
+                    <span className="text-sm text-gray-500">Tomorrow</span>
                   </div>
+                  <div className="text-xs text-gray-500 mt-1">4:15 PM ET</div>
                 </div>
               </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
 
