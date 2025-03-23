@@ -6,20 +6,22 @@ import {
   updateProfile,
   rateUser,
   getUserRatings,
+  searchUsers
 } from "../controllers/user.controller.js";
 
 const router = express.Router();
 
-console.log("user.route.js loaded");
+console.log("Initializing user routes");
 
-// Public route for profile access (no authentication required)
+// Public route
 router.get("/public/:username", getPublicProfile);
 
-// Protected routes (require authentication)
+// Protected routes
 router.get("/suggestions", protectRoute, getSuggestedConnections);
-router.get("/:username", protectRoute, getPublicProfile); // Keep this for authenticated access if needed
+router.get("/:username", protectRoute, getPublicProfile);
 router.put("/profile", protectRoute, updateProfile);
 router.post("/rate/:userId", protectRoute, rateUser);
 router.get("/ratings/:username", protectRoute, getUserRatings);
+router.get("/search", protectRoute, searchUsers);
 
 export default router;

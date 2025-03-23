@@ -1,3 +1,4 @@
+// backend/controllers/user.controller.js
 import User from "../models/user.model.js";
 import path from "path";
 import fs from "fs/promises";
@@ -21,7 +22,6 @@ export const updateProfile = async (req, res) => {
 
     const { name, headline, location, about, achievements, education, skills } = req.body;
 
-    // Update text fields
     if (name !== undefined) user.name = name;
     if (headline !== undefined) user.headline = headline;
     if (location !== undefined) user.location = location;
@@ -36,11 +36,10 @@ export const updateProfile = async (req, res) => {
       user.skills = Array.isArray(skills) ? skills : JSON.parse(skills || "[]");
     }
 
-    // Handle file uploads (if applicable)
     if (req.files) {
       console.log("Files received:", req.files);
       const BASE_URL = process.env.NODE_ENV === "production"
-        ? "https://your-production-url.com"
+        ? process.env.BASE_URL
         : "http://localhost:5000";
       const { profilePicture, bannerImg } = req.files;
 
@@ -51,7 +50,7 @@ export const updateProfile = async (req, res) => {
           `${userId}-${Date.now()}-${profilePicture.name}`
         );
         await profilePicture.mv(profilePicturePath);
-        user.profilePicture = `${BASE_URL}/uploads/profile/${path.basename(profilePicturePath)}`;
+        user.profilePicture = `/uploads/profile/${path.basename(profilePicturePath)}`;
       }
 
       if (bannerImg) {
@@ -61,7 +60,7 @@ export const updateProfile = async (req, res) => {
           `${userId}-${Date.now()}-${bannerImg.name}`
         );
         await bannerImg.mv(bannerImgPath);
-        user.bannerImg = `${BASE_URL}/uploads/banner/${path.basename(bannerImgPath)}`;
+        user.bannerImg = `/uploads/banner/${path.basename(bannerImgPath)}`;
       }
     }
 
@@ -103,7 +102,7 @@ export const getPublicProfile = async (req, res) => {
     }
 
     const BASE_URL = process.env.NODE_ENV === "production"
-      ? "https://your-production-url.com"
+      ? process.env.BASE_URL
       : "http://localhost:5000";
 
     if (user.profilePicture && !user.profilePicture.startsWith("http")) {
@@ -117,19 +116,39 @@ export const getPublicProfile = async (req, res) => {
     res.status(200).json(user);
   } catch (error) {
     console.error("Error in getPublicProfile:", error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
 export const rateUser = async (req, res) => {
   try {
     const { userId } = req.params;
-    const { rating } = req.body;
+    const { rating, comment } = req.body;
+    const raterId = req.user._id;
+
+    if (!rating || rating < 1 || rating > 5) {
+      return res.status(400).json({ message: "Rating must be between 1 and 5" });
+    }
+
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    // Add rating logic here
+
+    const existingRating = user.ratings.find(r => r.ratedBy.toString() === raterId.toString());
+    if (existingRating) {
+      existingRating.score = rating;
+      existingRating.comment = comment || "";
+      existingRating.createdAt = Date.now();
+    } else {
+      user.ratings.push({
+        ratedBy: raterId,
+        score: rating,
+        comment: comment || "",
+      });
+    }
+
+    await user.save();
     res.status(200).json({ message: "User rated successfully" });
   } catch (error) {
     console.error("Error in rateUser:", error);
@@ -140,11 +159,19 @@ export const rateUser = async (req, res) => {
 export const getUserRatings = async (req, res) => {
   try {
     const { username } = req.params;
-    const user = await User.findOne({ username }).select("ratings");
+    const user = await User.findOne({ username })
+      .select("ratings averageRating ratingCount")
+      .populate("ratings.ratedBy", "name username profilePicture");
+    
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.status(200).json({ ratings: user.ratings || [] });
+    
+    res.status(200).json({
+      ratings: user.ratings,
+      averageRating: user.averageRating,
+      ratingCount: user.ratingCount
+    });
   } catch (error) {
     console.error("Error in getUserRatings:", error);
     res.status(500).json({ message: "Server error", error: error.message });
@@ -154,23 +181,68 @@ export const getUserRatings = async (req, res) => {
 export const getSuggestedConnections = async (req, res) => {
   try {
     const userId = req.user._id;
-    const user = await User.findById(userId).select("connections");
+    const user = await User.findById(userId).select("connections skills sport");
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
     const suggestedUsers = await User.find({
       _id: { $ne: userId, $nin: user.connections },
+      $or: [
+        { sport: user.sport },
+        { skills: { $in: user.skills } }
+      ]
     })
-      .select("name username profilePicture")
+      .select("name username profilePicture sport skills")
       .limit(10);
+
+    const BASE_URL = process.env.NODE_ENV === "production"
+      ? process.env.BASE_URL
+      : "http://localhost:5000";
+
+    const formattedUsers = suggestedUsers.map(user => ({
+      ...user.toObject(),
+      profilePicture: user.profilePicture 
+        ? user.profilePicture.startsWith("http") 
+          ? user.profilePicture 
+          : `${BASE_URL}${user.profilePicture}`
+        : ""
+    }));
 
     res.status(200).json({
       message: "Suggested connections retrieved successfully",
-      suggestedUsers,
+      suggestedUsers: formattedUsers,
     });
   } catch (error) {
     console.error("Error in getSuggestedConnections:", error);
     res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+export const searchUsers = async (req, res) => {
+  try {
+    console.log("searchUsers function called with query:", req.query);
+    const { q } = req.query;
+
+    if (!q || q.trim().length < 1) {
+      console.log("Invalid search query received");
+      return res.status(400).json({ message: "Search query is required" });
+    }
+
+    // Simplified response for debugging
+    res.status(200).json({
+      message: "Search endpoint reached",
+      query: q,
+      userId: req.user._id
+    });
+  } catch (error) {
+    console.error("Error in searchUsers:", {
+      message: error.message,
+      stack: error.stack
+    });
+    res.status(500).json({ 
+      message: "Server error",
+      error: error.message 
+    });
   }
 };
