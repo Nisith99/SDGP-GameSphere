@@ -118,17 +118,24 @@ const ProfileHeader = ({ userData, onSave, isOwnProfile }) => {
             <h1 className="text-2xl font-bold mb-2 text-gray-800">{userData.name}</h1>
           )}
 
-          {isEditing ? (
-            <input
-              type="text"
-              value={editedData.headline ?? userData.headline}
-              onChange={(e) => setEditedData({ ...editedData, headline: e.target.value })}
-              className="text-gray-600 text-center w-full bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 p-1"
-            />
-          ) : (
-            <p className="text-gray-600">{userData.headline}</p>
-          )}
-
+          <div className="text-center mb-4">
+            {isEditing ? (
+              <div className="flex items-center justify-center">
+                <span className="text-gray-500 mr-2">Player Type:</span>
+                <input
+                  type="text"
+                  value={editedData.headline ?? userData.headline}
+                  onChange={(e) => setEditedData({ ...editedData, headline: e.target.value })}
+                  className="text-gray-600 text-center w-full max-w-xs bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 p-1"
+                />
+              </div>
+            ) : (
+              <p className="text-gray-600">
+                <span className="text-gray-500 mr-2">Player Type:</span>
+                {userData.headline}
+              </p>
+            )}
+          </div>
           {userData.averageRating > 0 && !isEditing && (
             <div className="flex items-center justify-center mt-2 mb-2">
               <div className="flex">
