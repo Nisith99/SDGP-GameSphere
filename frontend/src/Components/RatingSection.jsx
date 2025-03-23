@@ -1,4 +1,3 @@
-// RatingSection.jsx
 import { useState, useEffect } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { axiosInstance } from '../lib/axios';
@@ -42,7 +41,6 @@ const RatingSection = ({ userData, isOwnProfile }) => {
             toast.error('Please select a rating');
             return;
         }
-        console.log('Submitting rating for user ID:', userData._id); 
         submitRating({
             score: userRating,
             comment,
@@ -67,11 +65,11 @@ const RatingSection = ({ userData, isOwnProfile }) => {
                     onClick={() => interactive && setUserRating(starValue)}
                 >
                     {half ? (
-                        <StarHalf className="text-yellow-400 w-6 h-6" />
+                        <StarHalf className="text-yellow-500 w-6 h-6" />
                     ) : (
                         <Star
                             className={`w-6 h-6 ${
-                                filled ? 'text-yellow-400 fill-yellow-400' : 'text-gray-400'
+                                filled ? 'text-yellow-500 fill-yellow-500' : 'text-gray-300'
                             }`}
                         />
                     )}
@@ -83,15 +81,15 @@ const RatingSection = ({ userData, isOwnProfile }) => {
 
     if (isLoading) {
         return (
-            <div className="bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg p-6 border border-blue-700/40">
+            <div className="bg-white/90 rounded-xl shadow-md p-6 border border-blue-200">
                 <div className="animate-pulse flex flex-col items-center">
-                    <div className="h-4 bg-gray-700 rounded w-1/4 mb-4"></div>
+                    <div className="h-4 bg-gray-200 rounded w-1/4 mb-4"></div>
                     <div className="flex space-x-1 mb-4">
                         {Array(5).fill(0).map((_, i) => (
-                            <div key={i} className="w-6 h-6 rounded-full bg-gray-700"></div>
+                            <div key={i} className="w-6 h-6 rounded-full bg-gray-200"></div>
                         ))}
                     </div>
-                    <div className="h-3 bg-gray-700 rounded w-1/2"></div>
+                    <div className="h-3 bg-gray-200 rounded w-1/2"></div>
                 </div>
             </div>
         );
@@ -100,8 +98,8 @@ const RatingSection = ({ userData, isOwnProfile }) => {
     const { averageRating = 0, ratingCount = 0, ratings = [] } = ratingData || {};
 
     return (
-        <div className="bg-gray-900/90 backdrop-blur-md rounded-xl shadow-lg p-6 border border-pink-600/40 hover:shadow-pink-600/20 transition-all duration-300">
-            <h2 className="text-2xl font-bold text-pink-400 mb-4 tracking-tight drop-shadow-md">
+        <div className="bg-white/90 rounded-xl shadow-md p-6 border border-pink-200 hover:shadow-lg transition-all duration-300">
+            <h2 className="text-2xl font-bold text-pink-600 mb-4 tracking-tight">
                 Player Rating
             </h2>
 
@@ -109,28 +107,28 @@ const RatingSection = ({ userData, isOwnProfile }) => {
                 <div className="flex flex-col items-center mb-4 md:mb-0">
                     <div className="flex items-center">
                         {renderStars(averageRating)}
-                        <span className="text-xl font-bold ml-2 text-white">
+                        <span className="text-xl font-bold ml-2 text-gray-800">
                             {averageRating.toFixed(1)}
                         </span>
                     </div>
-                    <p className="text-gray-400 text-sm mt-1">
+                    <p className="text-gray-600 text-sm mt-1">
                         Based on {ratingCount} {ratingCount === 1 ? 'rating' : 'ratings'}
                     </p>
                 </div>
 
                 <button
                     onClick={() => setShowRatings(!showRatings)}
-                    className="px-4 py-2 text-sm bg-gray-800 text-blue-400 rounded-full hover:bg-gray-700 transition-colors"
+                    className="px-4 py-2 text-sm bg-gray-100 text-blue-600 rounded-full hover:bg-gray-200 transition-colors"
                 >
                     {showRatings ? 'Hide Ratings' : 'View All Ratings'}
                 </button>
             </div>
 
             {showRatings && ratings.length > 0 && (
-                <div className="mb-6 max-h-64 overflow-y-auto rounded border border-gray-700 p-4">
-                    <h3 className="text-lg font-semibold text-gray-300 mb-3">Recent Ratings</h3>
+                <div className="mb-6 max-h-64 overflow-y-auto rounded border border-gray-200 p-4">
+                    <h3 className="text-lg font-semibold text-gray-800 mb-3">Recent Ratings</h3>
                     {ratings.map((rating, index) => (
-                        <div key={index} className="p-3 rounded bg-gray-800/60 mb-2 last:mb-0">
+                        <div key={index} className="p-3 rounded bg-gray-50 mb-2 last:mb-0">
                             <div className="flex items-center">
                                 <img
                                     src={rating.ratedBy.profilePicture || '/avatar.png'}
@@ -138,21 +136,21 @@ const RatingSection = ({ userData, isOwnProfile }) => {
                                     className="w-8 h-8 rounded-full mr-2"
                                 />
                                 <div>
-                                    <p className="font-medium text-gray-200">
+                                    <p className="font-medium text-gray-800">
                                         {rating.ratedBy.name}
                                     </p>
                                     <div className="flex items-center">
                                         <div className="flex">
                                             {renderStars(rating.score)}
                                         </div>
-                                        <span className="text-xs text-gray-400 ml-2">
+                                        <span className="text-xs text-gray-500 ml-2">
                                             {new Date(rating.createdAt).toLocaleDateString()}
                                         </span>
                                     </div>
                                 </div>
                             </div>
                             {rating.comment && (
-                                <p className="mt-2 text-gray-300 text-sm">{rating.comment}</p>
+                                <p className="mt-2 text-gray-700 text-sm">{rating.comment}</p>
                             )}
                         </div>
                     ))}
@@ -160,8 +158,8 @@ const RatingSection = ({ userData, isOwnProfile }) => {
             )}
 
             {!isOwnProfile && (
-                <div className="border-t border-gray-700 pt-4 mt-4">
-                    <h3 className="text-lg font-semibold text-gray-300 mb-3">
+                <div className="border-t border-gray-200 pt-4 mt-4">
+                    <h3 className="text-lg font-semibold text-gray-800 mb-3">
                         Rate This Player
                     </h3>
 
@@ -175,14 +173,14 @@ const RatingSection = ({ userData, isOwnProfile }) => {
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
                         placeholder="Leave a comment (optional)"
-                        className="w-full p-3 rounded bg-gray-800 text-white border border-gray-700 focus:border-pink-500 focus:outline-none mb-4"
+                        className="w-full p-3 rounded bg-gray-50 text-gray-800 border border-gray-300 focus:border-pink-500 focus:outline-none mb-4"
                         rows="3"
                     />
 
                     <button
                         onClick={handleRatingSubmit}
                         disabled={isSubmitting || userRating === 0}
-                        className="w-full bg-pink-600 hover:bg-pink-700 text-white font-medium py-2 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full bg-pink-500 hover:bg-pink-600 text-white font-medium py-2 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {isSubmitting ? 'Submitting...' : 'Submit Rating'}
                     </button>
