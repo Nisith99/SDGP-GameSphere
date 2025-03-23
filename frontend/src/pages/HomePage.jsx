@@ -3,7 +3,7 @@ import { axiosInstance } from "../lib/axios";
 import Sidebar from "../components/Sidebar";
 import PostCreation from "../components/PostCreation";
 import Post from "../components/Post";
-import { Trophy, Users } from "lucide-react";
+import { Trophy } from "lucide-react";
 import RecommendedUser from "../components/RecommendedUser";
 
 const HomePage = () => {
@@ -13,7 +13,7 @@ const HomePage = () => {
     queryKey: ["recommendedUsers"],
     queryFn: async () => {
       const res = await axiosInstance.get("/users/suggestions");
-      return res.data;
+      return res.data?.suggestedUsers || []; // Adjusted to match backend response
     },
   });
 
@@ -25,22 +25,30 @@ const HomePage = () => {
     },
   });
 
+  // Ensure at least 4 recommended users are displayed (if available)
+  const displayedUsers = recommendedUsers?.slice(0, Math.max(4, recommendedUsers?.length)) || [];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50">
       <div className="container mx-auto py-8 px-4">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Left Sidebar */}
           <div className="hidden lg:block lg:col-span-1">
             <Sidebar user={authUser} />
           </div>
 
+          {/* Main Content */}
           <div className="col-span-1 lg:col-span-2 order-first lg:order-none">
             <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-4 mb-6">
               <PostCreation user={authUser} />
             </div>
 
             {posts?.map((post) => (
-              <div className="bg-white rounded-lg shadow-lg border border-gray-200 mb-6">
-                <Post key={post._id} post={post} />
+              <div
+                key={post._id}
+                className="bg-white rounded-lg shadow-lg border border-gray-200 mb-6"
+              >
+                <Post post={post} />
               </div>
             ))}
 
@@ -63,18 +71,21 @@ const HomePage = () => {
             )}
           </div>
 
+          {/* Right Sidebar */}
           {recommendedUsers?.length > 0 && (
             <div className="col-span-1 lg:col-span-1 hidden lg:block">
-              <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-4">
+              {/* Players You May Know */}
+              {/* <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-4 mb-6">
                 <h2 className="font-semibold mb-4 text-gray-900">
-                  Players you may know
+                  Players You May Know
                 </h2>
-                {recommendedUsers?.map((user) => (
+                {displayedUsers.map((user) => (
                   <RecommendedUser key={user._id} user={user} />
                 ))}
-              </div>
+              </div> */}
 
-              <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-4 mt-6">
+              {/* Upcoming Games */}
+              <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-4">
                 <h2 className="font-semibold mb-4 text-gray-900">
                   Upcoming Games
                 </h2>
@@ -122,4 +133,5 @@ const HomePage = () => {
     </div>
   );
 };
+
 export default HomePage;
