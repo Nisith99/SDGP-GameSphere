@@ -27,28 +27,13 @@ export const updateProfile = async (req, res) => {
     if (location !== undefined) user.location = location;
     if (about !== undefined) user.about = about;
     if (achievements !== undefined) {
-      try {
-        user.achievements = JSON.parse(achievements);
-      } catch (jsonError) {
-        console.error("Error parsing achievements:", jsonError);
-        return res.status(400).json({ message: "Invalid achievements data format" });
-      }
+      user.achievements = Array.isArray(achievements) ? achievements : JSON.parse(achievements || "[]");
     }
     if (education !== undefined) {
-      try {
-        user.education = JSON.parse(education);
-      } catch (jsonError) {
-        console.error("Error parsing education:", jsonError);
-        return res.status(400).json({ message: "Invalid education data format" });
-      }
+      user.education = Array.isArray(education) ? education : JSON.parse(education || "[]");
     }
     if (skills !== undefined) {
-      try {
-        user.skills = JSON.parse(skills);
-      } catch (jsonError) {
-        console.error("Error parsing skills:", jsonError);
-        return res.status(400).json({ message: "Invalid skills data format" });
-      }
+      user.skills = Array.isArray(skills) ? skills : JSON.parse(skills || "[]");
     }
 
     // Handle file uploads (if applicable)
@@ -107,11 +92,13 @@ export const updateProfile = async (req, res) => {
 export const getPublicProfile = async (req, res) => {
   try {
     const { username } = req.params;
-    const user = await User.findOne({ username })
+    console.log(`Fetching public profile for username: ${username}`);
+    const user = await User.findOne({ username: { $regex: new RegExp(`^${username}$`, "i") } })
       .select("-password")
       .populate("connections", "name username profilePicture");
 
     if (!user) {
+      console.log(`User not found: ${username}`);
       return res.status(404).json({ message: "User not found" });
     }
 
@@ -126,6 +113,7 @@ export const getPublicProfile = async (req, res) => {
       user.bannerImg = `${BASE_URL}${user.bannerImg}`;
     }
 
+    console.log(`Profile fetched successfully for: ${username}`);
     res.status(200).json(user);
   } catch (error) {
     console.error("Error in getPublicProfile:", error);
@@ -135,13 +123,13 @@ export const getPublicProfile = async (req, res) => {
 
 export const rateUser = async (req, res) => {
   try {
-    const { userId } = req.params; // Updated to use req.params.userId
+    const { userId } = req.params;
     const { rating } = req.body;
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    // Add rating logic here (e.g., update a ratings field in the user model)
+    // Add rating logic here
     res.status(200).json({ message: "User rated successfully" });
   } catch (error) {
     console.error("Error in rateUser:", error);
@@ -151,12 +139,11 @@ export const rateUser = async (req, res) => {
 
 export const getUserRatings = async (req, res) => {
   try {
-    const { username } = req.params; // Updated to use username
+    const { username } = req.params;
     const user = await User.findOne({ username }).select("ratings");
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    // Return ratings (assumes a ratings field exists in the model)
     res.status(200).json({ ratings: user.ratings || [] });
   } catch (error) {
     console.error("Error in getUserRatings:", error);
@@ -187,6 +174,3 @@ export const getSuggestedConnections = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
-
-// Removed the duplicate export statement
-// export { rateUser, getUserRatings, getSuggestedConnections };

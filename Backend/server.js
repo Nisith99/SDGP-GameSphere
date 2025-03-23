@@ -1,4 +1,3 @@
-// backend/server.js
 import express from "express";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
@@ -51,7 +50,17 @@ app.use((req, res) => {
   res.status(404).json({ message: "Not Found" });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  connectDB();
-});
+// Connect to DB and start server
+const startServer = async () => {
+  try {
+    await connectDB(); // Ensure DB connects first
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Failed to start server:", error);
+    process.exit(1);
+  }
+};
+
+startServer();
