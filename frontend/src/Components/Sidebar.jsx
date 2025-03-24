@@ -3,7 +3,7 @@ import { Home, UserPlus, Bell, Trophy } from "lucide-react";
 
 export default function Sidebar({ user }) {
   return (
-    <div style={{ backgroundColor: "#F0D3F7", borderRadius: "0.5rem", boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}>
+    <div style={{ backgroundColor: "#E5D9F2", borderRadius: "0.5rem", boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}>
       <div style={{ padding: "1rem", textAlign: "center" }}>
         <div
           style={{

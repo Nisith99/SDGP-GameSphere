@@ -300,7 +300,7 @@ const ChatPage = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-[#F0D3F7] to-[#B98EA7] flex flex-col">
+        <div className="min-h-screen bg-gradient-to-br from-[#ffff] via-[#ffff] to-[#B98EA7]">
             <div className="container mx-auto pt-4 sm:pt-8 pb-4 px-2 sm:px-4 flex-1">
                 <div className="flex flex-col lg:grid lg:grid-cols-4 gap-4 sm:gap-6">
                     <div className="lg:col-span-1">

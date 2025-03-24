@@ -153,7 +153,7 @@ const NotificationsPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F0D3F7] to-[#B98EA7]">
+    <div className="min-h-screen bg-gradient-to-br from-[#ffff] via-[#ffff] to-[#B98EA7]">
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 container mx-auto py-8 px-4">
         <div className="col-span-1 lg:col-span-1">
           <Sidebar user={authUser} />

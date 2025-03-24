@@ -93,7 +93,7 @@ const Post = ({ post }) => {
   };
 
   return (
-    <div style={{ backgroundColor: "#F0D3F7", borderRadius: "0.5rem", boxShadow: "0 2px 4px rgba(0,0,0,0.1)", marginBottom: "1rem" }}>
+    <div style={{ backgroundColor: "#ffff", borderRadius: "0.5rem", boxShadow: "0 2px 4px rgba(0,0,0,0.1)", marginBottom: "1rem" }}>
       <div style={{ padding: "1rem" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1rem" }}>
           <div style={{ display: "flex", alignItems: "center" }}>

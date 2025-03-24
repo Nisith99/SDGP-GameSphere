@@ -56,7 +56,7 @@ const Navbar = () => {
     });
 
   return (
-    <nav className="bg-[#F0D3F7] text-[#302F4D] shadow-md sticky top-0 z-10">
+    <nav className="bg-[#302f4D] text-[#302F4D] shadow-md sticky top-0 z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-3">
           {/* Logo Section */}
@@ -67,7 +67,7 @@ const Navbar = () => {
                 src="/gameSphere_logo.png"
                 alt="GameSphere"
               />
-              <span className="ml-2 text-xl font-bold tracking-tight text-[#302F4D] group-hover:text-[#A57982] transition-colors duration-200 hidden md:block">
+              <span className="ml-2 text-xl font-bold tracking-tight text-[#ffff] group-hover:text-[#ffff] transition-colors duration-200 hidden md:block">
                 GameSphere
               </span>
             </Link>
@@ -83,7 +83,7 @@ const Navbar = () => {
                     placeholder="Search people..."
                     value={searchQuery}
                     onChange={handleSearch}
-                    className="w-full py-2 px-4 pl-10 bg-[#B98EA7] text-[#120D31] border border-[#A57982] rounded-full focus:outline-none focus:ring-2 focus:ring-[#302F4D] focus:border-transparent placeholder-[#302F4D] text-sm shadow-sm transition-all duration-300 hover:bg-[#A57982]"
+                    className="w-full py-2 px-4 pl-10 bg-[#ffff] text-[#120D31] border border-[#A57982] rounded-full focus:outline-none focus:ring-2 focus:ring-[#302F4D] focus:border-transparent placeholder-[#302F4D] text-sm shadow-sm transition-all duration-300 hover:bg-[#ffff]"
                   />
                   <Search
                     size={18}
@@ -134,28 +134,28 @@ const Navbar = () => {
               <>
                 <Link
                   to="/"
-                  className="text-[#302F4D] hover:text-[#A57982] flex flex-col items-center transition-all duration-200 hover:scale-105"
+                  className="text-[#ffff] hover:text-[#A57982] flex flex-col items-center transition-all duration-200 hover:scale-105"
                 >
                   <Home size={22} />
                   <span className="text-xs mt-1 hidden md:block">Home</span>
                 </Link>
                 <Link
                   to="/leagues"
-                  className="text-[#302F4D] hover:text-[#A57982] flex flex-col items-center transition-all duration-200 hover:scale-105"
+                  className="text-[#ffff] hover:text-[#A57982] flex flex-col items-center transition-all duration-200 hover:scale-105"
                 >
                   <Trophy size={22} />
                   <span className="text-xs mt-1 hidden md:block">Clubs</span>
                 </Link>
                 <Link
                   to="/stats"
-                  className="text-[#302F4D] hover:text-[#A57982] flex flex-col items-center transition-all duration-200 hover:scale-105"
+                  className="text-[#ffff] hover:text-[#A57982] flex flex-col items-center transition-all duration-200 hover:scale-105"
                 >
                   <Activity size={22} />
                   <span className="text-xs mt-1 hidden md:block">Live Stats</span>
                 </Link>
                 <Link
                   to="/network"
-                  className="text-[#302F4D] hover:text-[#A57982] flex flex-col items-center relative transition-all duration-200 hover:scale-105"
+                  className="text-[#ffff] hover:text-[#A57982] flex flex-col items-center relative transition-all duration-200 hover:scale-105"
                 >
                   <Users size={22} />
                   <span className="text-xs mt-1 hidden md:block">Connections</span>
@@ -167,7 +167,7 @@ const Navbar = () => {
                 </Link>
                 <Link
                   to="/notifications"
-                  className="text-[#302F4D] hover:text-[#A57982] flex flex-col items-center relative transition-all duration-200 hover:scale-105"
+                  className="text-[#ffff] hover:text-[#A57982] flex flex-col items-center relative transition-all duration-200 hover:scale-105"
                 >
                   <Bell size={22} />
                   <span className="text-xs mt-1 hidden md:block">Alerts</span>
@@ -179,20 +179,20 @@ const Navbar = () => {
                 </Link>
                 <Link
                   to="/chat"
-                  className="text-[#302F4D] hover:text-[#A57982] flex flex-col items-center relative transition-all duration-200 hover:scale-105"
+                  className="text-[#ffff] hover:text-[#A57982] flex flex-col items-center relative transition-all duration-200 hover:scale-105"
                 >
                   <MessageSquare size={22} />
                   <span className="text-xs mt-1 hidden md:block">Messenger</span>
                 </Link>
                 <Link
                   to={`/profile/${authUser.username}`}
-                  className="text-[#302F4D] hover:text-[#A57982] flex flex-col items-center transition-all duration-200 hover:scale-105"
+                  className="text-[#ffff] hover:text-[#A57982] flex flex-col items-center transition-all duration-200 hover:scale-105"
                 >
                   <User size={22} />
                   <span className="text-xs mt-1 hidden md:block">Profile</span>
                 </Link>
                 <button
-                  className="flex items-center space-x-1 text-[#302F4D] hover:text-[#A57982] transition-all duration-200 hover:scale-105"
+                  className="flex items-center space-x-1 text-[#ffff] hover:text-[#A57982] transition-all duration-200 hover:scale-105"
                   onClick={() => logout()}
                 >
                   <LogOut size={22} />

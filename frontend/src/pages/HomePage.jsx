@@ -54,7 +54,7 @@ const HomePage = () => {
   const displayedUsers = recommendedUsers?.slice(0, Math.max(4, recommendedUsers?.length)) || [];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F0D3F7] to-[#B98EA7]">
+    <div className="min-h-screen bg-gradient-to-br from-[#ffff] via-[#ffff] to-[#B98EA7]">
       <div className="container mx-auto py-8 px-4">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Left Sidebar */}
@@ -64,14 +64,14 @@ const HomePage = () => {
 
           {/* Main Content */}
           <div className="col-span-1 lg:col-span-2 order-first lg:order-none">
-            <div className="bg-[#F0D3F7] rounded-lg shadow-lg border border-[#A57982] p-4 mb-6">
+            <div className="bg-[#E5D9F2] rounded-lg shadow-lg border border-[#A57982] p-4 mb-6">
               <PostCreation user={authUser} />
             </div>
 
             {posts?.map((post) => (
               <div
                 key={post._id}
-                className="bg-[#F0D3F7] rounded-lg shadow-lg border border-[#A57982] mb-6"
+                className="bg-[#E5D9F2] rounded-lg shadow-lg border border-[#A57982] mb-6"
               >
                 <Post post={post} />
               </div>
@@ -99,7 +99,7 @@ const HomePage = () => {
           {/* Right Sidebar */}
           <div className="col-span-1 lg:col-span-1 hidden lg:block">
             {recommendedUsers?.length > 0 && (
-              <div className="bg-[#F0D3F7] rounded-lg shadow-lg border border-[#A57982] p-4 mb-6">
+              <div className="bg-[#E5D9F2] rounded-lg shadow-lg border border-[#A57982] p-4 mb-6">
                 <h2 className="font-semibold mb-4 text-[#120D31]">
                   Players You May Know
                 </h2>
@@ -113,24 +113,24 @@ const HomePage = () => {
               </div>
             )}
 
-            <div className="bg-[#F0D3F7] rounded-lg shadow-lg border border-[#A57982] p-4">
+            <div className="bg-[#E5D9F2] rounded-lg shadow-lg border border-[#A57982] p-4">
               <h2 className="font-semibold mb-4 text-[#120D31]">
                 Upcoming Games
               </h2>
               <div className="space-y-4">
-                <div className="p-3 bg-[#B98EA7] rounded-lg hover:bg-[#A57982] transition-colors cursor-pointer">
+                <div className="p-3 bg-[#302f4D] rounded-lg hover:bg-[#A57982] transition-colors cursor-pointer">
                   <div className="flex justify-between items-center">
-                    <span className="font-medium text-[#120D31]">Lakers vs. Warriors</span>
-                    <span className="text-sm text-[#302F4D]">Today</span>
+                    <span className="font-medium text-[#ffff]">Lakers vs. Warriors</span>
+                    <span className="text-sm text-[#ffff]">Today</span>
                   </div>
-                  <div className="text-xs text-[#302F4D] mt-1">7:30 PM ET</div>
+                  <div className="text-xs text-[#ffff] mt-1">7:30 PM ET</div>
                 </div>
-                <div className="p-3 bg-[#B98EA7] rounded-lg hover:bg-[#A57982] transition-colors cursor-pointer">
+                <div className="p-3 bg-[#302f4D] rounded-lg hover:bg-[#A57982] transition-colors cursor-pointer">
                   <div className="flex justify-between items-center">
-                    <span className="font-medium text-[#120D31]">Cowboys vs. Eagles</span>
-                    <span className="text-sm text-[#302F4D]">Tomorrow</span>
+                    <span className="font-medium text-[#ffff]">Cowboys vs. Eagles</span>
+                    <span className="text-sm text-[#ffff]">Tomorrow</span>
                   </div>
-                  <div className="text-xs text-[#302F4D] mt-1">4:15 PM ET</div>
+                  <div className="text-xs text-[#ffff] mt-1">4:15 PM ET</div>
                 </div>
               </div>
             </div>

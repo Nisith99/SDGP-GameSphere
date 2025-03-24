@@ -65,7 +65,7 @@ const PostCreation = ({ user }) => {
   };
 
   return (
-    <div style={{ backgroundColor: "#F0D3F7", borderRadius: "0.5rem", boxShadow: "0 2px 4px rgba(0,0,0,0.1)", marginBottom: "1rem", padding: "1rem" }}>
+    <div style={{ backgroundColor: "#ffff", borderRadius: "0.5rem", boxShadow: "0 2px 4px rgba(0,0,0,0.1)", marginBottom: "1rem", padding: "1rem" }}>
       <div style={{ display: "flex", gap: "0.75rem" }}>
         <img
           src={user.profilePicture || "/avatar.png"}
@@ -78,7 +78,7 @@ const PostCreation = ({ user }) => {
             width: "100%",
             padding: "0.75rem",
             borderRadius: "0.5rem",
-            backgroundColor: "#B98EA7",
+            backgroundColor: "#ffff",
             color: "#120D31",
             border: "none",
             outline: "none",
@@ -88,9 +88,9 @@ const PostCreation = ({ user }) => {
           }}
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#A57982")}
-          onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#B98EA7")}
-          onFocus={(e) => (e.currentTarget.style.backgroundColor = "#A57982")}
+          onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#F6F0F0")}
+          onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#F6F0F0")}
+          onFocus={(e) => (e.currentTarget.style.backgroundColor = "#F6F0F0")}
         />
       </div>
 
@@ -122,7 +122,7 @@ const PostCreation = ({ user }) => {
         <button
           style={{
             backgroundColor: "#302F4D",
-            color: "#F0D3F7",
+            color: "#ffff",
             borderRadius: "0.5rem",
             padding: "0.5rem 1rem",
             transition: "background-color 0.2s",

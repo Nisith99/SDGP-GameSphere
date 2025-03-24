@@ -19,7 +19,7 @@ const NetworkPage = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F0D3F7] via-[#E0C2E5] to-[#B98EA7]">
+    <div className="min-h-screen bg-gradient-to-br from-[#ffff] via-[#ffff] to-[#B98EA7]">
       <div className="container mx-auto py-10 px-6">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <div className="col-span-1 lg:col-span-1">

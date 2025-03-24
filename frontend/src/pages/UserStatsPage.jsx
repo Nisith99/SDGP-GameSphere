@@ -108,7 +108,7 @@ const UserStatsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#F0D3F7] via-[#E0C2E5] to-[#B98EA7] text-[#120D31]">
+    <div className="min-h-screen bg-gradient-to-br from-[#ffff] via-[#ffff] to-[#B98EA7]">
       <motion.div className="container mx-auto py-16 px-6 max-w-5xl" variants={containerVariants} initial="hidden" animate="visible">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-5xl font-extrabold text-[#120D31] tracking-tight">Users' Stats</h1>
