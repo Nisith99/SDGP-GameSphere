@@ -6,17 +6,35 @@ import FriendRequest from "../components/FriendRequest";
 import UserCard from "../components/UserCard";
 
 const NetworkPage = () => {
-  const { data: user } = useQuery({ queryKey: ["authUser"] });
+  const { data: user, isLoading: userLoading } = useQuery({
+    queryKey: ["authUser"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/auth/me");
+      return res.data || null;
+    },
+  });
 
-  const { data: connectionRequests } = useQuery({
+  const { data: connectionRequests, isLoading: requestsLoading } = useQuery({
     queryKey: ["connectionRequests"],
-    queryFn: () => axiosInstance.get("/connections/requests").then(res => res.data),
+    queryFn: async () => {
+      const res = await axiosInstance.get("/connections/requests");
+      return res.data || [];
+    },
+    enabled: !!user,
   });
 
-  const { data: connections } = useQuery({
+  const { data: connections, isLoading: connectionsLoading } = useQuery({
     queryKey: ["connections"],
-    queryFn: () => axiosInstance.get("/connections").then(res => res.data),
+    queryFn: async () => {
+      const res = await axiosInstance.get("/connections");
+      return res.data || [];
+    },
+    enabled: !!user,
   });
+
+  if (userLoading || requestsLoading || connectionsLoading) {
+    return <div className="text-center py-10">Loading...</div>;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#ffff] via-[#ffff] to-[#B98EA7]">
@@ -38,7 +56,7 @@ const NetworkPage = () => {
                   </h2>
                   <div className="space-y-5">
                     {connectionRequests.map((request) => (
-                      <FriendRequest key={request.id} request={request} />
+                      <FriendRequest key={request._id || request.id} request={request} />
                     ))}
                   </div>
                 </div>
