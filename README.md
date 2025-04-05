@@ -1,11 +1,5 @@
-<<<<<<< HEAD
 # GameSphere
 
-=======
-
-<<<<<<<< HEAD:Backend/README.md
-========
->>>>>>> 6d4d32d40b35442b4c0b066d8b5030c8cd582296
 GameSphere is a gaming community platform designed to connect players, manage profiles, and foster engagement through features like user ratings and suggested connections. This repository contains both the backend (Node.js/Express) and frontend (assumed to be a Node-based framework like React/Vite) components of the application.
 
 ## Project Structure
@@ -72,7 +66,7 @@ CLOUDINARY_CLOUD_NAME=dhc5jpevd
 CLIENT_URL=http://localhost:5173
 ```
 
-- Replace `MONGO_URI` with your MongoDB connection string (e.g., `mongodb+srv://janiruw:test123@cluster0.1kcfn.mongodb.net/gamesphere?retryWrites=true&w=majority`). Update `<your-username>` and `<your-password>` with your MongoDB credentials and adjust the database name if different from `gamesphere`.
+- Replace `MONGO_URI` with your MongoDB connection string (e.g., `mongodb+srv://(username):(password)@cluster0.1kcfn.mongodb.net/gamesphere?retryWrites=true&w=majority`). Update `<your-username>` and `<your-password>` with your MongoDB credentials and adjust the database name if different from `gamesphere`.
 - Update `CLIENT_URL` if your frontend runs on a different port (e.g., `http://localhost:3000`); it's currently set to `http://localhost:5173` for Vite's default port.
 - Set a secure `JWT_SECRET` (e.g., a random 32+ character string like `yourverystrongsecret123!@#`). Avoid using weak or predictable values.
 
