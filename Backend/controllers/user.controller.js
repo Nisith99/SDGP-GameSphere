@@ -37,30 +37,16 @@ export const updateProfile = async (req, res) => {
     }
 
     if (req.files) {
-      console.log("Files received:", req.files);
-      const BASE_URL = process.env.NODE_ENV === "production"
-        ? process.env.BASE_URL
-        : "http://localhost:5000";
       const { profilePicture, bannerImg } = req.files;
-
+    
       if (profilePicture) {
-        const profilePicturePath = path.join(
-          __dirname,
-          "../uploads/profile",
-          `${userId}-${Date.now()}-${profilePicture.name}`
-        );
-        await profilePicture.mv(profilePicturePath);
-        user.profilePicture = `/uploads/profile/${path.basename(profilePicturePath)}`;
+        const result = await uploadToCloudinary(profilePicture, "profile");
+        user.profilePicture = result.secure_url;
       }
-
+    
       if (bannerImg) {
-        const bannerImgPath = path.join(
-          __dirname,
-          "../uploads/banner",
-          `${userId}-${Date.now()}-${bannerImg.name}`
-        );
-        await bannerImg.mv(bannerImgPath);
-        user.bannerImg = `/uploads/banner/${path.basename(bannerImgPath)}`;
+        const result = await uploadToCloudinary(bannerImg, "banner");
+        user.bannerImg = result.secure_url;
       }
     }
 
