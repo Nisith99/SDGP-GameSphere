@@ -3,6 +3,7 @@ import User from "../models/user.model.js";
 import path from "path";
 import fs from "fs/promises";
 import { fileURLToPath } from "url";
+import { uploadToCloudinary } from "../lib/cloudinary.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
